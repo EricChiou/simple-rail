@@ -1,0 +1,31 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="MIT"
+# issueTrackerURL=""
+
+[[mods]]
+modId="simplerail"
+version="1.16.5-0.0.1"
+displayName="Simple Rail"
+# updateJSONURL=""
+# displayURL=""
+logoFile="logo.png"
+credits="Thanks for my wife and daughter, they are everything in my life."
+authors="EricChiu"
+description='''
+Add some useful rail.
+'''
+
+[[dependencies.simplerail]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.simplerail]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,1.17)"
+    ordering="NONE"
+    side="BOTH"
