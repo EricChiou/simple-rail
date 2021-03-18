@@ -8,10 +8,10 @@
       "y": 90
     },
     "powered=true,shape=north_south": {
-      "model": "simplerail:block/high_speed_rail"
+      "model": "simplerail:block/high_speed_powered_rail"
     },
     "powered=true,shape=east_west": {
-      "model": "simplerail:block/high_speed_rail",
+      "model": "simplerail:block/high_speed_powered_rail",
       "y": 90
     }
   }

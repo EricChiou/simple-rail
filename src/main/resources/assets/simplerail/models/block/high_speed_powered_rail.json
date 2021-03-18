@@ -1,0 +1,6 @@
+{
+  "parent": "block/rail_flat",
+  "textures": {
+    "rail": "simplerail:blocks/high_speed_powered_rail"
+  }
+}

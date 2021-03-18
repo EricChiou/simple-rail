@@ -10,13 +10,13 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class Blocks {
-	
+
 	public static final HighSpeedRail HIGH_SPEED_RAIL = new HighSpeedRail();
-	
-	public static final DeferredRegister<Block> REGISTER =
-			DeferredRegister.create(ForgeRegistries.BLOCKS, SimpleRail.MOD_ID);
-		
-	public static final RegistryObject<Block> HIGH_SPEED_RAIL_OBJ =
-			REGISTER.register(I18n.BLOCK_HIGH_SPEED_RAIL, () -> HIGH_SPEED_RAIL);
+
+	public static final DeferredRegister<Block> REGISTER = DeferredRegister.create(ForgeRegistries.BLOCKS,
+			SimpleRail.MOD_ID);
+
+	public static final RegistryObject<Block> HIGH_SPEED_RAIL_OBJ = REGISTER.register(I18n.BLOCK_HIGH_SPEED_RAIL,
+			() -> HIGH_SPEED_RAIL);
 
 }
