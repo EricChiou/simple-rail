@@ -1,6 +1,10 @@
 {
-  "parent": "block/rail_flat",
+  "ambientocclusion": false,
   "textures":{
-    "rail": "simplerail:blocks/high_speed_rail"
+    "bottom": "simplerail:blocks/high_speed_rail",
+    "rail": "simplerail:blocks/high_speed_rail",
+    "rail_parts": "simplerail:blocks/high_speed_rail",
+    "texture": "simplerail:blocks/high_speed_rail",
+    "particle": "simplerail:blocks/high_speed_rail"
   }
 }
