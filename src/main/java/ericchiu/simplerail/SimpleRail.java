@@ -2,8 +2,6 @@ package ericchiu.simplerail;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -50,7 +48,7 @@ public class SimpleRail {
     private void doClientStuff(final FMLClientSetupEvent event) {
         LOGGER.info("Got game settings");
 
-        RenderLayer.setRenderType();
+        RenderLayer.set();
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

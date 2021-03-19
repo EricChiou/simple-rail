@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.RenderTypeLookup;
 
 public class RenderLayer {
 
-  public static void setRenderType() {
+  public static void set() {
     RenderType cutout = RenderType.cutout();
 
     RenderTypeLookup.setRenderLayer(Blocks.HIGH_SPEED_RAIL_OBJ.get(), cutout);
