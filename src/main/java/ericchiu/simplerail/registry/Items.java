@@ -2,21 +2,24 @@ package ericchiu.simplerail.registry;
 
 import ericchiu.simplerail.SimpleRail;
 import ericchiu.simplerail.constants.I18n;
-
+import ericchiu.simplerail.item.MineCart;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class Items {
-	
-	public static final DeferredRegister<Item> REGISTER =
-			DeferredRegister.create(ForgeRegistries.ITEMS, SimpleRail.MOD_ID);
-	
+
+	public static final MineCart MINECART = new MineCart();
+
+	public static final DeferredRegister<Item> REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS,
+			SimpleRail.MOD_ID);
+
 	// items
-	
+	public static final RegistryObject<Item> MINECART_OBJ = Items.REGISTER.register(I18n.ITEM_MINECART, () -> MINECART);
+
 	// block items
-	public static final RegistryObject<Item> HIGH_SPEED_RAIL_ITEM_OBJ =
-			Items.REGISTER.register(I18n.BLOCK_ITEM_HIGH_SPEED_RAIL, () -> Blocks.HIGH_SPEED_RAIL.blockItem);
+	public static final RegistryObject<Item> HIGH_SPEED_RAIL_ITEM_OBJ = Items.REGISTER
+			.register(I18n.BLOCK_ITEM_HIGH_SPEED_RAIL, () -> Blocks.HIGH_SPEED_RAIL.blockItem);
 
 }

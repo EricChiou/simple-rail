@@ -5,6 +5,7 @@ public class I18n {
 	public static final String TAB_RAIL = "simplerail.rails";
 
 	// item
+	public static final String ITEM_MINECART = "minecart";
 
 	// block
 	public static final String BLOCK_HIGH_SPEED_RAIL = "high_speed_rail";
