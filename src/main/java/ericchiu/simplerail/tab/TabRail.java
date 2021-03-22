@@ -1,4 +1,4 @@
-package ericchiu.simplerail.tabs;
+package ericchiu.simplerail.tab;
 
 import ericchiu.simplerail.constants.I18n;
 import ericchiu.simplerail.registry.Blocks;

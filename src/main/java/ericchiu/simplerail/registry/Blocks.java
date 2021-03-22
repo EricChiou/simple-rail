@@ -1,7 +1,7 @@
 package ericchiu.simplerail.registry;
 
 import ericchiu.simplerail.SimpleRail;
-import ericchiu.simplerail.blocks.HighSpeedRail;
+import ericchiu.simplerail.block.HighSpeedRail;
 import ericchiu.simplerail.constants.I18n;
 
 import net.minecraft.block.Block;

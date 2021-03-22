@@ -37,7 +37,7 @@ public class SimpleRail {
 
         MinecraftForge.EVENT_BUS.register(this);
 
-        Registration.init();
+        Registration.setup();
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -76,4 +76,5 @@ public class SimpleRail {
             LOGGER.info("HELLO from Register Block");
         }
     }
+
 }
