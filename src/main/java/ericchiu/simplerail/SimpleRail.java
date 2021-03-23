@@ -6,7 +6,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig.Type;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -16,8 +18,10 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import ericchiu.simplerail.config.CommonConfig;
 import ericchiu.simplerail.setup.Registration;
 import ericchiu.simplerail.setup.RenderLayer;
+import ericchiu.simplerail.tag.Tags;
 
 import java.util.stream.Collectors;
 
@@ -35,9 +39,12 @@ public class SimpleRail {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
+        ModLoadingContext.get().registerConfig(Type.COMMON, CommonConfig.SPEC);
+
         MinecraftForge.EVENT_BUS.register(this);
 
         Registration.setup();
+        Tags.setup();
     }
 
     private void setup(final FMLCommonSetupEvent event) {

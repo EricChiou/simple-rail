@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "powered=false,shape=north_south": {
+      "model": "simplerail:block/oneway_forward_rail"
+    },
+    "powered=false,shape=east_west": {
+      "model": "simplerail:block/oneway_forward_rail",
+      "y": 90
+    },
+    "powered=true,shape=north_south": {
+      "model": "simplerail:block/oneway_forward_powered_rail"
+    },
+    "powered=true,shape=east_west": {
+      "model": "simplerail:block/oneway_forward_powered_rail",
+      "y": 90
+    }
+  }
+}

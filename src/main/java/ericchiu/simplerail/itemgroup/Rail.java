@@ -1,4 +1,4 @@
-package ericchiu.simplerail.category;
+package ericchiu.simplerail.itemgroup;
 
 import ericchiu.simplerail.constants.I18n;
 import ericchiu.simplerail.registry.Blocks;

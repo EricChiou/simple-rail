@@ -2,14 +2,14 @@ package ericchiu.simplerail.constants;
 
 public class I18n {
 	// item group
-	public static final String TAB_RAIL = "simplerail.rails";
+	public static final String TAB_RAIL = "simplerail.tab";
 
 	// item
-	public static final String ITEM_MINECART = "minecart";
+	public static final String ITEM_WRENCH = "wrench";
 
 	// block
 	public static final String BLOCK_HIGH_SPEED_RAIL = "high_speed_rail";
-
-	// block item
-	public static final String BLOCK_ITEM_HIGH_SPEED_RAIL = "high_speed_rail";
+	public static final String BLOCK_HOLDING_RAIL = "holding_rail";
+	public static final String BLOCK_ONEWAY_FORWARD_RAIL = "oneway_forward_rail";
+	public static final String BLOCK_ONEWAY_REVERSE_RAIL = "oneway_reverse_rail";
 }

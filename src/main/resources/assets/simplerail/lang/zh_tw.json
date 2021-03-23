@@ -1,5 +1,8 @@
 {
-  "itemGroup.simplerail.rails": "Simple Rail",
-  "item.simplerail.pudding": "布丁",
-  "block.simplerail.high_speed_rail": "高速鐵軌"
+  "itemGroup.simplerail.tab": "Simple Rail",
+  "item.simplerail.wrench": "板手",
+  "block.simplerail.high_speed_rail": "高速鐵軌",
+  "block.simplerail.holding_rail": "鎖定鐵軌",
+  "block.simplerail.oneway_forward_rail": "單向鐵軌",
+  "block.simplerail.oneway_reverse_rail": "單向鐵軌"
 }

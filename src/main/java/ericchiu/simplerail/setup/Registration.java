@@ -10,8 +10,8 @@ public class Registration {
 	private static IEventBus BUS = FMLJavaModLoadingContext.get().getModEventBus();
 
 	public static void setup() {
-		Items.REGISTER.register(BUS);
-		Blocks.REGISTER.register(BUS);
+		Items.register(BUS);
+		Blocks.register(BUS);
 	}
 
 }

@@ -1,5 +1,8 @@
 {
-  "itemGroup.simplerail.rails": "Simple Rail",
-  "item.simplerail.pudding": "Pudding",
-  "block.simplerail.high_speed_rail": "High Speed Rail"
+  "itemGroup.simplerail.tab": "Simple Rail",
+  "item.simplerail.wrench": "Wrench",
+  "block.simplerail.high_speed_rail": "High Speed Rail",
+  "block.simplerail.holding_rail": "Holding Rail",
+  "block.simplerail.oneway_forward_rail": "Oneway Rail",
+  "block.simplerail.oneway_reverse_rail": "Oneway Rail"
 }

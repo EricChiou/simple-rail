@@ -1,0 +1,34 @@
+package ericchiu.simplerail.item;
+
+import ericchiu.simplerail.itemgroup.Rail;
+import ericchiu.simplerail.tag.Tags;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.Rarity;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
+
+public class Wrench extends Item {
+
+  public Wrench() {
+    super(new Item.Properties().addToolType(ToolType.HOE, 0).rarity(Rarity.COMMON).fireResistant().stacksTo(1)
+        .tab(Rail.TAB));
+  }
+
+  @Override
+  public ActionResultType useOn(ItemUseContext context) {
+    World world = context.getLevel();
+    BlockPos blockpos = context.getClickedPos();
+    BlockState blockstate = world.getBlockState(blockpos);
+
+    if (blockstate.is(Tags.RAILS)) {
+      return ActionResultType.SUCCESS;
+    }
+
+    return ActionResultType.FAIL;
+  }
+
+}
