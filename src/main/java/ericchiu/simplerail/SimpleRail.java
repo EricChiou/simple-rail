@@ -19,9 +19,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import ericchiu.simplerail.config.CommonConfig;
+import ericchiu.simplerail.setup.SimpleRailTags;
+import ericchiu.simplerail.setup.SimpleRailProperties;
 import ericchiu.simplerail.setup.Registration;
-import ericchiu.simplerail.setup.RenderLayer;
-import ericchiu.simplerail.tag.Tags;
+import ericchiu.simplerail.setup.RenderSetup;
 
 import java.util.stream.Collectors;
 
@@ -43,8 +44,9 @@ public class SimpleRail {
 
         MinecraftForge.EVENT_BUS.register(this);
 
+        SimpleRailProperties.setup();
+        SimpleRailTags.setup();
         Registration.setup();
-        Tags.setup();
     }
 
     private void setup(final FMLCommonSetupEvent event) {
@@ -55,7 +57,7 @@ public class SimpleRail {
     private void doClientStuff(final FMLClientSetupEvent event) {
         LOGGER.info("Got game settings");
 
-        RenderLayer.set();
+        RenderSetup.set();
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

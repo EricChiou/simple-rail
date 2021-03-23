@@ -3,7 +3,6 @@
   "values": [
     "simplerail:high_speed_rail",
     "simplerail:holding_rail",
-    "simplerail:oneway_forward_rail",
-    "simplerail:oneway_reverse_rail"
+    "simplerail:oneway_rail"
   ]
 }

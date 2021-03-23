@@ -1,7 +1,9 @@
 package ericchiu.simplerail.item;
 
+import ericchiu.simplerail.block.OnewayRail;
 import ericchiu.simplerail.itemgroup.Rail;
-import ericchiu.simplerail.tag.Tags;
+import ericchiu.simplerail.setup.SimpleRailProperties;
+import ericchiu.simplerail.setup.SimpleRailTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUseContext;
@@ -24,11 +26,16 @@ public class Wrench extends Item {
     BlockPos blockpos = context.getClickedPos();
     BlockState blockstate = world.getBlockState(blockpos);
 
-    if (blockstate.is(Tags.RAILS)) {
-      return ActionResultType.SUCCESS;
+    if (!blockstate.is(SimpleRailTags.RAILS)) {
+      return ActionResultType.FAIL;
     }
 
-    return ActionResultType.FAIL;
+    if (blockstate.getBlock() instanceof OnewayRail && blockstate.hasProperty(SimpleRailProperties.REVERSE)) {
+      boolean reverse = blockstate.getValue(SimpleRailProperties.REVERSE);
+      world.setBlock(blockpos, blockstate.setValue(SimpleRailProperties.REVERSE, !reverse), 3);
+    }
+
+    return ActionResultType.SUCCESS;
   }
 
 }

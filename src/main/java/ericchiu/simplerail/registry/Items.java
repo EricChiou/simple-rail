@@ -22,8 +22,7 @@ public class Items {
 		// block items
 		Items.REGISTER.register(I18n.BLOCK_HIGH_SPEED_RAIL, () -> Blocks.HIGH_SPEED_RAIL.blockItem);
 		Items.REGISTER.register(I18n.BLOCK_HOLDING_RAIL, () -> Blocks.HOLDING_RAIL.blockItem);
-		Items.REGISTER.register(I18n.BLOCK_ONEWAY_FORWARD_RAIL, () -> Blocks.ONEWAY_FORWARD_RAIL.blockItem);
-		Items.REGISTER.register(I18n.BLOCK_ONEWAY_REVERSE_RAIL, () -> Blocks.ONEWAY_REVERSE_RAIL.blockItem);
+		Items.REGISTER.register(I18n.BLOCK_ONEWAY_RAIL, () -> Blocks.ONEWAY_RAIL.blockItem);
 
 		REGISTER.register(bus);
 	}

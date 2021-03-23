@@ -1,0 +1,33 @@
+{
+  "variants": {
+    "reverse=false,powered=false,shape=north_south": {
+      "model": "simplerail:block/oneway_rail"
+    },
+    "reverse=false,powered=false,shape=east_west": {
+      "model": "simplerail:block/oneway_rail",
+      "y": 90
+    },
+    "reverse=false,powered=true,shape=north_south": {
+      "model": "simplerail:block/oneway_powered_rail"
+    },
+    "reverse=false,powered=true,shape=east_west": {
+      "model": "simplerail:block/oneway_powered_rail",
+      "y": 90
+    },
+    "reverse=true,powered=false,shape=north_south": {
+      "model": "simplerail:block/oneway_reverse_rail"
+    },
+    "reverse=true,powered=false,shape=east_west": {
+      "model": "simplerail:block/oneway_reverse_rail",
+      "y": 90
+    },
+    "reverse=true,powered=true,shape=north_south": {
+      "model": "simplerail:block/oneway_reverse_powered_rail"
+    },
+    "reverse=true,powered=true,shape=east_west": {
+      "model": "simplerail:block/oneway_reverse_powered_rail",
+      "y": 90
+    }
+
+  }
+}

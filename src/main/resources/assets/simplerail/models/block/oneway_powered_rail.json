@@ -1,6 +1,6 @@
 {
   "parent": "block/rail_flat",
   "textures": {
-    "rail": "simplerail:blocks/oneway_forward_rail"
+    "rail": "simplerail:blocks/oneway_powered_rail"
   }
 }
