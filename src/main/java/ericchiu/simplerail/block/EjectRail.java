@@ -21,6 +21,7 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
@@ -59,37 +60,45 @@ public class EjectRail extends PoweredRailBlock {
   }
 
   @Override
+  public boolean canMakeSlopes(BlockState state, IBlockReader world, BlockPos pos) {
+    return false;
+  }
+
+  @Override
   public void onMinecartPass(BlockState state, World world, BlockPos pos, AbstractMinecartEntity cart) {
     RailShape shape = state.getValue(BlockStateProperties.RAIL_SHAPE_STRAIGHT);
     boolean powered = state.getValue(BlockStateProperties.POWERED);
     boolean reverse = state.getValue(SimpleRailProperties.REVERSE);
 
-    if (powered || !CommonConfig.INSTANCE.ejectRailNeedPower.get()) {
-      List<Entity> passengers = cart.getPassengers();
-      if (passengers.size() > 0) {
-        cart.ejectPassengers();
+    if (!powered && CommonConfig.INSTANCE.ejectRailNeedPower.get()) {
+      return;
+    }
 
-        if (reverse) {
-          if (shape.equals(RailShape.NORTH_SOUTH)) {
-            passengers.forEach((passenger) -> {
-              transportPassenger(pos, passenger, CommonConfig.INSTANCE.ejectRailTransportDistance.get(), 0, 0);
-            });
-          } else {
-            passengers.forEach((passenger) -> {
-              transportPassenger(pos, passenger, 0, 0, CommonConfig.INSTANCE.ejectRailTransportDistance.get());
-            });
-          }
-        } else {
-          if (shape.equals(RailShape.NORTH_SOUTH)) {
-            passengers.forEach((passenger) -> {
-              transportPassenger(pos, passenger, -CommonConfig.INSTANCE.ejectRailTransportDistance.get(), 0, 0);
-            });
-          } else {
-            passengers.forEach((passenger) -> {
-              transportPassenger(pos, passenger, 0, 0, -CommonConfig.INSTANCE.ejectRailTransportDistance.get());
-            });
-          }
-        }
+    List<Entity> passengers = cart.getPassengers();
+    if (passengers.size() <= 0) {
+      return;
+    }
+
+    cart.ejectPassengers();
+    if (reverse) {
+      if (shape.equals(RailShape.NORTH_SOUTH)) {
+        passengers.forEach((passenger) -> {
+          transportPassenger(pos, passenger, CommonConfig.INSTANCE.ejectRailTransportDistance.get(), 0, 0);
+        });
+      } else {
+        passengers.forEach((passenger) -> {
+          transportPassenger(pos, passenger, 0, 0, CommonConfig.INSTANCE.ejectRailTransportDistance.get());
+        });
+      }
+    } else {
+      if (shape.equals(RailShape.NORTH_SOUTH)) {
+        passengers.forEach((passenger) -> {
+          transportPassenger(pos, passenger, -CommonConfig.INSTANCE.ejectRailTransportDistance.get(), 0, 0);
+        });
+      } else {
+        passengers.forEach((passenger) -> {
+          transportPassenger(pos, passenger, 0, 0, -CommonConfig.INSTANCE.ejectRailTransportDistance.get());
+        });
       }
     }
   }
