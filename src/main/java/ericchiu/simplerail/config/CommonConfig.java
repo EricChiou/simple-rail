@@ -7,6 +7,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.common.ForgeConfigSpec.DoubleValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 
 public class CommonConfig {
   private static final Pair<CommonConfig, ForgeConfigSpec> PAIR = new Builder().configure(CommonConfig::new);
@@ -18,6 +19,8 @@ public class CommonConfig {
   public final DoubleValue highSpeedRailMaxSpeed;
   public final BooleanValue onewayRailNeedPower;
   public final BooleanValue onewayRailUsePowerChangeDirection;
+  public final IntValue ejectRailTransportDistance;
+  public final BooleanValue ejectRailNeedPower;
 
   public CommonConfig(Builder builder) {
     builder.comment("Simple Rail Settings");
@@ -41,6 +44,15 @@ public class CommonConfig {
         .comment(
             "Use power to change oneway rail direction (default: false)\nIf this is true, it mean needPower is false")
         .define(Config.ONEWAY_RAIL_USE_POWER_CHANGE_DIRECTION, false);
+
+    builder.pop();
+
+    builder.push("eject_rail");
+
+    ejectRailTransportDistance = builder.comment("Eject rail transport distance (default: 3)")
+        .defineInRange(Config.EJECT_RAIL_TRANSPORT_DISTANCE, 3, 1, 100);
+    ejectRailNeedPower = builder.comment("Need power to enable eject rail (default: true)")
+        .define(Config.EJECT_RAIL_NEED_POWER, true);
 
     builder.pop();
 

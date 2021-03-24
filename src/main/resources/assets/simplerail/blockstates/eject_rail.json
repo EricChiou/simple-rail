@@ -1,0 +1,32 @@
+{
+  "variants": {
+    "need_power=true,reverse=false,powered=false,shape=north_south": {
+      "model": "simplerail:block/eject_rail"
+    },
+    "need_power=true,reverse=false,powered=true,shape=north_south": {
+      "model": "simplerail:block/eject_powered_rail"
+    },
+    "need_power=true,reverse=false,powered=false,shape=east_west": {
+      "model": "simplerail:block/eject_rail",
+      "y": 90
+    },
+    "need_power=true,reverse=false,powered=true,shape=east_west": {
+      "model": "simplerail:block/eject_powered_rail",
+      "y": 90
+    },
+    "need_power=true,reverse=true,powered=true,shape=north_south": {
+      "model": "simplerail:block/eject_reverse_powered_rail"
+    },
+    "need_power=true,reverse=true,powered=false,shape=north_south": {
+      "model": "simplerail:block/eject_reverse_rail"
+    },
+    "need_power=true,reverse=true,powered=true,shape=east_west": {
+      "model": "simplerail:block/eject_reverse_powered_rail",
+      "y": 90
+    },
+    "need_power=true,reverse=true,powered=false,shape=east_west": {
+      "model": "simplerail:block/eject_reverse_rail",
+      "y": 90
+    }
+  }
+}

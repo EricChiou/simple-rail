@@ -12,7 +12,6 @@ import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
@@ -22,7 +21,7 @@ public class HoldingRail extends PoweredRailBlock {
 
   public final BlockItem blockItem;
 
-  private Direction cartMotionDirection;
+  private Vector3d cartMotion;
   private AbstractMinecartEntity cartEntity;
 
   public HoldingRail() {
@@ -47,12 +46,10 @@ public class HoldingRail extends PoweredRailBlock {
   public void onMinecartPass(BlockState state, World world, BlockPos pos, AbstractMinecartEntity cart) {
     boolean powered = state.getValue(BlockStateProperties.POWERED);
     cartEntity = cart;
-    cartMotionDirection = cart.getMotionDirection();
+    cartMotion = cart.getForward();
 
     if (!powered) {
       cart.setDeltaMovement(Vector3d.ZERO);
-    } else {
-      super.onMinecartPass(state, world, pos, cart);
     }
   }
 
@@ -60,9 +57,8 @@ public class HoldingRail extends PoweredRailBlock {
   protected void updateState(BlockState state, World world, BlockPos pos, Block block) {
     boolean powered = state.getValue(BlockStateProperties.POWERED);
 
-    if (powered && cartEntity != null && cartMotionDirection != null) {
-      cartEntity.setDeltaMovement(cartMotionDirection.getStepX() * 0.4D, cartMotionDirection.getStepY() * 0.4D,
-          cartMotionDirection.getStepZ() * 0.4D);
+    if (powered && cartEntity != null && cartMotion != null) {
+      cartEntity.setDeltaMovement(cartMotion);
     }
 
     super.updateState(state, world, pos, block);

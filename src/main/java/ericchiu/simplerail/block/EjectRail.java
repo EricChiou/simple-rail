@@ -1,5 +1,7 @@
 package ericchiu.simplerail.block;
 
+import java.util.List;
+
 import ericchiu.simplerail.config.CommonConfig;
 import ericchiu.simplerail.itemgroup.Rail;
 import ericchiu.simplerail.setup.SimpleRailProperties;
@@ -9,6 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.PoweredRailBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -17,18 +20,18 @@ import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
-public class OnewayRail extends PoweredRailBlock {
+public class EjectRail extends PoweredRailBlock {
 
   public static final BooleanProperty REVERSE = SimpleRailProperties.REVERSE;
   public static final BooleanProperty NEED_POWER = SimpleRailProperties.NEED_POWER;
-  public static final BooleanProperty USE_POWER = SimpleRailProperties.USE_POWER;
 
   public final BlockItem blockItem;
 
-  public OnewayRail() {
+  public EjectRail() {
     super(AbstractBlock.Properties //
         .of(Material.METAL) //
         .strength(0.7f). //
@@ -38,10 +41,7 @@ public class OnewayRail extends PoweredRailBlock {
         noCollission(), //
         true);
 
-    this.registerDefaultState(this.stateDefinition.any() //
-        .setValue(REVERSE, false) //
-        .setValue(NEED_POWER, CommonConfig.INSTANCE.onewayRailNeedPower.get()) //
-        .setValue(USE_POWER, CommonConfig.INSTANCE.onewayRailUsePowerChangeDirection.get()));
+    this.registerDefaultState(this.stateDefinition.any().setValue(REVERSE, false));
 
     blockItem = new BlockItem(this, new Item.Properties().tab(Rail.TAB));
   }
@@ -50,7 +50,6 @@ public class OnewayRail extends PoweredRailBlock {
   protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
     builder.add(REVERSE);
     builder.add(NEED_POWER);
-    builder.add(USE_POWER);
     super.createBlockStateDefinition(builder);
   }
 
@@ -65,45 +64,60 @@ public class OnewayRail extends PoweredRailBlock {
     boolean powered = state.getValue(BlockStateProperties.POWERED);
     boolean reverse = state.getValue(SimpleRailProperties.REVERSE);
 
-    if (CommonConfig.INSTANCE.onewayRailUsePowerChangeDirection.get()) {
-      if (powered) {
-        goForward(shape, cart);
-      } else {
-        goReverse(shape, cart);
-      }
+    if (powered || !CommonConfig.INSTANCE.ejectRailNeedPower.get()) {
+      List<Entity> passengers = cart.getPassengers();
+      if (passengers.size() > 0) {
+        cart.ejectPassengers();
 
-    } else if (powered || !CommonConfig.INSTANCE.onewayRailNeedPower.get()) {
-      if (reverse) {
-        goForward(shape, cart);
-      } else {
-        goReverse(shape, cart);
+        if (reverse) {
+          if (shape.equals(RailShape.NORTH_SOUTH)) {
+            passengers.forEach((passenger) -> {
+              passenger.setDeltaMovement(Vector3d.ZERO);
+              passenger.setPos( //
+                  pos.getX(), //
+                  pos.getY(), //
+                  pos.getZ() + CommonConfig.INSTANCE.ejectRailTransportDistance.get() //
+              );
+            });
+          } else {
+            passengers.forEach((passenger) -> {
+              passenger.setDeltaMovement(Vector3d.ZERO);
+              passenger.setPos( //
+                  pos.getX() + CommonConfig.INSTANCE.ejectRailTransportDistance.get(), //
+                  pos.getY(), //
+                  pos.getZ() //
+              );
+            });
+          }
+        } else {
+          if (shape.equals(RailShape.NORTH_SOUTH)) {
+            passengers.forEach((passenger) -> {
+              passenger.setDeltaMovement(Vector3d.ZERO);
+              passenger.setPos( //
+                  pos.getX(), //
+                  pos.getY(), //
+                  pos.getZ() - CommonConfig.INSTANCE.ejectRailTransportDistance.get() //
+              );
+            });
+          } else {
+            passengers.forEach((passenger) -> {
+              passenger.setDeltaMovement(Vector3d.ZERO);
+              passenger.setPos( //
+                  pos.getX() - CommonConfig.INSTANCE.ejectRailTransportDistance.get(), //
+                  pos.getY(), //
+                  pos.getZ() //
+              );
+            });
+          }
+        }
       }
     }
   }
 
   @Override
   public void onPlace(BlockState state, World world, BlockPos pos, BlockState originState, boolean bool) {
-    BlockState newState = state //
-        .setValue(NEED_POWER, CommonConfig.INSTANCE.onewayRailNeedPower.get())
-        .setValue(USE_POWER, CommonConfig.INSTANCE.onewayRailUsePowerChangeDirection.get());
-
+    BlockState newState = state.setValue(NEED_POWER, CommonConfig.INSTANCE.ejectRailNeedPower.get());
     super.onPlace(newState, world, pos, originState, bool);
-  }
-
-  private void goForward(RailShape shape, AbstractMinecartEntity cart) {
-    if (shape.equals(RailShape.NORTH_SOUTH)) {
-      cart.setDeltaMovement(0, 0, 0.4D);
-    } else {
-      cart.setDeltaMovement(-0.4D, 0, 0);
-    }
-  }
-
-  private void goReverse(RailShape shape, AbstractMinecartEntity cart) {
-    if (shape.equals(RailShape.NORTH_SOUTH)) {
-      cart.setDeltaMovement(0, 0, -0.4D);
-    } else {
-      cart.setDeltaMovement(0.4D, 0, 0);
-    }
   }
 
 }

@@ -12,6 +12,7 @@ public class RenderSetup {
     RenderTypeLookup.setRenderLayer(Blocks.HIGH_SPEED_RAIL, cutout);
     RenderTypeLookup.setRenderLayer(Blocks.HOLDING_RAIL, cutout);
     RenderTypeLookup.setRenderLayer(Blocks.ONEWAY_RAIL, cutout);
+    RenderTypeLookup.setRenderLayer(Blocks.EJECT_RAIL, cutout);
   }
 
 }

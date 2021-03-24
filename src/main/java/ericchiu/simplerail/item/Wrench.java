@@ -1,6 +1,5 @@
 package ericchiu.simplerail.item;
 
-import ericchiu.simplerail.block.OnewayRail;
 import ericchiu.simplerail.itemgroup.Rail;
 import ericchiu.simplerail.setup.SimpleRailProperties;
 import ericchiu.simplerail.setup.SimpleRailTags;
@@ -30,7 +29,7 @@ public class Wrench extends Item {
       return ActionResultType.FAIL;
     }
 
-    if (blockstate.getBlock() instanceof OnewayRail && blockstate.hasProperty(SimpleRailProperties.REVERSE)) {
+    if (blockstate.hasProperty(SimpleRailProperties.REVERSE)) {
       boolean reverse = blockstate.getValue(SimpleRailProperties.REVERSE);
       world.setBlock(blockpos, blockstate.setValue(SimpleRailProperties.REVERSE, !reverse), 3);
     }
