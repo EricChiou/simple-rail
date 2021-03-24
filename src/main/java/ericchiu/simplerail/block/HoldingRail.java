@@ -26,8 +26,15 @@ public class HoldingRail extends PoweredRailBlock {
   private AbstractMinecartEntity cartEntity;
 
   public HoldingRail() {
-    super(AbstractBlock.Properties.of(Material.METAL).strength(0.7f).harvestLevel(0).harvestTool(ToolType.PICKAXE)
-        .sound(SoundType.METAL).noCollission(), true);
+    super(AbstractBlock.Properties //
+        .of(Material.METAL) //
+        .strength(0.7f). //
+        harvestLevel(0). //
+        harvestTool(ToolType.PICKAXE). //
+        sound(SoundType.METAL). //
+        noCollission(), //
+        true);
+
     blockItem = new BlockItem(this, new Item.Properties().tab(Rail.TAB));
   }
 

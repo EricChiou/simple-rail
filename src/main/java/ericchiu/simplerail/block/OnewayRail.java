@@ -23,14 +23,27 @@ import net.minecraftforge.common.ToolType;
 public class OnewayRail extends PoweredRailBlock {
 
   public static final BooleanProperty REVERSE = SimpleRailProperties.REVERSE;
+  public static final BooleanProperty NEED_POWER = SimpleRailProperties.NEED_POWER;
+  public static final BooleanProperty USE_POWER = SimpleRailProperties.USE_POWER;
+
+  private static final CommonConfig CONFIG = CommonConfig.INSTANCE;
 
   public final BlockItem blockItem;
 
   public OnewayRail() {
-    super(AbstractBlock.Properties.of(Material.METAL).strength(0.7f).harvestLevel(0).harvestTool(ToolType.PICKAXE)
-        .sound(SoundType.METAL).noCollission(), true);
+    super(AbstractBlock.Properties //
+        .of(Material.METAL) //
+        .strength(0.7f). //
+        harvestLevel(0). //
+        harvestTool(ToolType.PICKAXE). //
+        sound(SoundType.METAL). //
+        noCollission(), //
+        true);
 
-    this.registerDefaultState(this.stateDefinition.any().setValue(REVERSE, Boolean.valueOf(false)));
+    this.registerDefaultState(this.stateDefinition.any() //
+        .setValue(REVERSE, false) //
+        .setValue(NEED_POWER, CONFIG.onewayRailNeedPower.get()) //
+        .setValue(USE_POWER, CONFIG.onewayRailUsePowerChangeDirection.get()));
 
     blockItem = new BlockItem(this, new Item.Properties().tab(Rail.TAB));
   }
@@ -38,12 +51,14 @@ public class OnewayRail extends PoweredRailBlock {
   @Override
   protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
     builder.add(REVERSE);
+    builder.add(NEED_POWER);
+    builder.add(USE_POWER);
     super.createBlockStateDefinition(builder);
   }
 
   @Override
   public float getRailMaxSpeed(BlockState state, World world, BlockPos pos, AbstractMinecartEntity cart) {
-    return CommonConfig.INSTANCE.highSpeedRailMaxSpeed.get().floatValue();
+    return CONFIG.highSpeedRailMaxSpeed.get().floatValue();
   }
 
   @Override
@@ -52,20 +67,43 @@ public class OnewayRail extends PoweredRailBlock {
     boolean powered = state.getValue(BlockStateProperties.POWERED);
     boolean reverse = state.getValue(SimpleRailProperties.REVERSE);
 
-    if (powered) {
-      if (reverse) {
-        if (shape.equals(RailShape.NORTH_SOUTH)) {
-          cart.setDeltaMovement(0, 0, 0.4D);
-        } else {
-          cart.setDeltaMovement(-0.4D, 0, 0);
-        }
+    if (CONFIG.onewayRailUsePowerChangeDirection.get()) {
+      if (powered) {
+        goForward(shape, cart);
       } else {
-        if (shape.equals(RailShape.NORTH_SOUTH)) {
-          cart.setDeltaMovement(0, 0, -0.4D);
-        } else {
-          cart.setDeltaMovement(0.4D, 0, 0);
-        }
+        goReverse(shape, cart);
       }
+
+    } else if (powered || !CONFIG.onewayRailNeedPower.get()) {
+      if (reverse) {
+        goForward(shape, cart);
+      } else {
+        goReverse(shape, cart);
+      }
+    }
+  }
+
+  @Override
+  public void onPlace(BlockState state, World world, BlockPos pos, BlockState originState, boolean bool) {
+    BlockState newState = state.setValue(NEED_POWER, CONFIG.onewayRailNeedPower.get()).setValue(USE_POWER,
+        CONFIG.onewayRailUsePowerChangeDirection.get());
+
+    super.onPlace(newState, world, pos, originState, bool);
+  }
+
+  private void goForward(RailShape shape, AbstractMinecartEntity cart) {
+    if (shape.equals(RailShape.NORTH_SOUTH)) {
+      cart.setDeltaMovement(0, 0, 0.4D);
+    } else {
+      cart.setDeltaMovement(-0.4D, 0, 0);
+    }
+  }
+
+  private void goReverse(RailShape shape, AbstractMinecartEntity cart) {
+    if (shape.equals(RailShape.NORTH_SOUTH)) {
+      cart.setDeltaMovement(0, 0, -0.4D);
+    } else {
+      cart.setDeltaMovement(0.4D, 0, 0);
     }
   }
 

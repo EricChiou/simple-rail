@@ -19,8 +19,15 @@ public class HighSpeedRail extends PoweredRailBlock {
 	public final BlockItem blockItem;
 
 	public HighSpeedRail() {
-		super(AbstractBlock.Properties.of(Material.METAL).strength(0.7f).harvestLevel(0).harvestTool(ToolType.PICKAXE)
-				.sound(SoundType.METAL).noCollission(), true);
+		super(AbstractBlock.Properties //
+				.of(Material.METAL) //
+				.strength(0.7f). //
+				harvestLevel(0). //
+				harvestTool(ToolType.PICKAXE). //
+				sound(SoundType.METAL). //
+				noCollission(), //
+				true);
+
 		blockItem = new BlockItem(this, new Item.Properties().tab(Rail.TAB));
 	}
 
