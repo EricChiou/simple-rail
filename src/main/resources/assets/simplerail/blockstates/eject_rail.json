@@ -27,6 +27,20 @@
     "need_power=true,reverse=true,powered=false,shape=east_west": {
       "model": "simplerail:block/eject_reverse_rail",
       "y": 90
+    },
+    "need_power=false,reverse=false,shape=north_south": {
+      "model": "simplerail:block/eject_powered_rail"
+    },
+    "need_power=false,reverse=false,shape=east_west": {
+      "model": "simplerail:block/eject_powered_rail",
+      "y": 90
+    },
+    "need_power=false,reverse=true,shape=north_south": {
+      "model": "simplerail:block/eject_reverse_powered_rail"
+    },
+    "need_power=false,reverse=true,shape=east_west": {
+      "model": "simplerail:block/eject_reverse_powered_rail",
+      "y": 90
     }
   }
 }

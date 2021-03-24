@@ -72,41 +72,21 @@ public class EjectRail extends PoweredRailBlock {
         if (reverse) {
           if (shape.equals(RailShape.NORTH_SOUTH)) {
             passengers.forEach((passenger) -> {
-              passenger.setDeltaMovement(Vector3d.ZERO);
-              passenger.setPos( //
-                  pos.getX(), //
-                  pos.getY(), //
-                  pos.getZ() + CommonConfig.INSTANCE.ejectRailTransportDistance.get() //
-              );
+              transportPassenger(pos, passenger, CommonConfig.INSTANCE.ejectRailTransportDistance.get(), 0, 0);
             });
           } else {
             passengers.forEach((passenger) -> {
-              passenger.setDeltaMovement(Vector3d.ZERO);
-              passenger.setPos( //
-                  pos.getX() + CommonConfig.INSTANCE.ejectRailTransportDistance.get(), //
-                  pos.getY(), //
-                  pos.getZ() //
-              );
+              transportPassenger(pos, passenger, 0, 0, CommonConfig.INSTANCE.ejectRailTransportDistance.get());
             });
           }
         } else {
           if (shape.equals(RailShape.NORTH_SOUTH)) {
             passengers.forEach((passenger) -> {
-              passenger.setDeltaMovement(Vector3d.ZERO);
-              passenger.setPos( //
-                  pos.getX(), //
-                  pos.getY(), //
-                  pos.getZ() - CommonConfig.INSTANCE.ejectRailTransportDistance.get() //
-              );
+              transportPassenger(pos, passenger, -CommonConfig.INSTANCE.ejectRailTransportDistance.get(), 0, 0);
             });
           } else {
             passengers.forEach((passenger) -> {
-              passenger.setDeltaMovement(Vector3d.ZERO);
-              passenger.setPos( //
-                  pos.getX() - CommonConfig.INSTANCE.ejectRailTransportDistance.get(), //
-                  pos.getY(), //
-                  pos.getZ() //
-              );
+              transportPassenger(pos, passenger, 0, 0, -CommonConfig.INSTANCE.ejectRailTransportDistance.get());
             });
           }
         }
@@ -118,6 +98,11 @@ public class EjectRail extends PoweredRailBlock {
   public void onPlace(BlockState state, World world, BlockPos pos, BlockState originState, boolean bool) {
     BlockState newState = state.setValue(NEED_POWER, CommonConfig.INSTANCE.ejectRailNeedPower.get());
     super.onPlace(newState, world, pos, originState, bool);
+  }
+
+  private void transportPassenger(BlockPos pos, Entity passenger, double deltaX, double deltaY, double deltaZ) {
+    passenger.setDeltaMovement(Vector3d.ZERO);
+    passenger.moveTo(pos.getX() + deltaX, pos.getY() + deltaY, pos.getZ() + deltaZ);
   }
 
 }
