@@ -1,6 +1,7 @@
 {
   "itemGroup.simplerail.tab": "Simple Rail",
   "item.simplerail.wrench": "板手",
+  "item.simplerail.locomotive_cart": "火車頭",
   "block.simplerail.high_speed_rail": "高速鐵軌",
   "block.simplerail.holding_rail": "鎖定鐵軌",
   "block.simplerail.oneway_rail": "單向鐵軌",

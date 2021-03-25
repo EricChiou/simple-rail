@@ -1,6 +1,7 @@
 {
   "itemGroup.simplerail.tab": "Simple Rail",
   "item.simplerail.wrench": "Wrench",
+  "item.simplerail.locomotive_cart": "Locomotive",
   "block.simplerail.high_speed_rail": "High Speed Rail",
   "block.simplerail.holding_rail": "Holding Rail",
   "block.simplerail.oneway_rail": "Oneway Rail",

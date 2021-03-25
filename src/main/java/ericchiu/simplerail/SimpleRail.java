@@ -22,7 +22,7 @@ import ericchiu.simplerail.config.CommonConfig;
 import ericchiu.simplerail.setup.SimpleRailTags;
 import ericchiu.simplerail.setup.SimpleRailProperties;
 import ericchiu.simplerail.setup.Registration;
-import ericchiu.simplerail.setup.RenderSetup;
+import ericchiu.simplerail.setup.Render;
 
 import java.util.stream.Collectors;
 
@@ -57,7 +57,7 @@ public class SimpleRail {
     private void doClientStuff(final FMLClientSetupEvent event) {
         LOGGER.info("Got game settings");
 
-        RenderSetup.set();
+        Render.setup();
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {

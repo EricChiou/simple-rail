@@ -70,6 +70,10 @@ public class EjectRail extends PoweredRailBlock {
     boolean powered = state.getValue(BlockStateProperties.POWERED);
     boolean reverse = state.getValue(SimpleRailProperties.REVERSE);
 
+    if (world.isClientSide) {
+      return;
+    }
+
     if (!powered && CommonConfig.INSTANCE.ejectRailNeedPower.get()) {
       return;
     }
@@ -79,28 +83,11 @@ public class EjectRail extends PoweredRailBlock {
       return;
     }
 
-    cart.ejectPassengers();
-    if (reverse) {
-      if (shape.equals(RailShape.NORTH_SOUTH)) {
-        passengers.forEach((passenger) -> {
-          transportPassenger(pos, passenger, CommonConfig.INSTANCE.ejectRailTransportDistance.get(), 0, 0);
-        });
-      } else {
-        passengers.forEach((passenger) -> {
-          transportPassenger(pos, passenger, 0, 0, CommonConfig.INSTANCE.ejectRailTransportDistance.get());
-        });
-      }
-    } else {
-      if (shape.equals(RailShape.NORTH_SOUTH)) {
-        passengers.forEach((passenger) -> {
-          transportPassenger(pos, passenger, -CommonConfig.INSTANCE.ejectRailTransportDistance.get(), 0, 0);
-        });
-      } else {
-        passengers.forEach((passenger) -> {
-          transportPassenger(pos, passenger, 0, 0, -CommonConfig.INSTANCE.ejectRailTransportDistance.get());
-        });
-      }
-    }
+    passengers.forEach((passenger) -> {
+      cart.ejectPassengers();
+      passenger.setDeltaMovement(Vector3d.ZERO);
+      transportPassenger(pos, passenger, shape, reverse);
+    });
   }
 
   @Override
@@ -109,9 +96,18 @@ public class EjectRail extends PoweredRailBlock {
     super.onPlace(newState, world, pos, originState, bool);
   }
 
-  private void transportPassenger(BlockPos pos, Entity passenger, double deltaX, double deltaY, double deltaZ) {
+  private void transportPassenger(BlockPos pos, Entity passenger, RailShape shape, boolean reverse) {
     passenger.setDeltaMovement(Vector3d.ZERO);
-    passenger.moveTo(pos.getX() + deltaX, pos.getY() + deltaY, pos.getZ() + deltaZ);
+
+    Integer transportDistance = CommonConfig.INSTANCE.ejectRailTransportDistance.get();
+    if (shape.equals(RailShape.NORTH_SOUTH)) {
+      double deltaX = reverse ? transportDistance + 0.5d : -transportDistance - 0.5d;
+      passenger.moveTo(pos.getX() + deltaX, pos.getY(), pos.getZ() + 0.5d);
+
+    } else {
+      double deltaZ = reverse ? transportDistance + 0.5d : -transportDistance - 0.5d;
+      passenger.moveTo(pos.getX() + 0.5d, pos.getY(), pos.getZ() + deltaZ);
+    }
   }
 
 }

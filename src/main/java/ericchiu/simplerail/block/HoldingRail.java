@@ -67,7 +67,7 @@ public class HoldingRail extends PoweredRailBlock {
 
     if (powered && cartEntity != null && cartDirection != null) {
       Vector3i cartMotion = cartDirection.getNormal();
-      cartEntity.setDeltaMovement(cartMotion.getX() * 0.4D, cartMotion.getY() * 0.4D, cartMotion.getZ() * 0.4D);
+      cartEntity.setDeltaMovement(cartMotion.getX() * 0.4d, cartMotion.getY() * 0.4d, cartMotion.getZ() * 0.4d);
     }
 
     super.updateState(state, world, pos, block);

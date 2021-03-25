@@ -71,14 +71,10 @@ public class OnewayRail extends PoweredRailBlock {
     boolean powered = state.getValue(BlockStateProperties.POWERED);
     boolean reverse = state.getValue(SimpleRailProperties.REVERSE);
 
-    if (CommonConfig.INSTANCE.onewayRailUsePowerChangeDirection.get()) {
-      if (powered) {
-        goForward(shape, cart);
-      } else {
-        goReverse(shape, cart);
-      }
-
-    } else if (powered || !CommonConfig.INSTANCE.onewayRailNeedPower.get()) {
+    if (CommonConfig.INSTANCE.onewayRailUsePowerChangeDirection.get() //
+        || powered //
+        || !CommonConfig.INSTANCE.onewayRailNeedPower.get() //
+    ) {
       if (reverse) {
         goForward(shape, cart);
       } else {
@@ -98,17 +94,17 @@ public class OnewayRail extends PoweredRailBlock {
 
   private void goForward(RailShape shape, AbstractMinecartEntity cart) {
     if (shape.equals(RailShape.NORTH_SOUTH)) {
-      cart.setDeltaMovement(0, 0, 0.4D);
+      cart.setDeltaMovement(0, 0, 0.4d);
     } else {
-      cart.setDeltaMovement(-0.4D, 0, 0);
+      cart.setDeltaMovement(-0.4d, 0, 0);
     }
   }
 
   private void goReverse(RailShape shape, AbstractMinecartEntity cart) {
     if (shape.equals(RailShape.NORTH_SOUTH)) {
-      cart.setDeltaMovement(0, 0, -0.4D);
+      cart.setDeltaMovement(0, 0, -0.4d);
     } else {
-      cart.setDeltaMovement(0.4D, 0, 0);
+      cart.setDeltaMovement(0.4d, 0, 0);
     }
   }
 

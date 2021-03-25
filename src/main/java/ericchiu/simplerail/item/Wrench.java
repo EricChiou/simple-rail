@@ -15,7 +15,11 @@ import net.minecraftforge.common.ToolType;
 public class Wrench extends Item {
 
   public Wrench() {
-    super(new Item.Properties().addToolType(ToolType.HOE, 0).rarity(Rarity.COMMON).fireResistant().stacksTo(1)
+    super(new Item.Properties() //
+        .addToolType(ToolType.HOE, 0) //
+        .rarity(Rarity.COMMON) //
+        .fireResistant() //
+        .stacksTo(1) //
         .tab(Rail.TAB));
   }
 
