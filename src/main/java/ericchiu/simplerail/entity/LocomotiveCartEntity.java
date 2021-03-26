@@ -1,19 +1,29 @@
 package ericchiu.simplerail.entity;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.FurnaceMinecartEntity;
-import net.minecraft.util.math.BlockPos;
+import ericchiu.simplerail.registry.Entities;
+import ericchiu.simplerail.registry.Items;
+import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.network.FMLPlayMessages;
 
-public class LocomotiveCartEntity extends FurnaceMinecartEntity {
+public class LocomotiveCartEntity extends AbstractCustomcartEntity {
+
+  public LocomotiveCartEntity(EntityType<?> entityType, World world) {
+    super(entityType, world);
+  }
 
   public LocomotiveCartEntity(World world, double x, double y, double z) {
-    super(world, x, y, z);
+    super(Entities.LOCOMOTIVE_CART, world, x, y, z);
+  }
+
+  public LocomotiveCartEntity(FMLPlayMessages.SpawnEntity spawnEntity, World world) {
+    this(Entities.LOCOMOTIVE_CART, world);
   }
 
   @Override
-  protected void moveAlongTrack(BlockPos pos, BlockState state) {
-    super.moveAlongTrack(pos, state);
+  Item getCartType() {
+    return Items.LOCOMOTIVE_CART;
   }
 
   @Override

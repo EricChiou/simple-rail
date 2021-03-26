@@ -5,11 +5,9 @@ import ericchiu.simplerail.itemgroup.Rail;
 import ericchiu.simplerail.setup.SimpleRailTags;
 import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.minecart.AbstractMinecartEntity.Type;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
-import net.minecraft.item.MinecartItem;
 import net.minecraft.item.Rarity;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.tags.BlockTags;
@@ -17,11 +15,10 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class LocomotiveCart extends MinecartItem {
+public class LocomotiveCart extends Item {
 
   public LocomotiveCart() {
     super( //
-        Type.FURNACE, //
         new Item.Properties(). //
             rarity(Rarity.UNCOMMON). //
             fireResistant(). //

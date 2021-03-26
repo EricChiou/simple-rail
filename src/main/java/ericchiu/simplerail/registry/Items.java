@@ -6,6 +6,7 @@ import ericchiu.simplerail.item.LocomotiveCart;
 import ericchiu.simplerail.item.Wrench;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -17,10 +18,12 @@ public class Items {
 	private static final DeferredRegister<Item> REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS,
 			SimpleRail.MOD_ID);
 
+	public static final RegistryObject<Item> LOCOMOTIVE_CART_OBJ = REGISTER.register(I18n.ITEM_LOCOMOTIVE_CART,
+			() -> LOCOMOTIVE_CART);
+
 	public static void register(IEventBus bus) {
 		// items
 		REGISTER.register(I18n.ITEM_WRENCH, () -> WRENCH);
-		REGISTER.register(I18n.ITEM_LOCOMOTIVE_CART, () -> LOCOMOTIVE_CART);
 
 		// block items
 		REGISTER.register(I18n.BLOCK_HIGH_SPEED_RAIL, () -> Blocks.HIGH_SPEED_RAIL.blockItem);
