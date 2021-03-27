@@ -22,10 +22,10 @@ import net.minecraftforge.common.ToolType;
 
 public class HoldingRail extends PoweredRailBlock {
 
-  public final BlockItem blockItem;
-
   private Direction cartDirection;
   private AbstractMinecartEntity cartEntity;
+
+  public static final BlockItem BLOCK_ITEM = new BlockItem(new HoldingRail(), new Item.Properties().tab(Rail.TAB));
 
   public HoldingRail() {
     super(AbstractBlock.Properties //
@@ -36,8 +36,6 @@ public class HoldingRail extends PoweredRailBlock {
         sound(SoundType.METAL). //
         noCollission(), //
         true);
-
-    blockItem = new BlockItem(this, new Item.Properties().tab(Rail.TAB));
   }
 
   @Override

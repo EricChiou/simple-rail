@@ -27,7 +27,7 @@ public class OnewayRail extends PoweredRailBlock {
   public static final BooleanProperty NEED_POWER = SimpleRailProperties.NEED_POWER;
   public static final BooleanProperty USE_POWER = SimpleRailProperties.USE_POWER;
 
-  public final BlockItem blockItem;
+  public static final BlockItem BLOCK_ITEM = new BlockItem(new OnewayRail(), new Item.Properties().tab(Rail.TAB));
 
   public OnewayRail() {
     super(AbstractBlock.Properties //
@@ -43,8 +43,6 @@ public class OnewayRail extends PoweredRailBlock {
         .setValue(REVERSE, false) //
         .setValue(NEED_POWER, CommonConfig.INSTANCE.onewayRailNeedPower.get()) //
         .setValue(USE_POWER, CommonConfig.INSTANCE.onewayRailUsePowerChangeDirection.get()));
-
-    blockItem = new BlockItem(this, new Item.Properties().tab(Rail.TAB));
   }
 
   @Override

@@ -4,6 +4,8 @@ import ericchiu.simplerail.SimpleRail;
 import ericchiu.simplerail.constants.I18n;
 import ericchiu.simplerail.item.LocomotiveCart;
 import ericchiu.simplerail.item.Wrench;
+import ericchiu.simplerail.itemgroup.Rail;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
@@ -12,25 +14,25 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class Items {
 
-	public static final Wrench WRENCH = new Wrench();
-	public static final LocomotiveCart LOCOMOTIVE_CART = new LocomotiveCart();
-
 	private static final DeferredRegister<Item> REGISTER = DeferredRegister.create(ForgeRegistries.ITEMS,
 			SimpleRail.MOD_ID);
 
-	public static final RegistryObject<Item> LOCOMOTIVE_CART_OBJ = REGISTER.register(I18n.ITEM_LOCOMOTIVE_CART,
-			() -> LOCOMOTIVE_CART);
+	// items
+	public static final RegistryObject<Item> WRENCH = REGISTER.register(I18n.ITEM_WRENCH, () -> new Wrench());
+	public static final RegistryObject<Item> LOCOMOTIVE_CART = REGISTER.register(I18n.ITEM_LOCOMOTIVE_CART,
+			() -> new LocomotiveCart());
+
+	// block items
+	public static final RegistryObject<Item> HIGH_SPEED_RAIL = REGISTER.register(I18n.BLOCK_HIGH_SPEED_RAIL,
+			() -> new BlockItem(Blocks.HIGH_SPEED_RAIL.get(), new Item.Properties().tab(Rail.TAB)));
+	public static final RegistryObject<Item> HOLDING_RAIL = REGISTER.register(I18n.BLOCK_HOLDING_RAIL,
+			() -> new BlockItem(Blocks.HOLDING_RAIL.get(), new Item.Properties().tab(Rail.TAB)));
+	public static final RegistryObject<Item> ONEWAY_RAIL = REGISTER.register(I18n.BLOCK_ONEWAY_RAIL,
+			() -> new BlockItem(Blocks.ONEWAY_RAIL.get(), new Item.Properties().tab(Rail.TAB)));
+	public static final RegistryObject<Item> EJECT_RAIL = REGISTER.register(I18n.BLOCK_EJECT_RAIL,
+			() -> new BlockItem(Blocks.EJECT_RAIL.get(), new Item.Properties().tab(Rail.TAB)));
 
 	public static void register(IEventBus bus) {
-		// items
-		REGISTER.register(I18n.ITEM_WRENCH, () -> WRENCH);
-
-		// block items
-		REGISTER.register(I18n.BLOCK_HIGH_SPEED_RAIL, () -> Blocks.HIGH_SPEED_RAIL.blockItem);
-		REGISTER.register(I18n.BLOCK_HOLDING_RAIL, () -> Blocks.HOLDING_RAIL.blockItem);
-		REGISTER.register(I18n.BLOCK_ONEWAY_RAIL, () -> Blocks.ONEWAY_RAIL.blockItem);
-		REGISTER.register(I18n.BLOCK_EJECT_RAIL, () -> Blocks.EJECT_RAIL.blockItem);
-
 		REGISTER.register(bus);
 	}
 

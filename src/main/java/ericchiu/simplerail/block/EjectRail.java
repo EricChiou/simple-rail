@@ -30,7 +30,7 @@ public class EjectRail extends PoweredRailBlock {
   public static final BooleanProperty REVERSE = SimpleRailProperties.REVERSE;
   public static final BooleanProperty NEED_POWER = SimpleRailProperties.NEED_POWER;
 
-  public final BlockItem blockItem;
+  public static final BlockItem BLOCK_ITEM = new BlockItem(new EjectRail(), new Item.Properties().tab(Rail.TAB));
 
   public EjectRail() {
     super(AbstractBlock.Properties //
@@ -43,8 +43,6 @@ public class EjectRail extends PoweredRailBlock {
         true);
 
     this.registerDefaultState(this.stateDefinition.any().setValue(REVERSE, false));
-
-    blockItem = new BlockItem(this, new Item.Properties().tab(Rail.TAB));
   }
 
   @Override

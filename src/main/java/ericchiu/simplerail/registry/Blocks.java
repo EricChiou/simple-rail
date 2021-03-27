@@ -9,25 +9,25 @@ import ericchiu.simplerail.constants.I18n;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class Blocks {
 
-	public static final HighSpeedRail HIGH_SPEED_RAIL = new HighSpeedRail();
-	public static final HoldingRail HOLDING_RAIL = new HoldingRail();
-	public static final OnewayRail ONEWAY_RAIL = new OnewayRail();
-	public static final EjectRail EJECT_RAIL = new EjectRail();
-
 	private static final DeferredRegister<Block> REGISTER = DeferredRegister.create(ForgeRegistries.BLOCKS,
 			SimpleRail.MOD_ID);
 
-	public static void register(IEventBus bus) {
-		REGISTER.register(I18n.BLOCK_HIGH_SPEED_RAIL, () -> HIGH_SPEED_RAIL);
-		REGISTER.register(I18n.BLOCK_HOLDING_RAIL, () -> HOLDING_RAIL);
-		REGISTER.register(I18n.BLOCK_ONEWAY_RAIL, () -> ONEWAY_RAIL);
-		REGISTER.register(I18n.BLOCK_EJECT_RAIL, () -> EJECT_RAIL);
+	public static final RegistryObject<Block> HIGH_SPEED_RAIL = REGISTER.register(I18n.BLOCK_HIGH_SPEED_RAIL,
+			() -> new HighSpeedRail());
+	public static final RegistryObject<Block> HOLDING_RAIL = REGISTER.register(I18n.BLOCK_HOLDING_RAIL,
+			() -> new HoldingRail());
+	public static final RegistryObject<Block> ONEWAY_RAIL = REGISTER.register(I18n.BLOCK_ONEWAY_RAIL,
+			() -> new OnewayRail());
+	public static final RegistryObject<Block> EJECT_RAIL = REGISTER.register(I18n.BLOCK_EJECT_RAIL,
+			() -> new EjectRail());
 
+	public static void register(IEventBus bus) {
 		REGISTER.register(bus);
 	}
 
