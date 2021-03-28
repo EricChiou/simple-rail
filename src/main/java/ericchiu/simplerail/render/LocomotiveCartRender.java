@@ -35,6 +35,9 @@ public class LocomotiveCartRender<T extends LocomotiveCartEntity> extends Mineca
   @Override
   public void render(T entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer,
       int packedLight) {
+    // super.render(entity, entityYaw, partialTicks, matrixStack, buffer,
+    // packedLight);
+
     matrixStack.pushPose();
     long i = (long) entity.getId() * 493286711L;
     i = i * i * 4392167121L + i * 98761L;
@@ -45,7 +48,7 @@ public class LocomotiveCartRender<T extends LocomotiveCartEntity> extends Mineca
     double d0 = MathHelper.lerp((double) partialTicks, entity.xOld, entity.getX());
     double d1 = MathHelper.lerp((double) partialTicks, entity.yOld, entity.getY());
     double d2 = MathHelper.lerp((double) partialTicks, entity.zOld, entity.getZ());
-    double d3 = (double) 0.3F;
+    // double d3 = (double) 0.3F;
     Vector3d Vector3d = entity.getPos(d0, d1, d2);
     float f3 = MathHelper.lerp(partialTicks, entity.xRotO, entity.xRot);
     if (Vector3d != null) {
@@ -86,8 +89,7 @@ public class LocomotiveCartRender<T extends LocomotiveCartEntity> extends Mineca
     }
 
     matrixStack.translate(0.0D, 0.375D, 0.0D);
-    matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - entityYaw));
-    matrixStack.mulPose(Vector3f.ZP.rotationDegrees(-f3));
+    matrixStack.mulPose(Vector3f.YP.rotationDegrees(entityYaw));
     float f5 = (float) entity.getHurtTime() - partialTicks;
     float f6 = entity.getDamage() - partialTicks;
     if (f6 < 0.0F) {
@@ -103,10 +105,10 @@ public class LocomotiveCartRender<T extends LocomotiveCartEntity> extends Mineca
     BlockState blockstate = entity.getDisplayBlockState();
     if (blockstate.getRenderShape() != BlockRenderType.INVISIBLE) {
       matrixStack.pushPose();
-      float f4 = 0.75F;
+      // float f4 = 0.75F;
       matrixStack.scale(0.75F, 0.75F, 0.75F);
-      matrixStack.translate(-0.5D, (double) ((float) (j - 8) / 16.0F), 0.5D);
-      matrixStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+      matrixStack.translate(0.5D, (double) ((float) (j - 8) / 16.0F), -0.5D);
+      matrixStack.mulPose(Vector3f.YP.rotationDegrees(270.0F));
       renderMinecartContents(entity, partialTicks, blockstate, matrixStack, buffer, packedLight);
       matrixStack.popPose();
     }

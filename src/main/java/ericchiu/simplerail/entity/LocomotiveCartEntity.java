@@ -19,7 +19,7 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
   private static final EntityType<LocomotiveCartEntity> CART_TYPE = Entities.LOCOMOTIVE_CART.get();
 
   public LocomotiveCartEntity(World world, double x, double y, double z) {
-    super(CART_TYPE, world);
+    this(CART_TYPE, world);
     this.setPos(x, y, z);
   }
 

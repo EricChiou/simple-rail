@@ -87,7 +87,7 @@ public class LocomotiveCartModel<E extends LocomotiveCartEntity> extends Minecar
   @Override
   public void setupAnim(E entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw,
       float headPitch) {
-    cart.yRot = 4.0F - ageInTicks;
+    super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
   }
 
   public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
