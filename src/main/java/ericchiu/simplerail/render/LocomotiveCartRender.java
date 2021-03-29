@@ -6,15 +6,18 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import ericchiu.simplerail.constants.Texture;
 import ericchiu.simplerail.entity.LocomotiveCartEntity;
 import ericchiu.simplerail.render.model.LocomotiveCartModel;
-// import net.minecraft.block.BlockRenderType;
+import ericchiu.simplerail.setup.SimpleRailTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.util.Direction;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.state.properties.RailShape;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
@@ -45,7 +48,6 @@ public class LocomotiveCartRender<T extends LocomotiveCartEntity> extends Mineca
     double d0 = MathHelper.lerp((double) partialTicks, entity.xOld, entity.getX());
     double d1 = MathHelper.lerp((double) partialTicks, entity.yOld, entity.getY());
     double d2 = MathHelper.lerp((double) partialTicks, entity.zOld, entity.getZ());
-    // double d3 = (double) 0.3F;
     Vector3d vector3d = entity.getPos(d0, d1, d2);
     float f3 = MathHelper.lerp(partialTicks, entity.xRotO, entity.xRot);
     if (vector3d != null) {
@@ -68,50 +70,45 @@ public class LocomotiveCartRender<T extends LocomotiveCartEntity> extends Mineca
       }
     }
 
-    // float rotY = 180.0F - entityYaw;
-    // Direction direction = entity.getMotionDirection();
-    // if (direction.getStepX() == 0 && direction.getStepZ() == 0) {
-
-    // } else if (direction.getStepX() > 0 && direction.getStepZ() == 0) {
-
-    // } else if (direction.getStepX() < 0 && direction.getStepZ() == 0) {
-
-    // } else if (direction.getStepX() == 0 && direction.getStepZ() < 0) {
-
-    // } else if (direction.getStepX() > 0 && direction.getStepZ() < 0) {
-
-    // } else if (direction.getStepX() < 0 && direction.getStepZ() < 0) {
-
-    // } else if (direction.getStepX() == 0 && direction.getStepZ() > 0) {
-
-    // } else if (direction.getStepX() > 0 && direction.getStepZ() > 0) {
-
-    // } else if (direction.getStepX() < 0 && direction.getStepZ() > 0) {
-
-    // }
-
-    entityYaw %= 360;
-    if (entityYaw < 0) {
-      entityYaw += 360;
+    float rotY = 180.0F - entityYaw;
+    float rotZ = -f3;
+    Vector3d motion = entity.getDeltaMovement();
+    if (motion.x == 0 && motion.z == 0) {
+      rotY = entity.yRot;
+      BlockPos pos = entity.getCurrentRailPosition();
+      BlockState state = entity.level.getBlockState(pos);
+      if (state.is(SimpleRailTags.RAILS) || state.is(BlockTags.RAILS)) {
+        RailShape shape = state.getValue(BlockStateProperties.RAIL_SHAPE_STRAIGHT);
+        if (shape.equals(RailShape.NORTH_SOUTH) && (rotY != 90.0F && rotY != -90.0F)) {
+          rotY = 90.0F;
+        } else if (shape.equals(RailShape.EAST_WEST) && (rotY != 0.0F && rotY != 180.0F)) {
+          rotY = 0.0F;
+        }
+      }
+    } else if (motion.x > 0 && motion.z == 0) {
+      rotY = 180.0F;
+      rotZ = f3;
+    } else if (motion.x < 0 && motion.z == 0) {
+      rotY = 0.0F;
+    } else if (motion.x == 0 && motion.z < 0) {
+      rotY = -90.0F;
+    } else if (motion.x > 0 && motion.z < 0) {
+      rotY = -135.0F;
+    } else if (motion.x < 0 && motion.z < 0) {
+      rotY = -45.0F;
+    } else if (motion.x == 0 && motion.z > 0) {
+      rotY = 90.0F;
+      rotZ = f3;
+    } else if (motion.x > 0 && motion.z > 0) {
+      rotY = 135.0F;
+    } else if (motion.x < 0 && motion.z > 0) {
+      rotY = 45.0F;
     }
-    entityYaw += 360;
-
-    double serverYaw = entity.yRot;
-    serverYaw += 180;
-    serverYaw %= 360;
-    if (serverYaw < 0) {
-      serverYaw += 360;
-    }
-    serverYaw += 360;
-
-    if (Math.abs(entityYaw - serverYaw) > 90) {
-      entityYaw += 180;
-      f3 = -f3;
-    }
+    entity.yRot = rotY;
 
     matrixStack.translate(0.0D, 0.375D, 0.0D);
-    matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - entityYaw));
-    matrixStack.mulPose(Vector3f.ZP.rotationDegrees(-f3));
+    matrixStack.mulPose(Vector3f.YP.rotationDegrees(rotY));
+    matrixStack.mulPose(Vector3f.ZP.rotationDegrees(rotZ));
     float f5 = (float) entity.getHurtTime() - partialTicks;
     float f6 = entity.getDamage() - partialTicks;
     if (f6 < 0.0F) {

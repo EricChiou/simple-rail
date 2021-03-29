@@ -26,7 +26,6 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
 
   public LocomotiveCartEntity(EntityType<?> type, World world) {
     super(CART_TYPE, world);
-    this.setHasFuel(true);
   }
 
   public LocomotiveCartEntity(FMLPlayMessages.SpawnEntity spawnEntity, World world) {
@@ -76,7 +75,7 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     super.tick();
 
     if (this.random.nextInt(4) == 0 && this.isMoving()) {
-      this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY() + 1D, this.getZ(), 0.0D, 0.0D, 0.0D);
+      this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY() + 1.5D, this.getZ(), 0.0D, 0.0D, 0.0D);
     }
   }
 
