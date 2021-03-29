@@ -30,8 +30,8 @@ public class CommonConfig {
     builder.push("high_speed_rail");
 
     highSpeedRailMaxSpeed = builder
-        .comment("High speed rail max speed (default: 0.8f, original powered rail speed: 0.4f)")
-        .defineInRange(Config.HIGH_SPEED_RAIL_MAX_SPEED, 0.8d, 0.4d, 2.0d);
+        .comment("High speed rail max speed (default: 0.8F, original powered rail speed: 0.4F)")
+        .defineInRange(Config.HIGH_SPEED_RAIL_MAX_SPEED, 0.8D, 0.4D, 2.0D);
 
     builder.pop();
 

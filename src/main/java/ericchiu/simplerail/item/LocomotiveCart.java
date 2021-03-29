@@ -46,10 +46,10 @@ public class LocomotiveCart extends Item {
     RailShape railshape = blockstate.getBlock() instanceof AbstractRailBlock
         ? ((AbstractRailBlock) blockstate.getBlock()).getRailDirection(blockstate, world, blockpos, null)
         : RailShape.NORTH_SOUTH;
-    double deltaY = railshape.isAscending() ? 0.5d : 0.0d;
+    double deltaY = railshape.isAscending() ? 0.5D : 0.0D;
 
-    LocomotiveCartEntity locomotiveCartEntity = new LocomotiveCartEntity(world, blockpos.getX() + 0.5d,
-        blockpos.getY() + 0.0625d + deltaY, blockpos.getZ() + 0.5d);
+    LocomotiveCartEntity locomotiveCartEntity = new LocomotiveCartEntity(world, blockpos.getX() + 0.5D,
+        blockpos.getY() + 0.0625D + deltaY, blockpos.getZ() + 0.5D);
 
     if (itemstack.hasCustomHoverName()) {
       // abstractCartEntity.setCustomName(itemstack.getHoverName());

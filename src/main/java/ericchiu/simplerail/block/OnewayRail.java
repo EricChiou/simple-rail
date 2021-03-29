@@ -32,7 +32,7 @@ public class OnewayRail extends PoweredRailBlock {
   public OnewayRail() {
     super(AbstractBlock.Properties //
         .of(Material.METAL) //
-        .strength(0.7f). //
+        .strength(0.7F). //
         harvestLevel(0). //
         harvestTool(ToolType.PICKAXE). //
         sound(SoundType.METAL). //
@@ -92,17 +92,17 @@ public class OnewayRail extends PoweredRailBlock {
 
   private void goForward(RailShape shape, AbstractMinecartEntity cart) {
     if (shape.equals(RailShape.NORTH_SOUTH)) {
-      cart.setDeltaMovement(0, 0, 0.4d);
+      cart.setDeltaMovement(0, 0, 0.4D);
     } else {
-      cart.setDeltaMovement(-0.4d, 0, 0);
+      cart.setDeltaMovement(-0.4D, 0, 0);
     }
   }
 
   private void goReverse(RailShape shape, AbstractMinecartEntity cart) {
     if (shape.equals(RailShape.NORTH_SOUTH)) {
-      cart.setDeltaMovement(0, 0, -0.4d);
+      cart.setDeltaMovement(0, 0, -0.4D);
     } else {
-      cart.setDeltaMovement(0.4d, 0, 0);
+      cart.setDeltaMovement(0.4D, 0, 0);
     }
   }
 

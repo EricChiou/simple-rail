@@ -35,7 +35,7 @@ public class EjectRail extends PoweredRailBlock {
   public EjectRail() {
     super(AbstractBlock.Properties //
         .of(Material.METAL) //
-        .strength(0.7f). //
+        .strength(0.7F). //
         harvestLevel(0). //
         harvestTool(ToolType.PICKAXE). //
         sound(SoundType.METAL). //
@@ -99,12 +99,12 @@ public class EjectRail extends PoweredRailBlock {
 
     Integer transportDistance = CommonConfig.INSTANCE.ejectRailTransportDistance.get();
     if (shape.equals(RailShape.NORTH_SOUTH)) {
-      double deltaX = reverse ? transportDistance + 0.5d : -transportDistance - 0.5d;
-      passenger.moveTo(pos.getX() + deltaX, pos.getY(), pos.getZ() + 0.5d);
+      double deltaX = reverse ? transportDistance + 0.5D : -transportDistance - 0.5D;
+      passenger.moveTo(pos.getX() + deltaX, pos.getY(), pos.getZ() + 0.5D);
 
     } else {
-      double deltaZ = reverse ? transportDistance + 0.5d : -transportDistance - 0.5d;
-      passenger.moveTo(pos.getX() + 0.5d, pos.getY(), pos.getZ() + deltaZ);
+      double deltaZ = reverse ? transportDistance + 0.5D : -transportDistance - 0.5D;
+      passenger.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + deltaZ);
     }
   }
 

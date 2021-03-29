@@ -30,7 +30,7 @@ public class HoldingRail extends PoweredRailBlock {
   public HoldingRail() {
     super(AbstractBlock.Properties //
         .of(Material.METAL) //
-        .strength(0.7f). //
+        .strength(0.7F). //
         harvestLevel(0). //
         harvestTool(ToolType.PICKAXE). //
         sound(SoundType.METAL). //
@@ -65,7 +65,7 @@ public class HoldingRail extends PoweredRailBlock {
 
     if (powered && cartEntity != null && cartDirection != null) {
       Vector3i cartMotion = cartDirection.getNormal();
-      cartEntity.setDeltaMovement(cartMotion.getX() * 0.4d, cartMotion.getY() * 0.4d, cartMotion.getZ() * 0.4d);
+      cartEntity.setDeltaMovement(cartMotion.getX() * 0.4D, cartMotion.getY() * 0.4D, cartMotion.getZ() * 0.4D);
     }
 
     super.updateState(state, world, pos, block);

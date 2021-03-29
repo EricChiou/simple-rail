@@ -17,7 +17,7 @@ public class HighSpeedRail extends PoweredRailBlock {
 	public HighSpeedRail() {
 		super(AbstractBlock.Properties //
 				.of(Material.METAL) //
-				.strength(0.7f). //
+				.strength(0.7F). //
 				harvestLevel(0). //
 				harvestTool(ToolType.PICKAXE). //
 				sound(SoundType.METAL). //

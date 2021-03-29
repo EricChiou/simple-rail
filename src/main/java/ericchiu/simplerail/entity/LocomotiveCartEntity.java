@@ -7,6 +7,7 @@ import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.item.minecart.FurnaceMinecartEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.GameRules;
@@ -25,6 +26,7 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
 
   public LocomotiveCartEntity(EntityType<?> type, World world) {
     super(CART_TYPE, world);
+    this.setHasFuel(true);
   }
 
   public LocomotiveCartEntity(FMLPlayMessages.SpawnEntity spawnEntity, World world) {
@@ -69,8 +71,21 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     return false;
   }
 
+  @Override
+  public void tick() {
+    super.tick();
+
+    if (this.random.nextInt(4) == 0 && this.isMoving()) {
+      this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY() + 1D, this.getZ(), 0.0D, 0.0D, 0.0D);
+    }
+  }
+
   public ItemStack getReturnItem() {
     return new ItemStack(Items.LOCOMOTIVE_CART.get());
+  }
+
+  private boolean isMoving() {
+    return this.getDeltaMovement().x != 0 || this.getDeltaMovement().y != 0 || this.getDeltaMovement().z != 0;
   }
 
 }
