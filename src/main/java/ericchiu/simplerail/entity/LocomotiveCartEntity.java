@@ -8,6 +8,7 @@ import ericchiu.simplerail.registry.Entities;
 import ericchiu.simplerail.registry.Items;
 import ericchiu.simplerail.setup.SimpleRailDataSerializers;
 import ericchiu.simplerail.setup.SimpleRailDataSerializers.FacingDirection;
+import net.minecraft.block.AbstractRailBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -22,6 +23,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.RailShape;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
@@ -154,8 +156,15 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
   @Override
   public ActionResultType interact(PlayerEntity player, Hand hand) {
     ItemStack itemStack = player.getItemInHand(hand);
-    if (itemStack.getItem() instanceof Wrench) {
-      System.out.println("detect if has cart after locomotive cart");
+    if (itemStack.getItem() instanceof Wrench && isOnRail()) {
+      BlockPos blockpos = this.getCurrentRailPosition();
+      FacingDirection facing = this.entityData.get(FACING_DIRECTION);
+      BlockPos detectBlockpos = getDetectBlockPos(blockpos, facing);
+      BlockState detectBlockState = this.level.getBlockState(detectBlockpos);
+
+      if (detectBlockState.is(BlockTags.RAILS)) {
+        AbstractRailBlock detectBlock = (AbstractRailBlock) detectBlockState.getBlock();
+      }
     }
 
     return super.interact(player, hand);
@@ -185,6 +194,25 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     System.out.println("linkNewCart");
     this.train.add(cart);
     return true;
+  }
+
+  private BlockPos getDetectBlockPos(BlockPos blockPos, FacingDirection facing) {
+    if (facing.equals(FacingDirection.EAST)) {
+      return blockPos.west();
+    } else if (facing.equals(FacingDirection.WEST)) {
+      return blockPos.east();
+    } else if (facing.equals(FacingDirection.NORTH)) {
+      return blockPos.south();
+    } else if (facing.equals(FacingDirection.SOUTH)) {
+      return blockPos.north();
+    }
+
+    return blockPos.south();
+  }
+
+  private boolean isOnRail() {
+    BlockPos pos = new BlockPos(this.getX(), this.getY(), this.getZ());
+    return this.level.getBlockState(pos.below()).is(BlockTags.RAILS);
   }
 
 }
