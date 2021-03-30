@@ -29,16 +29,16 @@ public class Wrench extends Item {
     BlockPos blockpos = context.getClickedPos();
     BlockState blockstate = world.getBlockState(blockpos);
 
-    if (!blockstate.is(SimpleRailTags.RAILS)) {
-      return ActionResultType.FAIL;
+    if (blockstate.is(SimpleRailTags.RAILS)) {
+      if (blockstate.hasProperty(SimpleRailProperties.REVERSE)) {
+        boolean reverse = blockstate.getValue(SimpleRailProperties.REVERSE);
+        world.setBlock(blockpos, blockstate.setValue(SimpleRailProperties.REVERSE, !reverse), 3);
+      }
+
+      return ActionResultType.SUCCESS;
     }
 
-    if (blockstate.hasProperty(SimpleRailProperties.REVERSE)) {
-      boolean reverse = blockstate.getValue(SimpleRailProperties.REVERSE);
-      world.setBlock(blockpos, blockstate.setValue(SimpleRailProperties.REVERSE, !reverse), 3);
-    }
-
-    return ActionResultType.SUCCESS;
+    return ActionResultType.FAIL;
   }
 
 }

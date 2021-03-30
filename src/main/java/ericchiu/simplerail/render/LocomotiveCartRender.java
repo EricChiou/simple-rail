@@ -21,14 +21,14 @@ import net.minecraft.util.math.vector.Vector3f;
 public class LocomotiveCartRender<T extends LocomotiveCartEntity> extends MinecartRenderer<T> {
   private static final ResourceLocation TEXTURES = new ResourceLocation(Texture.LOCOMOTIVE_CART);
 
-  private final EntityModel<LocomotiveCartEntity> model = new LocomotiveCartModel<LocomotiveCartEntity>();
+  private final EntityModel<T> model = new LocomotiveCartModel<T>();
 
   public LocomotiveCartRender(EntityRendererManager manager) {
     super(manager);
   }
 
   @Override
-  public ResourceLocation getTextureLocation(LocomotiveCartEntity entity) {
+  public ResourceLocation getTextureLocation(T entity) {
     return TEXTURES;
   }
 

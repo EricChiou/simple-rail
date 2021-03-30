@@ -1,21 +1,30 @@
 package ericchiu.simplerail.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ericchiu.simplerail.item.Wrench;
 import ericchiu.simplerail.registry.Entities;
 import ericchiu.simplerail.registry.Items;
 import ericchiu.simplerail.setup.SimpleRailDataSerializers;
 import ericchiu.simplerail.setup.SimpleRailDataSerializers.FacingDirection;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.item.minecart.FurnaceMinecartEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.RailShape;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
@@ -28,8 +37,11 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
 
   private static final DataParameter<FacingDirection> FACING_DIRECTION = EntityDataManager
       .defineId(LocomotiveCartEntity.class, SimpleRailDataSerializers.FACING_DIRECTION);
-
+  private static final DataParameter<Boolean> LINKABLE = EntityDataManager.defineId(FurnaceMinecartEntity.class,
+      DataSerializers.BOOLEAN);
   private static final EntityType<LocomotiveCartEntity> CART_TYPE = Entities.LOCOMOTIVE_CART.get();
+
+  private final List<AbstractMinecartEntity> train = new ArrayList<AbstractMinecartEntity>();
 
   public LocomotiveCartEntity(World world, double x, double y, double z) {
     this(CART_TYPE, world);
@@ -48,7 +60,7 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
 
   public LocomotiveCartEntity(EntityType<?> type, World world) {
     super(CART_TYPE, world);
-
+    this.entityData.define(LINKABLE, true);
     this.entityData.define(FACING_DIRECTION, FacingDirection.NORTH);
   }
 
@@ -98,7 +110,12 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
   public void tick() {
     super.tick();
 
-    if (isMoving()) {
+    Vector3d motion = this.getDeltaMovement();
+    for (AbstractMinecartEntity cart : this.train) {
+      cart.setDeltaMovement(motion);
+    }
+
+    if (isMoving(motion)) {
       if (this.random.nextInt(4) == 0) {
         this.level.addParticle(ParticleTypes.LARGE_SMOKE, //
             this.getX(), //
@@ -107,7 +124,6 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
             0.0D, 0.0D, 0.0D);
       }
 
-      Vector3d motion = this.getDeltaMovement();
       if (motion.x > 0 && motion.z == 0) {
         this.entityData.set(FACING_DIRECTION, FacingDirection.EAST);
       } else if (motion.x < 0 && motion.z == 0) {
@@ -128,6 +144,23 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     }
   }
 
+  @Override
+  public void push(Entity entity) {
+    if (entity instanceof PlayerEntity) {
+      super.push(entity);
+    }
+  }
+
+  @Override
+  public ActionResultType interact(PlayerEntity player, Hand hand) {
+    ItemStack itemStack = player.getItemInHand(hand);
+    if (itemStack.getItem() instanceof Wrench) {
+      System.out.println("detect if has cart after locomotive cart");
+    }
+
+    return super.interact(player, hand);
+  }
+
   public ItemStack getReturnItem() {
     return new ItemStack(Items.LOCOMOTIVE_CART.get());
   }
@@ -137,8 +170,21 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
   }
 
   public boolean isMoving() {
-    Vector3d motion = this.getDeltaMovement();
+    return isMoving(this.getDeltaMovement());
+  }
+
+  public boolean isMoving(Vector3d motion) {
     return motion.x != 0 || motion.y != 0 || motion.z != 0;
+  }
+
+  public List<AbstractMinecartEntity> getTrain() {
+    return this.train;
+  }
+
+  public boolean linkNewCart(AbstractMinecartEntity cart) {
+    System.out.println("linkNewCart");
+    this.train.add(cart);
+    return true;
   }
 
 }
