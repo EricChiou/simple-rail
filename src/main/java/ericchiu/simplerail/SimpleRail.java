@@ -23,6 +23,7 @@ import ericchiu.simplerail.setup.SimpleRailTags;
 import ericchiu.simplerail.setup.SimpleRailProperties;
 import ericchiu.simplerail.setup.Registration;
 import ericchiu.simplerail.setup.Render;
+import ericchiu.simplerail.setup.SimpleRailDataSerializers;
 
 import java.util.stream.Collectors;
 
@@ -44,6 +45,7 @@ public class SimpleRail {
 
         MinecraftForge.EVENT_BUS.register(this);
 
+        SimpleRailDataSerializers.setup();
         SimpleRailProperties.setup();
         SimpleRailTags.setup();
         Registration.setup();

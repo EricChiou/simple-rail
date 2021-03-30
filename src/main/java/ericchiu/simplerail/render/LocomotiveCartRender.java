@@ -6,18 +6,14 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import ericchiu.simplerail.constants.Texture;
 import ericchiu.simplerail.entity.LocomotiveCartEntity;
 import ericchiu.simplerail.render.model.LocomotiveCartModel;
-import ericchiu.simplerail.setup.SimpleRailTags;
+import ericchiu.simplerail.setup.SimpleRailDataSerializers.FacingDirection;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.RailShape;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
@@ -31,13 +27,13 @@ public class LocomotiveCartRender<T extends LocomotiveCartEntity> extends Mineca
   }
 
   @Override
-  public ResourceLocation getTextureLocation(T entity) {
+  public ResourceLocation getTextureLocation(LocomotiveCartEntity entity) {
     return TEXTURES;
   }
 
   @Override
-  public void render(T entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer,
-      int packedLight) {
+  public void render(T entity, float entityYaw, float partialTicks, MatrixStack matrixStack,
+      IRenderTypeBuffer buffer, int packedLight) {
     matrixStack.pushPose();
     long i = (long) entity.getId() * 493286711L;
     i = i * i * 4392167121L + i * 98761L;
@@ -72,43 +68,9 @@ public class LocomotiveCartRender<T extends LocomotiveCartEntity> extends Mineca
 
     float rotY = 180.0F - entityYaw;
     float rotZ = -f3;
-    Vector3d motion = entity.getDeltaMovement();
-    if (motion.x == 0 && motion.z == 0) {
-      rotY = entity.yRot;
-      BlockPos pos = entity.getCurrentRailPosition();
-      BlockState state = entity.level.getBlockState(pos);
-      if (state.is(SimpleRailTags.RAILS) || state.is(BlockTags.RAILS)) {
-        RailShape shape = state.getValue(BlockStateProperties.RAIL_SHAPE_STRAIGHT);
-        if (shape.equals(RailShape.NORTH_SOUTH) && (rotY != 90.0F && rotY != -90.0F)) {
-          rotY = 90.0F;
-        } else if (shape.equals(RailShape.EAST_WEST) && (rotY != 0.0F && rotY != 180.0F)) {
-          rotY = 0.0F;
-        }
-      }
-    } else if (motion.x > 0 && motion.z == 0) {
-      rotY = 180.0F;
-      rotZ = f3;
-    } else if (motion.x < 0 && motion.z == 0) {
-      rotY = 0.0F;
-    } else if (motion.x == 0 && motion.z < 0) {
-      rotY = -90.0F;
-    } else if (motion.x > 0 && motion.z < 0) {
-      rotY = -135.0F;
-    } else if (motion.x < 0 && motion.z < 0) {
-      rotY = -45.0F;
-    } else if (motion.x == 0 && motion.z > 0) {
-      rotY = 90.0F;
-      rotZ = f3;
-    } else if (motion.x > 0 && motion.z > 0) {
-      rotY = 135.0F;
-    } else if (motion.x < 0 && motion.z > 0) {
-      rotY = 45.0F;
-    }
-    entity.yRot = rotY;
+    setRenderDirection(entity, matrixStack, rotY, rotZ);
 
     matrixStack.translate(0.0D, 0.375D, 0.0D);
-    matrixStack.mulPose(Vector3f.YP.rotationDegrees(rotY));
-    matrixStack.mulPose(Vector3f.ZP.rotationDegrees(rotZ));
     float f5 = (float) entity.getHurtTime() - partialTicks;
     float f6 = entity.getDamage() - partialTicks;
     if (f6 < 0.0F) {
@@ -122,7 +84,7 @@ public class LocomotiveCartRender<T extends LocomotiveCartEntity> extends Mineca
 
     matrixStack.scale(-1.0F, -1.0F, 1.0F);
     model.setupAnim(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F);
-    IVertexBuilder ivertexbuilder = buffer.getBuffer(model.renderType(getTextureLocation(entity)));
+    IVertexBuilder ivertexbuilder = buffer.getBuffer(model.renderType(this.getTextureLocation(entity)));
     model.renderToBuffer(matrixStack, ivertexbuilder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
     matrixStack.popPose();
   }
@@ -131,6 +93,33 @@ public class LocomotiveCartRender<T extends LocomotiveCartEntity> extends Mineca
   protected void renderMinecartContents(T entity, float partialTicks, BlockState state, MatrixStack matrixStack,
       IRenderTypeBuffer buffer, int packedLight) {
     super.renderMinecartContents(entity, partialTicks, state, matrixStack, buffer, packedLight);
+  }
+
+  private void setRenderDirection(T entity, MatrixStack matrixStack, float rotY, float rotZ) {
+    FacingDirection facingDirection = entity.getFacingDirection();
+
+    if (FacingDirection.EAST.equals(facingDirection)) {
+      rotY = 180.0F;
+      rotZ = -rotZ;
+    } else if (FacingDirection.WEST.equals(facingDirection)) {
+      rotY = 0.0F;
+    } else if (FacingDirection.NORTH.equals(facingDirection)) {
+      rotY = -90.0F;
+    } else if (FacingDirection.SOUTH.equals(facingDirection)) {
+      rotY = 90.0F;
+      rotZ = -rotZ;
+    } else if (FacingDirection.NORTH_EAST.equals(facingDirection)) {
+      rotY = -135.0F;
+    } else if (FacingDirection.NORTH_WEST.equals(facingDirection)) {
+      rotY = -45.0F;
+    } else if (FacingDirection.SOUTH_EAST.equals(facingDirection)) {
+      rotY = 135.0F;
+    } else if (FacingDirection.SOUTH_WEST.equals(facingDirection)) {
+      rotY = 45.0F;
+    }
+
+    matrixStack.mulPose(Vector3f.YP.rotationDegrees(rotY));
+    matrixStack.mulPose(Vector3f.ZP.rotationDegrees(rotZ));
   }
 
 }
