@@ -98,13 +98,16 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
   public void tick() {
     super.tick();
 
-    Vector3d motion = this.getDeltaMovement();
-    if (this.getDeltaMovement().x != 0 || this.getDeltaMovement().y != 0 || this.getDeltaMovement().z != 0) {
+    if (isMoving()) {
       if (this.random.nextInt(4) == 0) {
-        this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getX(), this.getY() + 1.5D, this.getZ(), 0.0D, 0.0D,
-            0.0D);
+        this.level.addParticle(ParticleTypes.LARGE_SMOKE, //
+            this.getX(), //
+            this.getY() + 1.5D, //
+            this.getZ(), //
+            0.0D, 0.0D, 0.0D);
       }
 
+      Vector3d motion = this.getDeltaMovement();
       if (motion.x > 0 && motion.z == 0) {
         this.entityData.set(FACING_DIRECTION, FacingDirection.EAST);
       } else if (motion.x < 0 && motion.z == 0) {
@@ -131,6 +134,11 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
 
   public FacingDirection getFacingDirection() {
     return this.entityData.get(FACING_DIRECTION);
+  }
+
+  public boolean isMoving() {
+    Vector3d motion = this.getDeltaMovement();
+    return motion.x != 0 || motion.y != 0 || motion.z != 0;
   }
 
 }

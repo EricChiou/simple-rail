@@ -20,6 +20,7 @@ import net.minecraft.util.math.vector.Vector3f;
 
 public class LocomotiveCartRender<T extends LocomotiveCartEntity> extends MinecartRenderer<T> {
   private static final ResourceLocation TEXTURES = new ResourceLocation(Texture.LOCOMOTIVE_CART);
+
   private final EntityModel<LocomotiveCartEntity> model = new LocomotiveCartModel<LocomotiveCartEntity>();
 
   public LocomotiveCartRender(EntityRendererManager manager) {
@@ -32,8 +33,8 @@ public class LocomotiveCartRender<T extends LocomotiveCartEntity> extends Mineca
   }
 
   @Override
-  public void render(T entity, float entityYaw, float partialTicks, MatrixStack matrixStack,
-      IRenderTypeBuffer buffer, int packedLight) {
+  public void render(T entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer buffer,
+      int packedLight) {
     matrixStack.pushPose();
     long i = (long) entity.getId() * 493286711L;
     i = i * i * 4392167121L + i * 98761L;
