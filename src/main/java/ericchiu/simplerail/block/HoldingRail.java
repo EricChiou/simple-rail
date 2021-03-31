@@ -22,7 +22,7 @@ import net.minecraftforge.common.ToolType;
 
 public class HoldingRail extends PoweredRailBlock {
 
-  private Direction cartDirection;
+  private Direction cartMotionDirection;
   private AbstractMinecartEntity cartEntity;
 
   public static final BlockItem BLOCK_ITEM = new BlockItem(new HoldingRail(), new Item.Properties().tab(Rail.TAB));
@@ -52,7 +52,7 @@ public class HoldingRail extends PoweredRailBlock {
   public void onMinecartPass(BlockState state, World world, BlockPos pos, AbstractMinecartEntity cart) {
     boolean powered = state.getValue(BlockStateProperties.POWERED);
     cartEntity = cart;
-    cartDirection = cart.getMotionDirection();
+    cartMotionDirection = cart.getMotionDirection();
 
     if (!powered) {
       cart.setDeltaMovement(Vector3d.ZERO);
@@ -63,8 +63,8 @@ public class HoldingRail extends PoweredRailBlock {
   protected void updateState(BlockState state, World world, BlockPos pos, Block block) {
     boolean powered = state.getValue(BlockStateProperties.POWERED);
 
-    if (powered && cartEntity != null && cartDirection != null) {
-      Vector3i cartMotion = cartDirection.getNormal();
+    if (powered && cartEntity != null && cartMotionDirection != null) {
+      Vector3i cartMotion = cartMotionDirection.getNormal();
       cartEntity.setDeltaMovement(cartMotion.getX() * 0.4D, cartMotion.getY() * 0.4D, cartMotion.getZ() * 0.4D);
     }
 
