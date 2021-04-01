@@ -51,8 +51,8 @@ public class HoldingRail extends PoweredRailBlock {
   @Override
   public void onMinecartPass(BlockState state, World world, BlockPos pos, AbstractMinecartEntity cart) {
     boolean powered = state.getValue(BlockStateProperties.POWERED);
-    cartEntity = cart;
-    cartMotionDirection = cart.getMotionDirection();
+    this.cartEntity = cart;
+    this.cartMotionDirection = cart.getMotionDirection();
 
     if (!powered) {
       cart.setDeltaMovement(Vector3d.ZERO);
@@ -61,11 +61,18 @@ public class HoldingRail extends PoweredRailBlock {
 
   @Override
   protected void updateState(BlockState state, World world, BlockPos pos, Block block) {
-    boolean powered = state.getValue(BlockStateProperties.POWERED);
-
-    if (powered && cartEntity != null && cartMotionDirection != null) {
-      Vector3i cartMotion = cartMotionDirection.getNormal();
-      cartEntity.setDeltaMovement(cartMotion.getX() * 0.4D, cartMotion.getY() * 0.4D, cartMotion.getZ() * 0.4D);
+    if (this.cartEntity != null && this.cartMotionDirection != null) {
+      if (this.cartEntity.blockPosition().equals(pos)) {
+        boolean powered = state.getValue(BlockStateProperties.POWERED);
+        if (powered) {
+          Vector3i cartMotion = this.cartMotionDirection.getNormal();
+          this.cartEntity.setDeltaMovement(cartMotion.getX() * 0.4D, cartMotion.getY() * 0.4D,
+              cartMotion.getZ() * 0.4D);
+        }
+      } else {
+        this.cartEntity = null;
+        this.cartMotionDirection = null;
+      }
     }
 
     super.updateState(state, world, pos, block);

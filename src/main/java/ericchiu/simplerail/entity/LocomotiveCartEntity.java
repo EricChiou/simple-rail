@@ -5,7 +5,6 @@ import java.util.List;
 
 import ericchiu.simplerail.item.Wrench;
 import ericchiu.simplerail.link.LinkageManager;
-import ericchiu.simplerail.link.LinkageManager.Train;
 import ericchiu.simplerail.registry.Entities;
 import ericchiu.simplerail.registry.Items;
 import ericchiu.simplerail.setup.SimpleRailDataSerializers;
@@ -33,7 +32,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.text.event.HoverEvent;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.FMLPlayMessages;
@@ -46,13 +44,10 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
   private static final DataParameter<Boolean> LINKABLE = EntityDataManager.defineId(LocomotiveCartEntity.class,
       DataSerializers.BOOLEAN);
 
-  private static final DataParameter<Boolean> LINKED = EntityDataManager.defineId(LocomotiveCartEntity.class,
-      DataSerializers.BOOLEAN);
-
   private static final EntityType<LocomotiveCartEntity> CART_TYPE = Entities.LOCOMOTIVE_CART.get();
 
-  // private final List<Linkage> linkages = new ArrayList<Linkage>();
-  Train train;
+  private ArrayList<AbstractMinecartEntity> train;
+  private LinkageManager linkageManager;
   private BlockPos currentPos = new BlockPos(0, 0, 0);
 
   public LocomotiveCartEntity(World world, double x, double y, double z) {
@@ -75,15 +70,15 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     super(CART_TYPE, world);
     this.entityData.define(LINKABLE, true);
     this.entityData.define(FACING, FacingDirection.NORTH);
+
+    if (!world.isClientSide) {
+      this.linkageManager = LinkageManager.get(world);
+      this.train = this.linkageManager.getTrain(this.uuid);
+    }
   }
 
   public LocomotiveCartEntity(FMLPlayMessages.SpawnEntity spawnEntity, World world) {
     this(CART_TYPE, world);
-  }
-
-  @Override
-  protected HoverEvent createHoverEvent() {
-    return super.createHoverEvent();
   }
 
   @Override
@@ -129,49 +124,47 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     super.tick();
 
     if (!this.level.isClientSide) {
-      if (this.train == null) {
-        this.train = LinkageManager.get(this.level).getTrain(this.uuid);
-      }
+      if (detectPosChanged()) {
+        if (this.isOnGround()) {
+          this.train.clear();
+          this.updateTrain();
+        } else if (this.train.size() > 0) {
+          AbstractMinecartEntity firstCart = this.train.get(0);
 
-      if (!this.blockPosition().equals(this.currentPos)) {
-        // move carts
-        if (this.train.cartList.size() > 1) {
-          for (int i = 1; i < train.cartList.size(); i++) {
-            if (this.train.cartList.get(i) == null) {
-              this.train.cartList.subList(i, this.train.cartList.size()).clear();
-              break;
-            } else {
-              BlockPos prevPos = this.train.posList.get(i - 1);
-              this.train.cartList.get(i).moveTo(prevPos.getX() + 0.5D, prevPos.getY(), prevPos.getZ() + 0.5D);
-            }
-          }
-        }
-
-        // update pos
-        this.train.posList.add(0, this.currentPos);
-        this.train.posList.subList(this.train.cartList.size(), this.train.posList.size()).clear();
-
-        // move first carts
-        if (this.train.cartList > 0) {
-          if (this.linkages.get(0).cart == null) {
-            this.linkages.clear();
+          if (firstCart == null) {
+            this.train.clear();
+            this.updateTrain();
           } else {
-            Linkage linkage = this.linkages.get(0);
-            linkage.pos = this.currentPos;
-            linkage.cart.moveTo(linkage.pos.getX() + 0.5D, linkage.pos.getY(), linkage.pos.getZ() + 0.5D);
+            // move carts
+            if (this.train.size() > 1) {
+              for (int i = 1; i < train.size(); i++) {
+                AbstractMinecartEntity cart = this.train.get(i);
+                if (cart == null) {
+                  this.train.subList(i, this.train.size()).clear();
+                  this.updateTrain();
+                  break;
+                } else {
+                  BlockPos pos = this.train.get(i - 1).blockPosition();
+                  cart.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
+                }
+              }
+            }
+
+            // move first carts
+            firstCart.moveTo(this.currentPos.getX() + 0.5D, this.currentPos.getY(), this.currentPos.getZ() + 0.5D);
           }
         }
+
         this.currentPos = this.blockPosition();
       }
 
-      for (Linkage linkage : this.linkages) {
-        linkage.cart.setDeltaMovement(Vector3d.ZERO);
+      for (AbstractMinecartEntity cart : this.train) {
+        cart.setDeltaMovement(Vector3d.ZERO);
       }
     }
 
     Vector3d motion = this.getDeltaMovement();
     if (isMoving(motion)) {
-
       if (!this.isOnGround() && this.random.nextInt(4) == 0) {
         this.level.addParticle(ParticleTypes.LARGE_SMOKE, //
             this.getX(), //
@@ -197,10 +190,6 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
       } else if (motion.x < 0 && motion.z > 0) {
         this.entityData.set(FACING, FacingDirection.SOUTH_WEST);
       }
-    } else {
-      if (this.isOnGround()) {
-        this.linkages.clear();
-      }
     }
   }
 
@@ -213,18 +202,20 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
 
   @Override
   public ActionResultType interact(PlayerEntity player, Hand hand) {
-    ItemStack itemStack = player.getItemInHand(hand);
-    if (itemStack.getItem() instanceof Wrench && !this.isOnGround()) {
-      BlockPos blockpos = this.getCurrentRailPosition();
-      FacingDirection facing = this.entityData.get(FACING);
-      BlockPos detectBlockpos = getDetectBlockPos(blockpos, facing);
-      BlockState detectBlockState = this.level.getBlockState(detectBlockpos);
+    if (!this.level.isClientSide) {
+      ItemStack itemStack = player.getItemInHand(hand);
+      if (itemStack.getItem() instanceof Wrench && !this.isOnGround()) {
+        BlockPos blockpos = this.getCurrentRailPosition();
+        FacingDirection facing = this.entityData.get(FACING);
+        BlockPos detectBlockpos = getDetectBlockPos(blockpos, facing);
+        BlockState detectBlockState = this.level.getBlockState(detectBlockpos);
 
-      if (detectBlockState.is(BlockTags.RAILS)) {
-        List<AbstractMinecartEntity> entities = this.level.getEntitiesOfClass(AbstractMinecartEntity.class,
-            new AxisAlignedBB(detectBlockpos), EntityPredicates.NO_SPECTATORS);
-        if (entities.size() > 0) {
-          this.linkNewCart(entities.get(0));
+        if (detectBlockState.is(BlockTags.RAILS)) {
+          List<AbstractMinecartEntity> entities = this.level.getEntitiesOfClass(AbstractMinecartEntity.class,
+              new AxisAlignedBB(detectBlockpos), EntityPredicates.NO_SPECTATORS);
+          if (entities.size() > 0) {
+            this.linkNewCart(entities.get(0));
+          }
         }
       }
     }
@@ -240,6 +231,11 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     return new ItemStack(Items.LOCOMOTIVE_CART.get());
   }
 
+  private boolean isMoving() {
+    Vector3d motion = this.getDeltaMovement();
+    return motion.x != 0 || motion.y != 0 || motion.z != 0;
+  }
+
   private boolean isMoving(Vector3d motion) {
     return motion.x != 0 || motion.y != 0 || motion.z != 0;
   }
@@ -249,15 +245,13 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
       return false;
     }
 
-    for (Linkage linkage : linkages) {
-      if (linkage.cart.getUUID().equals(cart.getUUID())) {
-        return false;
-      }
+    if (!this.linkageManager.checkCartLinkable(cart.getUUID())) {
+      return false;
     }
 
     System.out.println("linkNewCart");
-    this.linkages.add(new Linkage(cart, cart.blockPosition()));
-    cart.getEntityData().define(LINKED, true);
+    this.train.add(cart);
+    this.updateTrain();
     return true;
   }
 
@@ -275,14 +269,26 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     return blockPos.south();
   }
 
-  private class Linkage {
-    public AbstractMinecartEntity cart;
-    public BlockPos pos;
+  private void updateTrain() {
+    this.linkageManager.updateTrain(this.uuid, this.train);
+  }
 
-    public Linkage(AbstractMinecartEntity cart, BlockPos pos) {
-      this.cart = cart;
-      this.pos = pos;
+  private boolean detectPosChanged() {
+    Vector3d pos = this.position();
+    BlockPos blockPos = this.blockPosition();
+
+    if (!blockPos.equals(this.currentPos)) {
+      if (isMoving()) {
+        if ((blockPos.getX() + 0.2D <= pos.x && pos.x <= blockPos.getX() + 0.8D)
+            && (blockPos.getZ() + 0.2D <= pos.z && pos.z <= blockPos.getZ() + 0.8D)) {
+          return true;
+        }
+      } else {
+        return true;
+      }
     }
+
+    return false;
   }
 
 }
