@@ -7,7 +7,7 @@ import net.minecraft.util.IStringSerializable;
 
 public class SimpleRailDataSerializers {
 
-  public static final IDataSerializer<FacingDirection> FACING_DIRECTION = new IDataSerializer<FacingDirection>() {
+  public static final IDataSerializer<FacingDirection> FACING = new IDataSerializer<FacingDirection>() {
     public void write(PacketBuffer buffer, FacingDirection facingDirection) {
       buffer.writeEnum(facingDirection);
     }
@@ -22,7 +22,7 @@ public class SimpleRailDataSerializers {
   };
 
   public static final void setup() {
-    DataSerializers.registerSerializer(FACING_DIRECTION);
+    DataSerializers.registerSerializer(FACING);
   }
 
   public enum FacingDirection implements IStringSerializable {

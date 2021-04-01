@@ -20,5 +20,6 @@ public class I18n {
 	public static final String ENTITY_LOCOMOTIVE_CART = "locomotive_cart";
 
 	// train
-	public static final String TRAIN_DATA_NAME = SimpleRail.MOD_ID + "_train";
+	public static final String LINKAGE_DATA_NAME = SimpleRail.MOD_ID + "_linkage";
+	public static final String LINKAGE_COMPOUND_NAME = SimpleRail.MOD_ID + "_linkage";
 }
