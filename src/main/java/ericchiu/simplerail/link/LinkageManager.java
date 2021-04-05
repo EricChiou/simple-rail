@@ -5,98 +5,67 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import ericchiu.simplerail.constants.I18n;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.nbt.StringNBT;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.DimensionSavedDataManager;
-import net.minecraft.world.storage.WorldSavedData;
 
-public class LinkageManager extends WorldSavedData {
+public class LinkageManager {
 
-  private final ServerWorld serverWorld;
-  private Map<UUID, ArrayList<AbstractMinecartEntity>> trains = new HashMap<UUID, ArrayList<AbstractMinecartEntity>>();
+  private static Map<UUID, ArrayList<UUID>> trains = new HashMap<UUID, ArrayList<UUID>>();
 
-  public LinkageManager(ServerWorld serverWorld) {
-    super(I18n.LINKAGE_DATA_NAME);
-    this.serverWorld = serverWorld;
+  public static Map<UUID, ArrayList<UUID>> getTrains() {
+    return trains;
   }
 
-  @Override
-  public void load(CompoundNBT compound) {
-    for (String key : compound.getAllKeys()) {
-      ArrayList<AbstractMinecartEntity> train = new ArrayList<AbstractMinecartEntity>();
+  public static ArrayList<UUID> getTrainUuid(UUID locomotiveUuid) {
+    ArrayList<UUID> trainUuid = trains.get(locomotiveUuid);
+    return trainUuid == null ? new ArrayList<UUID>() : trains.get(locomotiveUuid);
+  }
 
-      for (INBT nbt : (ListNBT) compound.get(key)) {
-        try {
-          UUID cartUuid = UUID.fromString(((StringNBT) nbt).getAsString());
-          AbstractMinecartEntity cart = (AbstractMinecartEntity) this.serverWorld.getEntity(cartUuid);
-          if (cart != null) {
-            train.add(cart);
-          }
-        } catch (Exception e) {
-        }
+  public static UUID getLocomotiveUuid(UUID uuid) {
+    for (UUID locomotiveUuid : trains.keySet()) {
+      if (locomotiveUuid.equals(uuid)) {
+        return locomotiveUuid;
       }
 
-      this.trains.put(UUID.fromString(key), train);
-    }
-  }
-
-  @Override
-  public CompoundNBT save(CompoundNBT compound) {
-    for (UUID locomotiveUuid : this.trains.keySet()) {
-      if (this.serverWorld.getEntity(locomotiveUuid) != null && this.trains.get(locomotiveUuid).size() > 0) {
-        ListNBT listNbt = new ListNBT();
-        for (AbstractMinecartEntity cart : this.trains.get(locomotiveUuid)) {
-          if (this.serverWorld.getEntity(cart.getUUID()) != null) {
-            listNbt.add(StringNBT.valueOf(cart.getUUID().toString()));
-          }
+      for (UUID cartUuid : trains.get(locomotiveUuid)) {
+        if (cartUuid.equals(uuid)) {
+          return locomotiveUuid;
         }
-
-        compound.put(locomotiveUuid.toString(), listNbt);
       }
     }
 
-    return compound;
+    return null;
   }
 
-  public ArrayList<AbstractMinecartEntity> getTrain(UUID uuid) {
-    ArrayList<AbstractMinecartEntity> train = this.trains.get(uuid);
-    return train == null ? new ArrayList<AbstractMinecartEntity>() : train;
+  public static void setTrainUuid(UUID locomotiveUuid, ArrayList<UUID> trainUuid) {
+    trains.put(locomotiveUuid, trainUuid);
   }
 
-  public void updateTrain(UUID uuid, ArrayList<AbstractMinecartEntity> train) {
-    this.trains.put(uuid, train);
-    setDirty();
+  public static void updateTrain(UUID locomotiveUuid, ArrayList<AbstractMinecartEntity> train) {
+    ArrayList<UUID> trainUuid = new ArrayList<UUID>();
+    for (AbstractMinecartEntity cart : train) {
+      trainUuid.add(cart.getUUID());
+    }
+    trains.put(locomotiveUuid, trainUuid);
   }
 
-  public boolean checkCartLinkable(UUID uuid) {
-    for (UUID locomotiveUuid : this.trains.keySet()) {
-      for (AbstractMinecartEntity cart : this.trains.get(locomotiveUuid)) {
-        if (cart.getUUID().equals(uuid)) {
+  public static void removeTrain(UUID locomotiveUuid) {
+    trains.remove(locomotiveUuid);
+  }
+
+  public static boolean checkCartLinkable(UUID uuid) {
+    for (UUID locomotiveUuid : trains.keySet()) {
+      if (locomotiveUuid.equals(uuid)) {
+        return false;
+      }
+
+      for (UUID cartUuid : trains.get(locomotiveUuid)) {
+        if (cartUuid.equals(uuid)) {
           return false;
         }
       }
     }
 
     return true;
-  }
-
-  public static LinkageManager get(World world) {
-    ServerWorld serverWorld = world.getServer().getLevel(world.dimension());
-    DimensionSavedDataManager storage = serverWorld.getDataStorage();
-    LinkageManager linkageManager = storage.get(() -> new LinkageManager(serverWorld), I18n.LINKAGE_DATA_NAME);
-
-    if (linkageManager == null) {
-      linkageManager = new LinkageManager(serverWorld);
-      storage.set(linkageManager);
-    }
-
-    return linkageManager;
   }
 
 }

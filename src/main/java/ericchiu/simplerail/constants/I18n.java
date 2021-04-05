@@ -21,5 +21,6 @@ public class I18n {
 
 	// train
 	public static final String LINKAGE_DATA_NAME = SimpleRail.MOD_ID + "_linkage";
-	public static final String LINKAGE_COMPOUND_NAME = SimpleRail.MOD_ID + "_linkage";
+	public static final String LOCOMOTIVE_COMPOUND_TRAIN_NAME = "Train";
+	public static final String LOCOMOTIVE_COMPOUND_FACING_NAME = "Facing";
 }
