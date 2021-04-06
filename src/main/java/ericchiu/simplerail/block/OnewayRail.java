@@ -1,7 +1,6 @@
 package ericchiu.simplerail.block;
 
 import ericchiu.simplerail.config.CommonConfig;
-import ericchiu.simplerail.itemgroup.Rail;
 import ericchiu.simplerail.setup.SimpleRailProperties;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -10,13 +9,12 @@ import net.minecraft.block.PoweredRailBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
@@ -26,8 +24,6 @@ public class OnewayRail extends PoweredRailBlock {
   public static final BooleanProperty REVERSE = SimpleRailProperties.REVERSE;
   public static final BooleanProperty NEED_POWER = SimpleRailProperties.NEED_POWER;
   public static final BooleanProperty USE_POWER = SimpleRailProperties.USE_POWER;
-
-  public static final BlockItem BLOCK_ITEM = new BlockItem(new OnewayRail(), new Item.Properties().tab(Rail.TAB));
 
   public OnewayRail() {
     super(AbstractBlock.Properties //
@@ -78,6 +74,9 @@ public class OnewayRail extends PoweredRailBlock {
       } else {
         goReverse(shape, cart);
       }
+    } else {
+      cart.setDeltaMovement(Vector3d.ZERO);
+      cart.moveTo(pos, cart.yRot, cart.xRot);
     }
   }
 

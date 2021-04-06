@@ -1,11 +1,9 @@
 package ericchiu.simplerail.entity;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import ericchiu.simplerail.constants.I18n;
-import ericchiu.simplerail.item.Wrench;
 import ericchiu.simplerail.link.LinkageManager;
 import ericchiu.simplerail.registry.Entities;
 import ericchiu.simplerail.registry.Items;
@@ -29,11 +27,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.RailShape;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
@@ -52,7 +46,7 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
 
   private static final EntityType<LocomotiveCartEntity> CART_TYPE = Entities.LOCOMOTIVE_CART.get();
 
-  private ArrayList<AbstractMinecartEntity> train;
+  private ArrayList<Car> train;
   private BlockPos prevPos;
 
   public LocomotiveCartEntity(World world, double x, double y, double z) {
@@ -128,12 +122,16 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
       }
 
       if (this.detectPosChanged()) {
-        this.moveCarts();
+        this.moveCarts((ServerWorld) this.level);
         this.prevPos = this.blockPosition();
+      } else {
+        for (Car car : this.train) {
+          car.cart.moveTo(car.fixedPos, car.cart.yRot, car.cart.xRot);
+        }
       }
 
-      for (AbstractMinecartEntity cart : this.train) {
-        cart.setDeltaMovement(Vector3d.ZERO);
+      for (Car car : this.train) {
+        car.cart.setDeltaMovement(Vector3d.ZERO);
       }
     }
   }
@@ -144,29 +142,6 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
       super.push(entity);
     }
   }
-
-  // @Override
-  // public ActionResultType interact(PlayerEntity player, Hand hand) {
-  //   if (!this.level.isClientSide) {
-  //     ItemStack itemStack = player.getItemInHand(hand);
-  //     if (itemStack.getItem() instanceof Wrench && !this.isOnGround()) {
-  //       BlockPos blockpos = this.getCurrentRailPosition();
-  //       FacingDirection facing = this.entityData.get(FACING);
-  //       BlockPos detectBlockpos = this.getDetectBlockPos(blockpos, facing);
-  //       BlockState detectBlockState = this.level.getBlockState(detectBlockpos);
-
-  //       if (detectBlockState.is(BlockTags.RAILS)) {
-  //         List<AbstractMinecartEntity> entities = this.level.getEntitiesOfClass(AbstractMinecartEntity.class,
-  //             new AxisAlignedBB(detectBlockpos));
-  //         if (entities.size() > 0) {
-  //           this.linkNewCart(entities.get(0));
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   return super.interact(player, hand);
-  // }
 
   @Override
   protected void readAdditionalSaveData(CompoundNBT nbt) {
@@ -211,13 +186,19 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
 
     if (this.train != null) {
       ListNBT listNbt = new ListNBT();
-      for (AbstractMinecartEntity cart : this.train) {
-        listNbt.add(StringNBT.valueOf(cart.getUUID().toString()));
+      for (Car car : this.train) {
+        listNbt.add(StringNBT.valueOf(car.cart.getUUID().toString()));
       }
       nbt.put(I18n.LOCOMOTIVE_COMPOUND_TRAIN_NAME, listNbt);
     }
 
     nbt.putString(I18n.LOCOMOTIVE_COMPOUND_FACING_NAME, this.entityData.get(FACING).toString());
+  }
+
+  @Override
+  public boolean isColliding(BlockPos p_242278_1_, BlockState p_242278_2_) {
+    System.out.println("11111 isColliding");
+    return super.isColliding(p_242278_1_, p_242278_2_);
   }
 
   public FacingDirection getFacingDirection() {
@@ -232,7 +213,7 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     System.out.println("11111 linkNewCart");
     System.out.println(cart);
 
-    this.train.add(cart);
+    this.train.add(new Car(cart, cart.blockPosition()));
     LinkageManager.updateTrain(this.uuid, this.train);
     return true;
   }
@@ -291,28 +272,14 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     return motion.x != 0 || motion.y != 0 || motion.z != 0;
   }
 
-  private BlockPos getDetectBlockPos(BlockPos blockPos, FacingDirection facing) {
-    if (facing.equals(FacingDirection.EAST)) {
-      return blockPos.west();
-    } else if (facing.equals(FacingDirection.WEST)) {
-      return blockPos.east();
-    } else if (facing.equals(FacingDirection.NORTH)) {
-      return blockPos.south();
-    } else if (facing.equals(FacingDirection.SOUTH)) {
-      return blockPos.north();
-    }
-
-    return blockPos.south();
-  }
-
   private void initTrain() {
-    this.train = new ArrayList<AbstractMinecartEntity>();
+    this.train = new ArrayList<Car>();
     for (UUID cartUuid : LinkageManager.getTrainUuid(this.uuid)) {
       ServerWorld serverWorld = (ServerWorld) this.level;
       AbstractMinecartEntity cart = (AbstractMinecartEntity) serverWorld.getEntity(cartUuid);
 
       if (cart != null) {
-        this.train.add(cart);
+        this.train.add(new Car(cart, cart.blockPosition()));
       }
     }
     LinkageManager.updateTrain(this.uuid, this.train);
@@ -341,7 +308,7 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     return false;
   }
 
-  private void moveCarts() {
+  private void moveCarts(ServerWorld serverWorld) {
     if (this.train.size() == 0) {
       return;
     }
@@ -352,7 +319,7 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
       return;
     }
 
-    AbstractMinecartEntity firstCart = this.train.get(0);
+    AbstractMinecartEntity firstCart = this.getCartByUuid(serverWorld, this.train.get(0).cart.getUUID());
     if (firstCart == null) {
       this.train.clear();
       LinkageManager.updateTrain(this.uuid, this.train);
@@ -362,14 +329,15 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     // move carts
     if (this.train.size() > 1) {
       for (int i = 1; i < train.size(); i++) {
-        AbstractMinecartEntity cart = this.train.get(i);
+        AbstractMinecartEntity cart = this.getCartByUuid(serverWorld, this.train.get(i).cart.getUUID());
         if (cart == null) {
           this.train.subList(i, this.train.size()).clear();
           LinkageManager.updateTrain(this.uuid, this.train);
           break;
         } else {
-          BlockPos pos = this.train.get(i - 1).blockPosition();
+          BlockPos pos = this.train.get(i - 1).cart.blockPosition();
           cart.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
+          this.train.get(i).fixedPos = pos;
         }
       }
 
@@ -377,6 +345,24 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
 
     // move first carts
     firstCart.moveTo(this.prevPos.getX() + 0.5D, this.prevPos.getY(), this.prevPos.getZ() + 0.5D);
+    this.train.get(0).fixedPos = this.prevPos;
+  }
+
+  private AbstractMinecartEntity getCartByUuid(ServerWorld serverWorld, UUID cartUuid) {
+    return (AbstractMinecartEntity) serverWorld.getEntity(cartUuid);
+  }
+
+  public static class Car {
+    public AbstractMinecartEntity cart;
+    public BlockPos fixedPos;
+
+    public Car() {
+    }
+
+    public Car(AbstractMinecartEntity cart, BlockPos fixedPos) {
+      this.cart = cart;
+      this.fixedPos = fixedPos;
+    }
   }
 
 }

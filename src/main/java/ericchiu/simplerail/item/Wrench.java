@@ -17,10 +17,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Rarity;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
@@ -40,33 +43,12 @@ public class Wrench extends Item {
   }
 
   @Override
-  public ActionResultType interactLivingEntity(ItemStack p_111207_1_, PlayerEntity p_111207_2_,
-      LivingEntity p_111207_3_, Hand p_111207_4_) {
-    System.out.println("11111 interactLivingEntity");
-
-    return super.interactLivingEntity(p_111207_1_, p_111207_2_, p_111207_3_, p_111207_4_);
-  }
-
-  @Override
-  public ActionResult<ItemStack> use(World p_77659_1_, PlayerEntity p_77659_2_, Hand p_77659_3_) {
-    System.out.println("11111 use");
-    return super.use(p_77659_1_, p_77659_2_, p_77659_3_);
-  }
-
-  @Override
-  public boolean useOnRelease(ItemStack p_219970_1_) {
-    // TODO Auto-generated method stub
-    return super.useOnRelease(p_219970_1_);
-  }
-
-  @Override
   public ActionResultType useOn(ItemUseContext context) {
     World world = context.getLevel();
     if (world.isClientSide) {
       return ActionResultType.SUCCESS;
     }
 
-    boolean linked = false;
     Vector3d loc = context.getClickLocation();
     BlockPos pos = context.getClickedPos();
     BlockState state = world.getBlockState(pos);
@@ -109,12 +91,15 @@ public class Wrench extends Item {
       for (AbstractMinecartEntity cart : carts) {
         if (LinkageManager.checkCartLinkable(cart.getUUID())) {
           locomotiveCart.linkNewCart(cart);
-          linked = true;
+          world.addParticle(ParticleTypes.SMOKE, //
+              loc.x, loc.y, loc.z, //
+              0.0D, 0.0D, 0.0D);
+          world.playSound(context.getPlayer(), pos, SoundEvents.CHAIN_HIT, SoundCategory.VOICE, 0, 0);
         }
       }
     }
 
-    if (!linked && state.is(SimpleRailTags.RAILS)) {
+    if (carts.size() <= 0 && state.is(SimpleRailTags.RAILS)) {
       if (state.hasProperty(SimpleRailProperties.REVERSE)) {
         boolean reverse = state.getValue(SimpleRailProperties.REVERSE);
         world.setBlock(pos, state.setValue(SimpleRailProperties.REVERSE, !reverse), 3);

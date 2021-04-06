@@ -3,7 +3,6 @@ package ericchiu.simplerail.block;
 import java.util.List;
 
 import ericchiu.simplerail.config.CommonConfig;
-import ericchiu.simplerail.itemgroup.Rail;
 import ericchiu.simplerail.setup.SimpleRailProperties;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -13,8 +12,6 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -29,8 +26,6 @@ public class EjectRail extends PoweredRailBlock {
 
   public static final BooleanProperty REVERSE = SimpleRailProperties.REVERSE;
   public static final BooleanProperty NEED_POWER = SimpleRailProperties.NEED_POWER;
-
-  public static final BlockItem BLOCK_ITEM = new BlockItem(new EjectRail(), new Item.Properties().tab(Rail.TAB));
 
   public EjectRail() {
     super(AbstractBlock.Properties //
