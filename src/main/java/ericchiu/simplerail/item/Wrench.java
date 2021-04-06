@@ -1,6 +1,5 @@
 package ericchiu.simplerail.item;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,18 +9,14 @@ import ericchiu.simplerail.link.LinkageManager;
 import ericchiu.simplerail.setup.SimpleRailProperties;
 import ericchiu.simplerail.setup.SimpleRailTags;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Rarity;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -73,33 +68,22 @@ public class Wrench extends Item {
       }
     }
 
-    List<AbstractMinecartEntity> carts = new ArrayList<AbstractMinecartEntity>();
-    carts.addAll(world.getEntitiesOfClass(AbstractMinecartEntity.class, new AxisAlignedBB(firstPos)));
-    carts.addAll(world.getEntitiesOfClass(AbstractMinecartEntity.class, new AxisAlignedBB(secondPos)));
-    System.out.println("11111 useOn");
-    System.out.println(carts);
+    List<AbstractMinecartEntity> firstPosCarts = world.getEntitiesOfClass(AbstractMinecartEntity.class,
+        new AxisAlignedBB(firstPos));
+    List<AbstractMinecartEntity> secondPosCarts = world.getEntitiesOfClass(AbstractMinecartEntity.class,
+        new AxisAlignedBB(secondPos));
 
-    LocomotiveCartEntity locomotiveCart = null;
-    for (AbstractMinecartEntity cart : carts) {
-      UUID locomotiveUuid = LinkageManager.getLocomotiveUuid(cart.getUUID());
-      if (locomotiveUuid != null) {
-        locomotiveCart = (LocomotiveCartEntity) serverWorld.getEntity(locomotiveUuid);
-      }
+    LocomotiveCartEntity locomotive = this.getLocomotive(serverWorld, firstPosCarts);
+    if (locomotive == null) {
+      locomotive = this.getLocomotive(serverWorld, secondPosCarts);
     }
 
-    if (locomotiveCart != null) {
-      for (AbstractMinecartEntity cart : carts) {
-        if (LinkageManager.checkCartLinkable(cart.getUUID())) {
-          locomotiveCart.linkNewCart(cart);
-          world.addParticle(ParticleTypes.SMOKE, //
-              loc.x, loc.y, loc.z, //
-              0.0D, 0.0D, 0.0D);
-          world.playSound(context.getPlayer(), pos, SoundEvents.CHAIN_HIT, SoundCategory.VOICE, 0, 0);
-        }
-      }
+    if (locomotive != null) {
+      this.linkCarts(context, locomotive, firstPosCarts);
+      this.linkCarts(context, locomotive, secondPosCarts);
     }
 
-    if (carts.size() <= 0 && state.is(SimpleRailTags.RAILS)) {
+    if (firstPosCarts.size() <= 0 && state.is(SimpleRailTags.RAILS)) {
       if (state.hasProperty(SimpleRailProperties.REVERSE)) {
         boolean reverse = state.getValue(SimpleRailProperties.REVERSE);
         world.setBlock(pos, state.setValue(SimpleRailProperties.REVERSE, !reverse), 3);
@@ -109,6 +93,35 @@ public class Wrench extends Item {
     }
 
     return ActionResultType.FAIL;
+  }
+
+  private LocomotiveCartEntity getLocomotive(ServerWorld serverWorld, List<AbstractMinecartEntity> carts) {
+    for (AbstractMinecartEntity cart : carts) {
+      UUID locomotiveUuid = LinkageManager.getLocomotiveUuid(cart.getUUID());
+      if (locomotiveUuid != null) {
+        LocomotiveCartEntity locomotive = (LocomotiveCartEntity) serverWorld.getEntity(locomotiveUuid);
+        if (locomotive != null) {
+          return locomotive;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  private void linkCarts(ItemUseContext context, LocomotiveCartEntity locomotive, List<AbstractMinecartEntity> carts) {
+    World world = context.getLevel();
+    Vector3d loc = context.getClickLocation();
+    BlockPos pos = context.getClickedPos();
+    PlayerEntity player = context.getPlayer();
+
+    for (AbstractMinecartEntity cart : carts) {
+      locomotive.linkNewCart((ServerWorld) world, cart);
+      world.addParticle(ParticleTypes.SMOKE, //
+          loc.x, loc.y, loc.z, //
+          0.0D, 0.0D, 0.0D);
+      world.playSound(player, pos, SoundEvents.CHAIN_HIT, SoundCategory.VOICE, 0, 0);
+    }
   }
 
 }

@@ -196,22 +196,37 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
   }
 
   @Override
-  public boolean isColliding(BlockPos p_242278_1_, BlockState p_242278_2_) {
-    System.out.println("11111 isColliding");
-    return super.isColliding(p_242278_1_, p_242278_2_);
+  public boolean canCollideWith(Entity entity) {
+    if (entity instanceof PlayerEntity) {
+      if (this.getDeltaMovement().equals(Vector3d.ZERO)) {
+        return super.canCollideWith(entity);
+      } else {
+        return false;
+      }
+    } else if (entity instanceof LocomotiveCartEntity) {
+      return super.canCollideWith(entity);
+    } else if (entity instanceof AbstractMinecartEntity) {
+      entity.setDeltaMovement(this.getDeltaMovement());
+      return false;
+    } else if (entity.isAlive()) {
+      if (this.getDeltaMovement().equals(Vector3d.ZERO)) {
+      } else {
+        entity.kill();
+      }
+      return false;
+    }
+
+    return super.canCollideWith(entity);
   }
 
   public FacingDirection getFacingDirection() {
     return this.entityData.get(FACING);
   }
 
-  public boolean linkNewCart(AbstractMinecartEntity cart) {
-    if (cart.getUUID().equals(this.uuid) || !LinkageManager.checkCartLinkable(cart.getUUID())) {
+  public boolean linkNewCart(ServerWorld serverWorld, AbstractMinecartEntity cart) {
+    if (!LinkageManager.checkCartLinkable(serverWorld, cart.getUUID())) {
       return false;
     }
-
-    System.out.println("11111 linkNewCart");
-    System.out.println(cart);
 
     this.train.add(new Car(cart, cart.blockPosition()));
     LinkageManager.updateTrain(this.uuid, this.train);

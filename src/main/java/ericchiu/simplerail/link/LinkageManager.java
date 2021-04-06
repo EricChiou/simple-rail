@@ -1,15 +1,16 @@
 package ericchiu.simplerail.link;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import ericchiu.simplerail.entity.LocomotiveCartEntity.Car;
+import net.minecraft.world.server.ServerWorld;
 
 public class LinkageManager {
 
-  private static Map<UUID, ArrayList<UUID>> trains = new HashMap<UUID, ArrayList<UUID>>();
+  private static Map<UUID, ArrayList<UUID>> trains = new ConcurrentHashMap<UUID, ArrayList<UUID>>();
 
   public static Map<UUID, ArrayList<UUID>> getTrains() {
     return trains;
@@ -52,15 +53,19 @@ public class LinkageManager {
     trains.remove(locomotiveUuid);
   }
 
-  public static boolean checkCartLinkable(UUID uuid) {
+  public static boolean checkCartLinkable(ServerWorld serverWorld, UUID uuid) {
     for (UUID locomotiveUuid : trains.keySet()) {
-      if (locomotiveUuid.equals(uuid)) {
-        return false;
-      }
-
-      for (UUID cartUuid : trains.get(locomotiveUuid)) {
-        if (cartUuid.equals(uuid)) {
+      if (serverWorld.getEntity(locomotiveUuid) == null) {
+        trains.remove(locomotiveUuid);
+      } else {
+        if (locomotiveUuid.equals(uuid)) {
           return false;
+        }
+
+        for (UUID cartUuid : trains.get(locomotiveUuid)) {
+          if (cartUuid.equals(uuid)) {
+            return false;
+          }
         }
       }
     }
