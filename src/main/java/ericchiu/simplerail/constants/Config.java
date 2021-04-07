@@ -13,4 +13,7 @@ public class Config {
   public static final String EJECT_RAIL_TRANSPORT_DISTANCE = "transportDistance";
   public static final String EJECT_RAIL_NEED_POWER = "needPower";
 
+  // destory rail
+  public static final String DESTORY_RAIL_NEED_POWER = "needPower";
+
 }

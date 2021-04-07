@@ -2,14 +2,11 @@ package ericchiu.simplerail.block;
 
 import java.util.List;
 
+import ericchiu.simplerail.block.base.BasePoweredRail;
 import ericchiu.simplerail.config.CommonConfig;
 import ericchiu.simplerail.setup.SimpleRailProperties;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.PoweredRailBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.state.BooleanProperty;
@@ -18,26 +15,19 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.RailShape;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
 
-public class EjectRail extends PoweredRailBlock {
+public class EjectRail extends BasePoweredRail {
 
   public static final BooleanProperty REVERSE = SimpleRailProperties.REVERSE;
   public static final BooleanProperty NEED_POWER = SimpleRailProperties.NEED_POWER;
 
   public EjectRail() {
-    super(AbstractBlock.Properties //
-        .of(Material.METAL) //
-        .strength(0.7F). //
-        harvestLevel(0). //
-        harvestTool(ToolType.PICKAXE). //
-        sound(SoundType.METAL). //
-        noCollission(), //
-        true);
+    super();
 
-    this.registerDefaultState(this.stateDefinition.any().setValue(REVERSE, false));
+    this.registerDefaultState(this.stateDefinition.any() //
+        .setValue(REVERSE, false) //
+        .setValue(NEED_POWER, CommonConfig.INSTANCE.ejectRailNeedPower.get()));
   }
 
   @Override
@@ -45,16 +35,6 @@ public class EjectRail extends PoweredRailBlock {
     builder.add(REVERSE);
     builder.add(NEED_POWER);
     super.createBlockStateDefinition(builder);
-  }
-
-  @Override
-  public float getRailMaxSpeed(BlockState state, World world, BlockPos pos, AbstractMinecartEntity cart) {
-    return CommonConfig.INSTANCE.highSpeedRailMaxSpeed.get().floatValue();
-  }
-
-  @Override
-  public boolean canMakeSlopes(BlockState state, IBlockReader world, BlockPos pos) {
-    return false;
   }
 
   @Override

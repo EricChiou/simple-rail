@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "need_power=true,powered=false,shape=north_south": {
+      "model": "simplerail:block/destory_rail"
+    },
+    "need_power=true,powered=true,shape=north_south": {
+      "model": "simplerail:block/destory_powered_rail"
+    },
+    "need_power=true,powered=false,shape=east_west": {
+      "model": "simplerail:block/destory_rail",
+      "y": 90
+    },
+    "need_power=true,powered=true,shape=east_west": {
+      "model": "simplerail:block/destory_powered_rail",
+      "y": 90
+    },
+    "need_power=false,shape=north_south": {
+      "model": "simplerail:block/destory_powered_rail"
+    },
+    "need_power=false,shape=east_west": {
+      "model": "simplerail:block/destory_powered_rail",
+      "y": 90
+    }
+  }
+}

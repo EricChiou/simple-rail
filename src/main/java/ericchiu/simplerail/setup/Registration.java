@@ -11,9 +11,9 @@ public class Registration {
 	private static final IEventBus BUS = FMLJavaModLoadingContext.get().getModEventBus();
 
 	public static void setup() {
+		Blocks.register(BUS);
 		Items.register(BUS);
 		Entities.register(BUS);
-		Blocks.register(BUS);
 	}
 
 }

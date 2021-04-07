@@ -120,7 +120,7 @@ public class Wrench extends Item {
       world.addParticle(ParticleTypes.SMOKE, //
           loc.x, loc.y, loc.z, //
           0.0D, 0.0D, 0.0D);
-      world.playSound(player, pos, SoundEvents.CHAIN_HIT, SoundCategory.VOICE, 0, 0);
+      world.playSound(player, pos, SoundEvents.CHAIN_HIT, SoundCategory.VOICE, 3F, 3F);
     }
   }
 

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "simplerail:block/train_dispenser"
+    }
+  }
+}

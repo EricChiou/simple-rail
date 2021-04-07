@@ -4,6 +4,7 @@
     "simplerail:high_speed_rail",
     "simplerail:holding_rail",
     "simplerail:oneway_rail",
-    "simplerail:eject_rail"
+    "simplerail:eject_rail",
+    "simplerail:destory_rail"
   ]
 }

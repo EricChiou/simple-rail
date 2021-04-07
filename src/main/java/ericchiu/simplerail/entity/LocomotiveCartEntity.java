@@ -72,7 +72,6 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
 
   @Override
   public void destroy(DamageSource source) {
-    this.remove();
     if (this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
       ItemStack itemstack = this.getReturnItem();
       if (this.hasCustomName()) {
@@ -83,6 +82,7 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     }
 
     LinkageManager.removeTrain(this.uuid);
+    this.remove();
   }
 
   @Override
@@ -228,9 +228,24 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
       return false;
     }
 
+    if (this.train == null) {
+      this.initTrain();
+    }
+
     this.train.add(new Car(cart, cart.blockPosition()));
     LinkageManager.updateTrain(this.uuid, this.train);
     return true;
+  }
+
+  public void deleteTrain() {
+    LinkageManager.removeTrain(this.uuid);
+
+    if (this.train != null) {
+      for (Car car : this.train) {
+        car.cart.remove();
+      }
+    }
+    this.remove();
   }
 
   private void initFacingDirection(World world, double x, double y, double z) {

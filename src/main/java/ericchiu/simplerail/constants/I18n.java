@@ -11,13 +11,20 @@ public class I18n {
 	public static final String ITEM_LOCOMOTIVE_CART = "locomotive_cart";
 
 	// block
+	// rail
 	public static final String BLOCK_HIGH_SPEED_RAIL = "high_speed_rail";
 	public static final String BLOCK_HOLDING_RAIL = "holding_rail";
 	public static final String BLOCK_ONEWAY_RAIL = "oneway_rail";
 	public static final String BLOCK_EJECT_RAIL = "eject_rail";
+	public static final String BLOCK_DESTORY_RAIL = "destory_rail";
+	// machine
+	public static final String BLOCK_TRAIN_DISPENSER = "train_dispenser";
 
 	// entity
 	public static final String ENTITY_LOCOMOTIVE_CART = "locomotive_cart";
+
+	// tile entity
+	public static final String TILE_ENTITY_TRAIN_DISPENSER = "train_dispenser";
 
 	// train
 	public static final String LINKAGE_DATA_NAME = SimpleRail.MOD_ID + "_linkage";

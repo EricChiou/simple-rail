@@ -21,6 +21,7 @@ public class CommonConfig {
   public final BooleanValue onewayRailUsePowerChangeDirection;
   public final IntValue ejectRailTransportDistance;
   public final BooleanValue ejectRailNeedPower;
+  public final BooleanValue destoryRailNeedPower;
 
   public CommonConfig(Builder builder) {
     builder.comment("Simple Rail Settings");
@@ -53,6 +54,13 @@ public class CommonConfig {
         .defineInRange(Config.EJECT_RAIL_TRANSPORT_DISTANCE, 3, 1, 100);
     ejectRailNeedPower = builder.comment("Need power to enable eject rail (default: true)")
         .define(Config.EJECT_RAIL_NEED_POWER, true);
+
+    builder.pop();
+
+    builder.push("destory_rail");
+
+    destoryRailNeedPower = builder.comment("Need power to enable destory rail (default: false)")
+        .define(Config.DESTORY_RAIL_NEED_POWER, false);
 
     builder.pop();
 

@@ -23,6 +23,7 @@ public class Items {
 			() -> new LocomotiveCart());
 
 	// block items
+	// rail
 	public static final RegistryObject<Item> HIGH_SPEED_RAIL = REGISTER.register(I18n.BLOCK_HIGH_SPEED_RAIL,
 			() -> new BlockItem(Blocks.HIGH_SPEED_RAIL.get(), new Item.Properties().tab(Rail.TAB)));
 	public static final RegistryObject<Item> HOLDING_RAIL = REGISTER.register(I18n.BLOCK_HOLDING_RAIL,
@@ -31,6 +32,11 @@ public class Items {
 			() -> new BlockItem(Blocks.ONEWAY_RAIL.get(), new Item.Properties().tab(Rail.TAB)));
 	public static final RegistryObject<Item> EJECT_RAIL = REGISTER.register(I18n.BLOCK_EJECT_RAIL,
 			() -> new BlockItem(Blocks.EJECT_RAIL.get(), new Item.Properties().tab(Rail.TAB)));
+	public static final RegistryObject<Item> DESTORY_RAIL = REGISTER.register(I18n.BLOCK_DESTORY_RAIL,
+			() -> new BlockItem(Blocks.DESTORY_RAIL.get(), new Item.Properties().tab(Rail.TAB)));
+	// machine
+	public static final RegistryObject<Item> TRAIN_DISPENSER = REGISTER.register(I18n.BLOCK_TRAIN_DISPENSER,
+			() -> new BlockItem(Blocks.TRAIN_DISPENSER.get(), new Item.Properties().tab(Rail.TAB)));
 
 	public static void register(IEventBus bus) {
 		REGISTER.register(bus);

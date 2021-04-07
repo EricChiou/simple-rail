@@ -1,9 +1,16 @@
 {
+  "_comment": "====================Tab====================",
   "itemGroup.simplerail.tab": "Simple Rail",
+  "_comment": "====================Tool====================",
   "item.simplerail.wrench": "Wrench",
+  "_comment": "====================Cart====================",
   "item.simplerail.locomotive_cart": "Locomotive",
+  "_comment": "====================Rail====================",
   "block.simplerail.high_speed_rail": "High Speed Rail",
   "block.simplerail.holding_rail": "Holding Rail",
   "block.simplerail.oneway_rail": "Oneway Rail",
-  "block.simplerail.eject_rail": "Eject Rail"
+  "block.simplerail.eject_rail": "Eject Rail",
+  "block.simplerail.destory_rail": "Destory Rail",
+  "_comment": "====================Machine====================",
+  "block.simplerail.train_dispenser": "Train Dispenser"
 }
