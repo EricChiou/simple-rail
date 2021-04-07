@@ -9,6 +9,7 @@ import ericchiu.simplerail.link.LinkageManager;
 import ericchiu.simplerail.setup.SimpleRailProperties;
 import ericchiu.simplerail.setup.SimpleRailTags;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.DirectionalBlock;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -46,12 +47,64 @@ public class Wrench extends Item {
 
     Vector3d loc = context.getClickLocation();
     BlockPos pos = context.getClickedPos();
-    BlockState state = world.getBlockState(pos);
+
+    BlockPos firstPos = pos;
+    BlockPos secondPos = this.getSecondPos(context.getHorizontalDirection(), pos, loc);
+
+    List<AbstractMinecartEntity> firstPosCarts = this.getCartsByPos(world, firstPos);
+    List<AbstractMinecartEntity> secondPosCarts = this.getCartsByPos(world, secondPos);
 
     ServerWorld serverWorld = (ServerWorld) world;
-    BlockPos firstPos = pos;
+    LocomotiveCartEntity locomotive = this.getLocomotive(serverWorld, firstPosCarts);
+    if (locomotive == null) {
+      locomotive = this.getLocomotive(serverWorld, secondPosCarts);
+    }
+
+    if (locomotive != null) {
+      this.linkCarts(context, locomotive, firstPosCarts);
+      this.linkCarts(context, locomotive, secondPosCarts);
+    }
+
+    BlockState state = world.getBlockState(pos);
+    if (firstPosCarts.size() <= 0 && state.is(SimpleRailTags.RAILS)) {
+      this.changeReverse(world, state, pos);
+    }
+
+    if (state.is(SimpleRailTags.MACHINES)) {
+      this.changeFacing(world, state, pos);
+    }
+
+    return ActionResultType.CONSUME;
+  }
+
+  private void changeReverse(World world, BlockState state, BlockPos pos) {
+    if (state.hasProperty(SimpleRailProperties.REVERSE)) {
+      boolean reverse = state.getValue(SimpleRailProperties.REVERSE);
+      world.setBlock(pos, state.setValue(SimpleRailProperties.REVERSE, !reverse), 3);
+    }
+  }
+
+  private void changeFacing(World world, BlockState state, BlockPos pos) {
+    if (state.hasProperty(DirectionalBlock.FACING)) {
+      Direction direction = state.getValue(DirectionalBlock.FACING);
+      System.out.println("11111 changeFacing");
+      System.out.println(direction);
+
+      if (direction.equals(Direction.EAST)) {
+        world.setBlock(pos, state.setValue(DirectionalBlock.FACING, Direction.SOUTH), 3);
+      } else if (direction.equals(Direction.WEST)) {
+        world.setBlock(pos, state.setValue(DirectionalBlock.FACING, Direction.NORTH), 3);
+      } else if (direction.equals(Direction.NORTH)) {
+        world.setBlock(pos, state.setValue(DirectionalBlock.FACING, Direction.EAST), 3);
+      } else if (direction.equals(Direction.SOUTH)) {
+        world.setBlock(pos, state.setValue(DirectionalBlock.FACING, Direction.WEST), 3);
+      }
+    }
+  }
+
+  private BlockPos getSecondPos(Direction direction, BlockPos pos, Vector3d loc) {
     BlockPos secondPos = pos;
-    Direction direction = context.getHorizontalDirection();
+
     if (direction.equals(Direction.EAST) || direction.equals(Direction.WEST)) {
       double decimal = loc.z - pos.getZ();
       if (decimal < 0.5D) {
@@ -68,31 +121,11 @@ public class Wrench extends Item {
       }
     }
 
-    List<AbstractMinecartEntity> firstPosCarts = world.getEntitiesOfClass(AbstractMinecartEntity.class,
-        new AxisAlignedBB(firstPos));
-    List<AbstractMinecartEntity> secondPosCarts = world.getEntitiesOfClass(AbstractMinecartEntity.class,
-        new AxisAlignedBB(secondPos));
+    return secondPos;
+  }
 
-    LocomotiveCartEntity locomotive = this.getLocomotive(serverWorld, firstPosCarts);
-    if (locomotive == null) {
-      locomotive = this.getLocomotive(serverWorld, secondPosCarts);
-    }
-
-    if (locomotive != null) {
-      this.linkCarts(context, locomotive, firstPosCarts);
-      this.linkCarts(context, locomotive, secondPosCarts);
-    }
-
-    if (firstPosCarts.size() <= 0 && state.is(SimpleRailTags.RAILS)) {
-      if (state.hasProperty(SimpleRailProperties.REVERSE)) {
-        boolean reverse = state.getValue(SimpleRailProperties.REVERSE);
-        world.setBlock(pos, state.setValue(SimpleRailProperties.REVERSE, !reverse), 3);
-      }
-
-      return ActionResultType.SUCCESS;
-    }
-
-    return ActionResultType.FAIL;
+  private List<AbstractMinecartEntity> getCartsByPos(World world, BlockPos pos) {
+    return world.getEntitiesOfClass(AbstractMinecartEntity.class, new AxisAlignedBB(pos));
   }
 
   private LocomotiveCartEntity getLocomotive(ServerWorld serverWorld, List<AbstractMinecartEntity> carts) {

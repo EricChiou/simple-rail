@@ -1,7 +1,5 @@
 package ericchiu.simplerail.constants;
 
-import ericchiu.simplerail.SimpleRail;
-
 public class I18n {
 	// item group
 	public static final String TAB_RAIL = "simplerail.tab";
@@ -23,11 +21,7 @@ public class I18n {
 	// entity
 	public static final String ENTITY_LOCOMOTIVE_CART = "locomotive_cart";
 
-	// tile entity
-	public static final String TILE_ENTITY_TRAIN_DISPENSER = "train_dispenser";
-
 	// train
-	public static final String LINKAGE_DATA_NAME = SimpleRail.MOD_ID + "_linkage";
 	public static final String LOCOMOTIVE_COMPOUND_TRAIN_NAME = "Train";
 	public static final String LOCOMOTIVE_COMPOUND_FACING_NAME = "Facing";
 }

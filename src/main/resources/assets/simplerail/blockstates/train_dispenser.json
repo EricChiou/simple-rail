@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "simplerail:block/train_dispenser"
+    },
+    "facing=south": {
+      "model": "simplerail:block/train_dispenser",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "simplerail:block/train_dispenser",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "simplerail:block/train_dispenser",
+      "y": -90
     }
   }
 }

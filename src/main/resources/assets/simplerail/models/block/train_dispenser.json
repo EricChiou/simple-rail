@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "simplerail:blocks/train_dispenser",
+    "down": "simplerail:blocks/train_dispenser",
+    "up": "simplerail:blocks/train_dispenser",
+    "north": "simplerail:blocks/train_dispenser_front",
+    "east": "simplerail:blocks/train_dispenser",
+    "south": "simplerail:blocks/train_dispenser",
+    "west": "simplerail:blocks/train_dispenser"
+  }
+}
