@@ -16,4 +16,15 @@ public class Config {
   // destory rail
   public static final String DESTORY_RAIL_NEED_POWER = "needPower";
 
+  // timer holding rail
+  public static final String TIMER_HOLDING_RAIL_LV1 = "lv1";
+  public static final String TIMER_HOLDING_RAIL_LV2 = "lv2";
+  public static final String TIMER_HOLDING_RAIL_LV3 = "lv3";
+  public static final String TIMER_HOLDING_RAIL_LV4 = "lv4";
+  public static final String TIMER_HOLDING_RAIL_LV5 = "lv5";
+  public static final String TIMER_HOLDING_RAIL_LV6 = "lv6";
+  public static final String TIMER_HOLDING_RAIL_LV7 = "lv7";
+  public static final String TIMER_HOLDING_RAIL_LV8 = "lv8";
+  public static final String TIMER_HOLDING_RAIL_LV9 = "lv9";
+
 }

@@ -12,6 +12,8 @@ public class SimpleRailProperties {
   public static final BooleanProperty NEED_POWER = BooleanProperty.create(Properties.NEED_POWER_PROPERTY);
   public static final BooleanProperty USE_POWER = BooleanProperty.create(Properties.USE_POWER_PROPERTY);
   public static final IntegerProperty LEVEL = IntegerProperty.create(Properties.LEVEL_PROPERTY, 0, 9);
+  public static final IntegerProperty GO_TIME = IntegerProperty.create(Properties.GO_TIME_PROPERTY, 0,
+      2147483647);
   public static final EnumProperty<Direction> DIRECTION = EnumProperty.create(Properties.DIRECTION_PROPERTY,
       Direction.class);
 
