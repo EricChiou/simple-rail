@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    " C ",
+    "   "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "minecraft:minecart"
+    }
+  },
+  "result": {
+    "item": "simplerail:locomotive_cart",
+    "count": 1
+  }
+}

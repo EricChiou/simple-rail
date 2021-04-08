@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    " I ",
+    "   "
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "I": {
+      "item": "minecraft:powered_rail"
+    }
+  },
+  "result": {
+    "item": "simplerail:destory_rail",
+    "count": 3
+  }
+}

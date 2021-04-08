@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "RI ",
+    "   "
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "I": {
+      "item": "minecraft:powered_rail"
+    }
+  },
+  "result": {
+    "item": "simplerail:oneway_rail",
+    "count": 1
+  }
+}

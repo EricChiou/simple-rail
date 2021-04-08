@@ -15,6 +15,7 @@ public class I18n {
 	public static final String BLOCK_ONEWAY_RAIL = "oneway_rail";
 	public static final String BLOCK_EJECT_RAIL = "eject_rail";
 	public static final String BLOCK_DESTORY_RAIL = "destory_rail";
+	public static final String BLOCK_TIMER_HOLDING_RAIL = "timer_holding_rail";
 	// machine
 	public static final String BLOCK_TRAIN_DISPENSER = "train_dispenser";
 

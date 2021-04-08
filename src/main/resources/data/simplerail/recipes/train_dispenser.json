@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    " D ",
+    "   "
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:minecart"
+    },
+    "D": {
+      "item": "minecraft:dispenser"
+    }
+  },
+  "result": {
+    "item": "simplerail:train_dispenser",
+    "count": 1
+  }
+}
