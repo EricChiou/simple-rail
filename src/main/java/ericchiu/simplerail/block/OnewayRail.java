@@ -53,8 +53,9 @@ public class OnewayRail extends BasePoweredRail {
         goReverse(shape, cart);
       }
     } else {
-      cart.setDeltaMovement(Vector3d.ZERO);
-      cart.moveTo(pos, cart.yRot, cart.xRot);
+      if (!cart.getDeltaMovement().equals(Vector3d.ZERO)) {
+        cart.setDeltaMovement(cart.getDeltaMovement().multiply(1.2, 1.2, 1.2));
+      }
     }
   }
 

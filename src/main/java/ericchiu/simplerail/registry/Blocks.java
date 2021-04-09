@@ -6,6 +6,7 @@ import ericchiu.simplerail.block.EjectRail;
 import ericchiu.simplerail.block.HighSpeedRail;
 import ericchiu.simplerail.block.HoldingRail;
 import ericchiu.simplerail.block.OnewayRail;
+import ericchiu.simplerail.block.TimerHoldingRail;
 import ericchiu.simplerail.block.TrainDispenserBlock;
 import ericchiu.simplerail.constants.I18n;
 
@@ -31,6 +32,8 @@ public class Blocks {
 			() -> new EjectRail());
 	public static final RegistryObject<Block> DESTORY_RAIL = REGISTER.register(I18n.BLOCK_DESTORY_RAIL,
 			() -> new DestoryRail());
+	public static final RegistryObject<Block> TIMER_HOLDING_RAIL = REGISTER.register(I18n.BLOCK_TIMER_HOLDING_RAIL,
+			() -> new TimerHoldingRail());
 
 	// machine
 	public static final RegistryObject<Block> TRAIN_DISPENSER = REGISTER.register(I18n.BLOCK_TRAIN_DISPENSER,

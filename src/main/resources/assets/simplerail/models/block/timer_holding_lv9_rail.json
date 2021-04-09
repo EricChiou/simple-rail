@@ -1,0 +1,6 @@
+{
+  "parent": "block/rail_flat",
+  "textures": {
+    "rail": "simplerail:blocks/timer_holding_lv9_rail"
+  }
+}

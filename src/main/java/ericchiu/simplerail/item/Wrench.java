@@ -68,6 +68,7 @@ public class Wrench extends Item {
     BlockState state = world.getBlockState(pos);
     if (firstPosCarts.size() <= 0 && state.is(SimpleRailTags.RAILS)) {
       this.changeReverse(world, state, pos);
+      this.changeLevel(world, state, pos);
     }
 
     if (state.is(SimpleRailTags.MACHINES)) {
@@ -81,6 +82,15 @@ public class Wrench extends Item {
     if (state.hasProperty(SimpleRailProperties.REVERSE)) {
       boolean reverse = state.getValue(SimpleRailProperties.REVERSE);
       world.setBlock(pos, state.setValue(SimpleRailProperties.REVERSE, !reverse), 3);
+    }
+  }
+
+  private void changeLevel(World world, BlockState state, BlockPos pos) {
+    if (state.hasProperty(SimpleRailProperties.LEVEL)) {
+      int level = state.getValue(SimpleRailProperties.LEVEL);
+      level = level >= 9 ? 0 : level + 1;
+
+      world.setBlock(pos, state.setValue(SimpleRailProperties.LEVEL, level), 3);
     }
   }
 

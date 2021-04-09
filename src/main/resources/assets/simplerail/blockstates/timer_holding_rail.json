@@ -1,0 +1,74 @@
+{
+  "variants": {
+    "level=0,shape=north_south": {
+      "model": "simplerail:block/timer_holding_lv0_rail"
+    },
+    "level=1,shape=north_south": {
+      "model": "simplerail:block/timer_holding_lv1_rail"
+    },
+    "level=2,shape=north_south": {
+      "model": "simplerail:block/timer_holding_lv2_rail"
+    },
+    "level=3,shape=north_south": {
+      "model": "simplerail:block/timer_holding_lv3_rail"
+    },
+    "level=4,shape=north_south": {
+      "model": "simplerail:block/timer_holding_lv4_rail"
+    },
+    "level=5,shape=north_south": {
+      "model": "simplerail:block/timer_holding_lv5_rail"
+    },
+    "level=6,shape=north_south": {
+      "model": "simplerail:block/timer_holding_lv6_rail"
+    },
+    "level=7,shape=north_south": {
+      "model": "simplerail:block/timer_holding_lv7_rail"
+    },
+    "level=8,shape=north_south": {
+      "model": "simplerail:block/timer_holding_lv8_rail"
+    },
+    "level=9,shape=north_south": {
+      "model": "simplerail:block/timer_holding_lv9_rail"
+    },
+    "level=0,shape=east_west": {
+      "model": "simplerail:block/timer_holding_lv0_rail",
+      "y": 90
+    },
+    "level=1,shape=east_west": {
+      "model": "simplerail:block/timer_holding_lv1_rail",
+      "y": 90
+    },
+    "level=2,shape=east_west": {
+      "model": "simplerail:block/timer_holding_lv2_rail",
+      "y": 90
+    },
+    "level=3,shape=east_west": {
+      "model": "simplerail:block/timer_holding_lv3_rail",
+      "y": 90
+    },
+    "level=4,shape=east_west": {
+      "model": "simplerail:block/timer_holding_lv4_rail",
+      "y": 90
+    },
+    "level=5,shape=east_west": {
+      "model": "simplerail:block/timer_holding_lv5_rail",
+      "y": 90
+    },
+    "level=6,shape=east_west": {
+      "model": "simplerail:block/timer_holding_lv6_rail",
+      "y": 90
+    },
+    "level=7,shape=east_west": {
+      "model": "simplerail:block/timer_holding_lv7_rail",
+      "y": 90
+    },
+    "level=8,shape=east_west": {
+      "model": "simplerail:block/timer_holding_lv8_rail",
+      "y": 90
+    },
+    "level=9,shape=east_west": {
+      "model": "simplerail:block/timer_holding_lv9_rail",
+      "y": 90
+    }
+  }
+}

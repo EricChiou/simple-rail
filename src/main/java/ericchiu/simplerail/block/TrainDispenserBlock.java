@@ -118,7 +118,7 @@ public class TrainDispenserBlock extends DispenserBlock {
   }
 
   private AbstractMinecartEntity getCartEntity(World world, Vector3d placeLoc, String minecartName) {
-    AbstractMinecartEntity cart = new MinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
+    AbstractMinecartEntity cart = null;
     switch (minecartName) {
     case "chest_minecart":
       cart = new ChestMinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
@@ -131,6 +131,9 @@ public class TrainDispenserBlock extends DispenserBlock {
       break;
     case "tnt_minecart":
       cart = new TNTMinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
+      break;
+    default:
+      cart = new MinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
       break;
     }
 
