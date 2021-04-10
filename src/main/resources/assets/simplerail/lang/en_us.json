@@ -11,6 +11,7 @@
   "block.simplerail.oneway_rail": "Oneway Rail",
   "block.simplerail.eject_rail": "Eject Rail",
   "block.simplerail.destory_rail": "Destory Rail",
+  "block.simplerail.timer_holding_rail": "Timer Rail",
   "_comment": "====================Machine====================",
   "block.simplerail.train_dispenser": "Train Dispenser"
 }

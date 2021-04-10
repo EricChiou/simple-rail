@@ -57,7 +57,7 @@ public class TrainDispenserBlock extends DispenserBlock {
 
       for (int i = (containerSize - 1); i >= 0; i--) {
         ItemStack itemstack = chestTileEntity.getItem(i);
-        String minecartName = itemstack.getItem().toString();
+        String itemName = itemstack.getItem().toString();
         Vector3d placeLoc = this.getPlaceLoc(direction, pos, i);
 
         if (itemstack.getItem() instanceof LocomotiveCart) {
@@ -66,7 +66,7 @@ public class TrainDispenserBlock extends DispenserBlock {
           locomotive = cart;
 
         } else if (itemstack.getItem() instanceof MinecartItem) {
-          AbstractMinecartEntity cart = this.getCartEntity(world, placeLoc, minecartName);
+          AbstractMinecartEntity cart = this.getCartEntity(world, placeLoc, itemName);
           world.addFreshEntity(cart);
           trainCars.add(cart);
         }
@@ -117,9 +117,9 @@ public class TrainDispenserBlock extends DispenserBlock {
     return loc;
   }
 
-  private AbstractMinecartEntity getCartEntity(World world, Vector3d placeLoc, String minecartName) {
+  private AbstractMinecartEntity getCartEntity(World world, Vector3d placeLoc, String itemName) {
     AbstractMinecartEntity cart = null;
-    switch (minecartName) {
+    switch (itemName) {
     case "chest_minecart":
       cart = new ChestMinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
       break;

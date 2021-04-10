@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " R ",
+    " I ",
+    " R "
+  ],
+  "key": {
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "I": {
+      "item": "minecraft:powered_rail"
+    }
+  },
+  "result": {
+    "item": "simplerail:timer_holding_rail",
+    "count": 1
+  }
+}

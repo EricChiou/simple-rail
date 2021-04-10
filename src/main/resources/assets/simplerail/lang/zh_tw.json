@@ -11,6 +11,7 @@
   "block.simplerail.oneway_rail": "單向鐵軌",
   "block.simplerail.eject_rail": "彈出鐵軌",
   "block.simplerail.destory_rail": "銷毀鐵軌",
+  "block.simplerail.timer_holding_rail": "定時鐵軌",
   "_comment": "====================Machine====================",
   "block.simplerail.train_dispenser": "火車放置器"
 }

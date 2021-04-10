@@ -25,4 +25,8 @@ public class I18n {
 	// train
 	public static final String LOCOMOTIVE_COMPOUND_TRAIN_NAME = "Train";
 	public static final String LOCOMOTIVE_COMPOUND_FACING_NAME = "Facing";
+
+	// world data name
+	public static final String WORLD_DATA_TIMER_HOLDING_RAIL = "timerholdingrail";
+	public static final String HOLDING_RAIL_SAVE_TIME_NAME = "savetime";
 }
