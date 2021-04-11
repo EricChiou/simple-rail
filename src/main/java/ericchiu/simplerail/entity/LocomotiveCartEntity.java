@@ -198,19 +198,14 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
   @Override
   public boolean canCollideWith(Entity entity) {
     if (entity instanceof PlayerEntity) {
-      if (this.getDeltaMovement().equals(Vector3d.ZERO)) {
-        return super.canCollideWith(entity);
-      } else {
-        return false;
-      }
+      return false;
     } else if (entity instanceof LocomotiveCartEntity) {
       return super.canCollideWith(entity);
     } else if (entity instanceof AbstractMinecartEntity) {
       entity.setDeltaMovement(this.getDeltaMovement());
       return false;
     } else if (entity.isAlive()) {
-      if (this.getDeltaMovement().equals(Vector3d.ZERO)) {
-      } else {
+      if (!this.getDeltaMovement().equals(Vector3d.ZERO)) {
         entity.kill();
       }
       return false;
