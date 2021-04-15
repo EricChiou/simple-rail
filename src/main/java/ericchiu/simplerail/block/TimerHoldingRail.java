@@ -39,7 +39,6 @@ public class TimerHoldingRail extends BasePoweredRail {
   private static final int LV8 = CommonConfig.INSTANCE.timerHoldingRailLv8.get();
   private static final int LV9 = CommonConfig.INSTANCE.timerHoldingRailLv9.get();
 
-  private TimerHoldingRailWorldData data = null;
   private Map<BlockPos, UUID> cartUuids = new HashMap<BlockPos, UUID>();
 
   public TimerHoldingRail() {
@@ -64,10 +63,6 @@ public class TimerHoldingRail extends BasePoweredRail {
 
     ServerWorld serverWorld = (ServerWorld) world;
 
-    if (this.data == null) {
-      this.data = TimerHoldingRailWorldData.get(serverWorld);
-    }
-
     int level = state.getValue(LEVEL);
     if (level == 0) {
       if (!cart.getDeltaMovement().equals(Vector3d.ZERO)) {
@@ -76,16 +71,19 @@ public class TimerHoldingRail extends BasePoweredRail {
       return;
     }
 
-    long goTime = this.data.getGoTime(pos);
-    if (goTime == 0) {
+    TimerHoldingRailWorldData data = TimerHoldingRailWorldData.get(serverWorld);
+    long goTime = data.getGoTime(pos);
+    UUID cartUuid = this.cartUuids.get(pos);
+
+    if (goTime < System.currentTimeMillis() && cartUuid == null) {
+      state = state.setValue(DIRECTION, cart.getMotionDirection());
+      world.setBlock(pos, state, 3);
+
       goTime = this.calGoTime(level);
-      this.data.setGoTime(pos, goTime);
+      data.setGoTime(pos, goTime);
     }
 
-    UUID cartUuid = this.cartUuids.get(pos);
     if (cartUuid == null) {
-      world.setBlock(pos, state.setValue(DIRECTION, cart.getMotionDirection()), 3);
-
       cartUuid = cart.getUUID();
       this.cartUuids.put(pos, cart.getUUID());
     }
@@ -101,7 +99,7 @@ public class TimerHoldingRail extends BasePoweredRail {
       world.setBlock(pos, state.setValue(DIRECTION, cart.getMotionDirection()), 3);
 
       this.stopCart(pos, cart);
-      this.data.setGoTime(pos, this.calGoTime(level));
+      data.setGoTime(pos, this.calGoTime(level));
 
       this.cartUuids.put(pos, cart.getUUID());
     }
@@ -162,11 +160,8 @@ public class TimerHoldingRail extends BasePoweredRail {
   }
 
   private void removeGoTime(ServerWorld serverWorld, BlockPos pos) {
-    if (this.data == null) {
-      this.data = TimerHoldingRailWorldData.get(serverWorld);
-    }
-
-    this.data.removeGoTime(pos);
+    TimerHoldingRailWorldData data = TimerHoldingRailWorldData.get(serverWorld);
+    data.removeGoTime(pos);
   }
 
   private void stopCart(BlockPos pos, AbstractMinecartEntity cart) {
