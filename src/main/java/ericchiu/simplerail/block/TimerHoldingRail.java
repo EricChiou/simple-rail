@@ -1,5 +1,7 @@
 package ericchiu.simplerail.block;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import ericchiu.simplerail.block.base.BasePoweredRail;
@@ -37,8 +39,8 @@ public class TimerHoldingRail extends BasePoweredRail {
   private static final int LV8 = CommonConfig.INSTANCE.timerHoldingRailLv8.get();
   private static final int LV9 = CommonConfig.INSTANCE.timerHoldingRailLv9.get();
 
-  private UUID currentCartUuid = null;
   private TimerHoldingRailWorldData data = null;
+  private Map<BlockPos, UUID> cartUuids = new HashMap<BlockPos, UUID>();
 
   public TimerHoldingRail() {
     super();
@@ -60,10 +62,6 @@ public class TimerHoldingRail extends BasePoweredRail {
       return;
     }
 
-    if (this.currentCartUuid == null) {
-      this.currentCartUuid = cart.getUUID();
-    }
-
     ServerWorld serverWorld = (ServerWorld) world;
 
     if (this.data == null) {
@@ -79,17 +77,25 @@ public class TimerHoldingRail extends BasePoweredRail {
     }
 
     long goTime = this.data.getGoTime(pos);
-    if (cart.getUUID().equals(this.currentCartUuid)) {
-      if (goTime == 0) {
-        this.stopCart(pos, cart);
-        this.data.setGoTime(pos, this.calGoTime(level));
+    if (goTime == 0) {
+      goTime = this.calGoTime(level);
+      this.data.setGoTime(pos, goTime);
+    }
+
+    UUID cartUuid = this.cartUuids.get(pos);
+    if (cartUuid == null) {
+      world.setBlock(pos, state.setValue(DIRECTION, cart.getMotionDirection()), 3);
+
+      cartUuid = cart.getUUID();
+      this.cartUuids.put(pos, cart.getUUID());
+    }
+
+    if (cartUuid.equals(cart.getUUID())) {
+      if (System.currentTimeMillis() >= goTime) {
+        Vector3i motion = state.getValue(DIRECTION).getNormal();
+        cart.setDeltaMovement(motion.getX() * 0.4D, motion.getY() * 0.4D, motion.getZ() * 0.4D);
       } else {
-        if (System.currentTimeMillis() >= goTime) {
-          Vector3i motion = state.getValue(DIRECTION).getNormal();
-          cart.setDeltaMovement(motion.getX() * 0.4D, motion.getY() * 0.4D, motion.getZ() * 0.4D);
-        } else {
-          this.stopCart(pos, cart);
-        }
+        this.stopCart(pos, cart);
       }
     } else {
       world.setBlock(pos, state.setValue(DIRECTION, cart.getMotionDirection()), 3);
@@ -97,7 +103,7 @@ public class TimerHoldingRail extends BasePoweredRail {
       this.stopCart(pos, cart);
       this.data.setGoTime(pos, this.calGoTime(level));
 
-      this.currentCartUuid = cart.getUUID();
+      this.cartUuids.put(pos, cart.getUUID());
     }
   }
 
@@ -140,6 +146,7 @@ public class TimerHoldingRail extends BasePoweredRail {
   public void onBlockExploded(BlockState state, World world, BlockPos pos, Explosion explosion) {
     if (!world.isClientSide) {
       this.removeGoTime((ServerWorld) world, pos);
+      this.cartUuids.remove(pos);
     }
     super.onBlockExploded(state, world, pos, explosion);
   }
@@ -149,6 +156,7 @@ public class TimerHoldingRail extends BasePoweredRail {
       FluidState fluid) {
     if (!world.isClientSide) {
       this.removeGoTime((ServerWorld) world, pos);
+      this.cartUuids.remove(pos);
     }
     return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
   }
