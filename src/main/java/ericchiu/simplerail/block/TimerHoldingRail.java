@@ -38,6 +38,7 @@ public class TimerHoldingRail extends BasePoweredRail {
   private static final int LV9 = CommonConfig.INSTANCE.timerHoldingRailLv9.get();
 
   private UUID currentCartUuid = null;
+  private TimerHoldingRailWorldData data = null;
 
   public TimerHoldingRail() {
     super();
@@ -65,6 +66,10 @@ public class TimerHoldingRail extends BasePoweredRail {
 
     ServerWorld serverWorld = (ServerWorld) world;
 
+    if (this.data == null) {
+      this.data = TimerHoldingRailWorldData.get(serverWorld);
+    }
+
     int level = state.getValue(LEVEL);
     if (level == 0) {
       if (!cart.getDeltaMovement().equals(Vector3d.ZERO)) {
@@ -73,11 +78,11 @@ public class TimerHoldingRail extends BasePoweredRail {
       return;
     }
 
-    long goTime = this.getGoTime(serverWorld, pos);
+    long goTime = this.data.getGoTime(pos);
     if (cart.getUUID().equals(this.currentCartUuid)) {
       if (goTime == 0) {
         this.stopCart(pos, cart);
-        this.setGoTime(serverWorld, pos, level);
+        this.data.setGoTime(pos, this.calGoTime(level));
       } else {
         if (System.currentTimeMillis() >= goTime) {
           Vector3i motion = state.getValue(DIRECTION).getNormal();
@@ -90,7 +95,7 @@ public class TimerHoldingRail extends BasePoweredRail {
       world.setBlock(pos, state.setValue(DIRECTION, cart.getMotionDirection()), 3);
 
       this.stopCart(pos, cart);
-      this.setGoTime(serverWorld, pos, level);
+      this.data.setGoTime(pos, this.calGoTime(level));
 
       this.currentCartUuid = cart.getUUID();
     }
@@ -148,21 +153,12 @@ public class TimerHoldingRail extends BasePoweredRail {
     return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
   }
 
-  private long getGoTime(ServerWorld serverWorld, BlockPos pos) {
-    TimerHoldingRailWorldData data = TimerHoldingRailWorldData.get(serverWorld);
-    return data.getGoTime(pos);
-  }
-
-  private void setGoTime(ServerWorld serverWorld, BlockPos pos, int level) {
-    long goTime = this.calGoTime(level);
-
-    TimerHoldingRailWorldData data = TimerHoldingRailWorldData.get(serverWorld);
-    data.setGoTime(pos, goTime);
-  }
-
   private void removeGoTime(ServerWorld serverWorld, BlockPos pos) {
-    TimerHoldingRailWorldData data = TimerHoldingRailWorldData.get(serverWorld);
-    data.removeGoTime(pos);
+    if (this.data == null) {
+      this.data = TimerHoldingRailWorldData.get(serverWorld);
+    }
+
+    this.data.removeGoTime(pos);
   }
 
   private void stopCart(BlockPos pos, AbstractMinecartEntity cart) {
