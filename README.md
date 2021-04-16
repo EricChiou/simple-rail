@@ -1,6 +1,4 @@
-#### Forge version: 1.16.5-36.1.0
-
- 
+##### Forge version: 1.16.5-36.1.0
 
 #### Rail
 -   High Speed Rail
