@@ -29,4 +29,6 @@ public class I18n {
 	// world data name
 	public static final String WORLD_DATA_TIMER_HOLDING_RAIL = "timerholdingrail";
 	public static final String HOLDING_RAIL_SAVE_TIME_NAME = "savetime";
+	public static final String HOLDING_DATA_CART_UUID_KEY = "cartUuid";
+	public static final String HOLDING_DATA_GO_TIME_KEY = "goTime";
 }
