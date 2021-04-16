@@ -1,9 +1,5 @@
 package ericchiu.simplerail.block;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import ericchiu.simplerail.block.base.BasePoweredRail;
 import ericchiu.simplerail.config.CommonConfig;
 import ericchiu.simplerail.setup.SimpleRailProperties;
