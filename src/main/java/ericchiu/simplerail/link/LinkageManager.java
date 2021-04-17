@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import ericchiu.simplerail.entity.LocomotiveCartEntity.Car;
+import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.world.server.ServerWorld;
 
 public class LinkageManager {
@@ -41,10 +41,10 @@ public class LinkageManager {
     trains.put(locomotiveUuid, trainUuid);
   }
 
-  public static void updateTrain(UUID locomotiveUuid, ArrayList<Car> train) {
+  public static void updateTrain(UUID locomotiveUuid, ArrayList<AbstractMinecartEntity> train) {
     ArrayList<UUID> trainUuid = new ArrayList<UUID>();
-    for (Car car : train) {
-      trainUuid.add(car.cart.getUUID());
+    for (AbstractMinecartEntity cart : train) {
+      trainUuid.add(cart.getUUID());
     }
     trains.put(locomotiveUuid, trainUuid);
   }

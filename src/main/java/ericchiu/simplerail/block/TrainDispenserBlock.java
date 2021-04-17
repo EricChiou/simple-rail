@@ -26,6 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
@@ -55,15 +56,23 @@ public class TrainDispenserBlock extends DispenserBlock {
       LocomotiveCartEntity locomotive = null;
       List<AbstractMinecartEntity> trainCars = new LinkedList<AbstractMinecartEntity>();
 
-      for (int i = (containerSize - 1); i >= 0; i--) {
+      for (int i = 0; i < containerSize; i++) {
         ItemStack itemstack = chestTileEntity.getItem(i);
         String itemName = itemstack.getItem().toString();
         Vector3d placeLoc = this.getPlaceLoc(direction, pos, i);
 
+        List<AbstractMinecartEntity> carts = world.getEntitiesOfClass(AbstractMinecartEntity.class,
+            new AxisAlignedBB(new BlockPos(placeLoc)));
+        if (carts.size() > 0) {
+          break;
+        }
+
         if (itemstack.getItem() instanceof LocomotiveCart) {
           LocomotiveCartEntity cart = new LocomotiveCartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
           world.addFreshEntity(cart);
-          locomotive = cart;
+          if (i == 0) {
+            locomotive = cart;
+          }
 
         } else if (itemstack.getItem() instanceof MinecartItem) {
           AbstractMinecartEntity cart = this.getCartEntity(world, placeLoc, itemName);
