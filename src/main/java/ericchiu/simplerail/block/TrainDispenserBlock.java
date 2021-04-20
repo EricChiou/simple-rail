@@ -95,6 +95,17 @@ public class TrainDispenserBlock extends DispenserBlock {
   }
 
   @Override
+  public void onPlace(BlockState state, World world, BlockPos pos, BlockState p_220082_4_, boolean p_220082_5_) {
+    Direction direction = state.getValue(DispenserBlock.FACING);
+    if (!direction.equals(Direction.EAST) //
+        && !direction.equals(Direction.WEST) //
+        && !direction.equals(Direction.NORTH) //
+        && !direction.equals(Direction.SOUTH)) {
+      world.setBlock(pos, state.setValue(FACING, Direction.NORTH), 3);
+    }
+  }
+
+  @Override
   public ActionResultType use(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
       BlockRayTraceResult rayTraceResult) {
     if (world.isClientSide) {

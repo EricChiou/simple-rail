@@ -97,8 +97,6 @@ public class Wrench extends Item {
   private void changeFacing(World world, BlockState state, BlockPos pos) {
     if (state.hasProperty(DirectionalBlock.FACING)) {
       Direction direction = state.getValue(DirectionalBlock.FACING);
-      System.out.println("11111 changeFacing");
-      System.out.println(direction);
 
       if (direction.equals(Direction.EAST)) {
         world.setBlock(pos, state.setValue(DirectionalBlock.FACING, Direction.SOUTH), 3);

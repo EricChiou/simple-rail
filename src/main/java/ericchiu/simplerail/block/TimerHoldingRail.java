@@ -1,5 +1,7 @@
 package ericchiu.simplerail.block;
 
+import java.util.Random;
+
 import ericchiu.simplerail.block.base.BasePoweredRail;
 import ericchiu.simplerail.config.CommonConfig;
 import ericchiu.simplerail.setup.SimpleRailProperties;
@@ -40,7 +42,6 @@ public class TimerHoldingRail extends BasePoweredRail {
 
   public TimerHoldingRail() {
     super();
-
     this.registerDefaultState(this.stateDefinition.any().setValue(DIRECTION, Direction.NORTH));
     this.registerDefaultState(this.stateDefinition.any().setValue(LEVEL, 0));
   }
