@@ -2,6 +2,7 @@ package ericchiu.simplerail;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityEvent.EnteringChunk;
@@ -81,11 +82,16 @@ public class SimpleRail {
     LOGGER.info("HELLO from server starting");
   }
 
-  @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+  @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
   public static class RegistryEvents {
     @SubscribeEvent
     public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
       LOGGER.info("HELLO from Register Block");
+    }
+
+    @SubscribeEvent
+    public static void onRegisterTileEntityTypes(RegistryEvent.Register<TileEntityType<?>> evt) {
+
     }
   }
 

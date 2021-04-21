@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "simplerail:train_dispenser"
+    "simplerail:train_dispenser",
+    "simplerail:singnal_timer"
   ]
 }

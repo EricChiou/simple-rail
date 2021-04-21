@@ -73,6 +73,7 @@ public class Wrench extends Item {
 
     if (state.is(SimpleRailTags.MACHINES)) {
       this.changeFacing(world, state, pos);
+      this.changeLevel(world, state, pos);
     }
 
     return ActionResultType.CONSUME;

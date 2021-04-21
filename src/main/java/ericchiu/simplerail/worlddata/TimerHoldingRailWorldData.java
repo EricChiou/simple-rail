@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import ericchiu.simplerail.SimpleRail;
 import ericchiu.simplerail.block.TimerHoldingRail;
-import ericchiu.simplerail.constants.I18n;
+import ericchiu.simplerail.constants.WorldData;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
@@ -14,10 +14,10 @@ import net.minecraft.world.storage.DimensionSavedDataManager;
 import net.minecraft.world.storage.WorldSavedData;
 
 public class TimerHoldingRailWorldData extends WorldSavedData {
-  private static final String NAME = SimpleRail.MOD_ID + "_" + I18n.WORLD_DATA_TIMER_HOLDING_RAIL;
-  private static final String SAVE_TIME_NAME = SimpleRail.MOD_ID + "_" + I18n.HOLDING_RAIL_SAVE_TIME_NAME;
-  private static final String CART_UUID_KEY = I18n.HOLDING_DATA_CART_UUID_KEY;
-  private static final String GO_TIME_KEY = I18n.HOLDING_DATA_GO_TIME_KEY;
+  private static final String NAME = SimpleRail.MOD_ID + "_" + WorldData.TIMER_HOLDING_RAIL;
+  private static final String SAVE_TIME_NAME = SimpleRail.MOD_ID + "_" + WorldData.TIMER_HOLDING_RAIL_SAVE_TIME_NAME;
+  private static final String CART_UUID_KEY = WorldData.TIMER_HOLDING_DATA_CART_UUID_KEY;
+  private static final String GO_TIME_KEY = WorldData.TIMER_HOLDING_DATA_GO_TIME_KEY;
 
   private Map<BlockPos, HoldingData> holdingData = new ConcurrentHashMap<BlockPos, HoldingData>();
   private ServerWorld serverWorld = null;
@@ -50,14 +50,16 @@ public class TimerHoldingRailWorldData extends WorldSavedData {
     for (String key : nbt.getAllKeys()) {
       try {
         String[] coor = key.split(",");
-        BlockPos pos = new BlockPos(Integer.valueOf(coor[0]), Integer.valueOf(coor[1]), Integer.valueOf(coor[2]));
+        if (coor.length >= 3) {
+          BlockPos pos = new BlockPos(Integer.valueOf(coor[0]), Integer.valueOf(coor[1]), Integer.valueOf(coor[2]));
 
-        CompoundNBT holdingDataNbt = (CompoundNBT) nbt.get(key);
-        HoldingData holdingData = new HoldingData( //
-            holdingDataNbt.getUUID(CART_UUID_KEY), //
-            holdingDataNbt.getLong(GO_TIME_KEY) + delayTime);
+          CompoundNBT holdingDataNbt = (CompoundNBT) nbt.get(key);
+          HoldingData holdingData = new HoldingData( //
+              holdingDataNbt.getUUID(CART_UUID_KEY), //
+              holdingDataNbt.getLong(GO_TIME_KEY) + delayTime);
 
-        this.holdingData.put(pos, holdingData);
+          this.holdingData.put(pos, holdingData);
+        }
       } catch (Exception e) {
       }
     }

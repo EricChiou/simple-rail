@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "level=0": {
+      "model": "simplerail:block/singnal_timer_lv0"
+    },
+    "level=1": {
+      "model": "simplerail:block/singnal_timer_lv1"
+    },
+    "level=2": {
+      "model": "simplerail:block/singnal_timer_lv2"
+    },
+    "level=3": {
+      "model": "simplerail:block/singnal_timer_lv3"
+    },
+    "level=4": {
+      "model": "simplerail:block/singnal_timer_lv4"
+    },
+    "level=5": {
+      "model": "simplerail:block/singnal_timer_lv5"
+    },
+    "level=6": {
+      "model": "simplerail:block/singnal_timer_lv6"
+    },
+    "level=7": {
+      "model": "simplerail:block/singnal_timer_lv7"
+    },
+    "level=8": {
+      "model": "simplerail:block/singnal_timer_lv8"
+    },
+    "level=9": {
+      "model": "simplerail:block/singnal_timer_lv9"
+    }
+  }
+}

@@ -18,6 +18,7 @@ public class I18n {
 	public static final String BLOCK_TIMER_HOLDING_RAIL = "timer_holding_rail";
 	// machine
 	public static final String BLOCK_TRAIN_DISPENSER = "train_dispenser";
+	public static final String BLOCK_SINGNAL_TIMER = "singnal_timer";
 
 	// entity
 	public static final String ENTITY_LOCOMOTIVE_CART = "locomotive_cart";
@@ -26,9 +27,4 @@ public class I18n {
 	public static final String LOCOMOTIVE_COMPOUND_TRAIN_NAME = "Train";
 	public static final String LOCOMOTIVE_COMPOUND_FACING_NAME = "Facing";
 
-	// world data name
-	public static final String WORLD_DATA_TIMER_HOLDING_RAIL = "timerholdingrail";
-	public static final String HOLDING_RAIL_SAVE_TIME_NAME = "savetime";
-	public static final String HOLDING_DATA_CART_UUID_KEY = "cartUuid";
-	public static final String HOLDING_DATA_GO_TIME_KEY = "goTime";
 }

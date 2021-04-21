@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "particle": "simplerail:blocks/singnal_timer_lv3",
+    "down": "simplerail:blocks/singnal_timer_lv3",
+    "up": "simplerail:blocks/singnal_timer_lv3",
+    "north": "simplerail:blocks/singnal_timer_lv3",
+    "east": "simplerail:blocks/singnal_timer_lv3",
+    "south": "simplerail:blocks/singnal_timer_lv3",
+    "west": "simplerail:blocks/singnal_timer_lv3"
+  }
+}

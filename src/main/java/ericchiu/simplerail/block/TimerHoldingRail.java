@@ -1,7 +1,5 @@
 package ericchiu.simplerail.block;
 
-import java.util.Random;
-
 import ericchiu.simplerail.block.base.BasePoweredRail;
 import ericchiu.simplerail.config.CommonConfig;
 import ericchiu.simplerail.setup.SimpleRailProperties;
