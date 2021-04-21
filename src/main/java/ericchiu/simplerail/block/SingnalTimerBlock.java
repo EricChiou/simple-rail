@@ -2,7 +2,6 @@ package ericchiu.simplerail.block;
 
 import java.util.Random;
 
-import ericchiu.simplerail.config.CommonConfig;
 import ericchiu.simplerail.setup.SimpleRailProperties;
 import ericchiu.simplerail.tileentity.SingnalTimerTileEntity;
 import net.minecraft.block.AbstractBlock;
@@ -27,16 +26,6 @@ public class SingnalTimerBlock extends RedstoneBlock {
 
   public static final IntegerProperty LEVEL = SimpleRailProperties.LEVEL;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-
-  private static final int LV1 = CommonConfig.INSTANCE.singnalTimerBlockLv1.get();
-  private static final int LV2 = CommonConfig.INSTANCE.singnalTimerBlockLv2.get();
-  private static final int LV3 = CommonConfig.INSTANCE.singnalTimerBlockLv3.get();
-  private static final int LV4 = CommonConfig.INSTANCE.singnalTimerBlockLv4.get();
-  private static final int LV5 = CommonConfig.INSTANCE.singnalTimerBlockLv5.get();
-  private static final int LV6 = CommonConfig.INSTANCE.singnalTimerBlockLv6.get();
-  private static final int LV7 = CommonConfig.INSTANCE.singnalTimerBlockLv7.get();
-  private static final int LV8 = CommonConfig.INSTANCE.singnalTimerBlockLv8.get();
-  private static final int LV9 = CommonConfig.INSTANCE.singnalTimerBlockLv9.get();
 
   public SingnalTimerBlock() {
     super(AbstractBlock.Properties.of(Material.METAL, MaterialColor.FIRE).requiresCorrectToolForDrops()
