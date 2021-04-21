@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 import ericchiu.simplerail.config.CommonConfig;
 import ericchiu.simplerail.event.ChunkEventManager;
+import ericchiu.simplerail.registry.TileEntities;
 import ericchiu.simplerail.setup.SimpleRailTags;
 import ericchiu.simplerail.setup.SimpleRailProperties;
 import ericchiu.simplerail.setup.Registration;
@@ -82,7 +83,7 @@ public class SimpleRail {
     LOGGER.info("HELLO from server starting");
   }
 
-  @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+  @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
   public static class RegistryEvents {
     @SubscribeEvent
     public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent) {
@@ -90,8 +91,8 @@ public class SimpleRail {
     }
 
     @SubscribeEvent
-    public static void onRegisterTileEntityTypes(RegistryEvent.Register<TileEntityType<?>> evt) {
-
+    public static void registerTE(RegistryEvent.Register<TileEntityType<?>> evt) {
+      TileEntities.register(evt);
     }
   }
 

@@ -27,4 +27,6 @@ public class Config {
   public static final String TIMER_HOLDING_RAIL_LV8 = "lv8";
   public static final String TIMER_HOLDING_RAIL_LV9 = "lv9";
 
+  public static final int TICKS_PER_SECONDS = 20;
+
 }

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import ericchiu.simplerail.config.CommonConfig;
 import ericchiu.simplerail.setup.SimpleRailProperties;
+import ericchiu.simplerail.tileentity.SingnalTimerTileEntity;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -15,9 +16,11 @@ import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.TickPriority;
 import net.minecraft.world.server.ServerWorld;
 
 public class SingnalTimerBlock extends RedstoneBlock {
@@ -50,24 +53,17 @@ public class SingnalTimerBlock extends RedstoneBlock {
 
   @Override
   public void tick(BlockState state, ServerWorld serverWorld, BlockPos pos, Random p_225534_4_) {
-    System.out.println("11111 tick");
-    // if (state.getValue(POWERED)) {
-    //   System.out.println("11111 POWERED true");
-    //   serverWorld.setBlock(pos, state.setValue(POWERED, false), 3);
-    //   serverWorld.getBlockTicks().scheduleTick(pos, this, this.calTriggerTime(state), TickPriority.VERY_HIGH);
-    // } else {
-    //   System.out.println("11111 POWERED false");
-    //   serverWorld.setBlock(pos, state.setValue(POWERED, true), 3);
-    //   serverWorld.getBlockTicks().scheduleTick(pos, this, 1, TickPriority.VERY_HIGH);
-    // }
+    if (state.getValue(POWERED)) {
+      serverWorld.setBlock(pos, state.setValue(POWERED, false), 3);
+    } else {
+      serverWorld.setBlock(pos, state.setValue(POWERED, true), 3);
+      serverWorld.getBlockTicks().scheduleTick(pos, this, 10, TickPriority.VERY_HIGH);
+    }
   }
 
   @Override
   public int getSignal(BlockState state, IBlockReader reader, BlockPos pos, Direction direction) {
     int lv = state.getValue(LEVEL);
-    System.out.println("11111");
-    System.out.println(lv);
-    System.out.println(state.getValue(POWERED));
     if (lv > 0 && state.getValue(POWERED)) {
       return 15;
     }
@@ -75,39 +71,14 @@ public class SingnalTimerBlock extends RedstoneBlock {
     return 0;
   }
 
-  private int calTriggerTime(BlockState state) {
-    int triggerTime = 0;
-    switch (state.getValue(LEVEL)) {
-    case 1:
-      triggerTime = LV1;
-      break;
-    case 2:
-      triggerTime = LV2;
-      break;
-    case 3:
-      triggerTime = LV3;
-      break;
-    case 4:
-      triggerTime = LV4;
-      break;
-    case 5:
-      triggerTime = LV5;
-      break;
-    case 6:
-      triggerTime = LV6;
-      break;
-    case 7:
-      triggerTime = LV7;
-      break;
-    case 8:
-      triggerTime = LV8;
-      break;
-    case 9:
-      triggerTime = LV9;
-      break;
-    }
+  @Override
+  public boolean hasTileEntity(BlockState state) {
+    return true;
+  }
 
-    return triggerTime;
+  @Override
+  public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+    return new SingnalTimerTileEntity();
   }
 
 }

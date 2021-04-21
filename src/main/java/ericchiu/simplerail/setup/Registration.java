@@ -3,7 +3,6 @@ package ericchiu.simplerail.setup;
 import ericchiu.simplerail.registry.Blocks;
 import ericchiu.simplerail.registry.Entities;
 import ericchiu.simplerail.registry.Items;
-import ericchiu.simplerail.registry.TileEntities;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -15,7 +14,6 @@ public class Registration {
 		Items.register(BUS);
 		Entities.register(BUS);
 		Blocks.register(BUS);
-		TileEntities.register(BUS);
 	}
 
 }
