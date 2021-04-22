@@ -79,7 +79,7 @@ public class SingnalTimerTileEntity extends TileEntity implements ITickableTileE
       break;
     }
 
-    return skipTicksAmount - 10;
+    return skipTicksAmount - Config.SINGNAL_DURATION_TIKCS;
   }
 
 }

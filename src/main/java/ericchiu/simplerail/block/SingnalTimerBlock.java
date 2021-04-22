@@ -2,6 +2,7 @@ package ericchiu.simplerail.block;
 
 import java.util.Random;
 
+import ericchiu.simplerail.constants.Config;
 import ericchiu.simplerail.setup.SimpleRailProperties;
 import ericchiu.simplerail.tileentity.SingnalTimerTileEntity;
 import net.minecraft.block.AbstractBlock;
@@ -46,7 +47,7 @@ public class SingnalTimerBlock extends RedstoneBlock {
       serverWorld.setBlock(pos, state.setValue(POWERED, false), 3);
     } else {
       serverWorld.setBlock(pos, state.setValue(POWERED, true), 3);
-      serverWorld.getBlockTicks().scheduleTick(pos, this, 10, TickPriority.VERY_HIGH);
+      serverWorld.getBlockTicks().scheduleTick(pos, this, Config.SINGNAL_DURATION_TIKCS, TickPriority.VERY_HIGH);
     }
   }
 
