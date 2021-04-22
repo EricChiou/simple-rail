@@ -5,7 +5,7 @@ license="MIT"
 
 [[mods]]
 modId="simplerail"
-version="1.16.5-0.1.92"
+version="1.16.5-0.1.96"
 displayName="Simple Rail"
 # updateJSONURL=""
 # displayURL=""
