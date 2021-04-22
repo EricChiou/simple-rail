@@ -12,26 +12,26 @@ import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.world.TickPriority;
 import net.minecraft.world.World;
 
-public class SingnalTimerTileEntity extends TileEntity implements ITickableTileEntity {
+public class SignalTimerTileEntity extends TileEntity implements ITickableTileEntity {
 
   public static final IntegerProperty LEVEL = SimpleRailProperties.LEVEL;
 
-  private static final int LV1 = CommonConfig.INSTANCE.singnalTimerBlockLv1.get();
-  private static final int LV2 = CommonConfig.INSTANCE.singnalTimerBlockLv2.get();
-  private static final int LV3 = CommonConfig.INSTANCE.singnalTimerBlockLv3.get();
-  private static final int LV4 = CommonConfig.INSTANCE.singnalTimerBlockLv4.get();
-  private static final int LV5 = CommonConfig.INSTANCE.singnalTimerBlockLv5.get();
-  private static final int LV6 = CommonConfig.INSTANCE.singnalTimerBlockLv6.get();
-  private static final int LV7 = CommonConfig.INSTANCE.singnalTimerBlockLv7.get();
-  private static final int LV8 = CommonConfig.INSTANCE.singnalTimerBlockLv8.get();
-  private static final int LV9 = CommonConfig.INSTANCE.singnalTimerBlockLv9.get();
+  private static final int LV1 = CommonConfig.INSTANCE.signalTimerBlockLv1.get();
+  private static final int LV2 = CommonConfig.INSTANCE.signalTimerBlockLv2.get();
+  private static final int LV3 = CommonConfig.INSTANCE.signalTimerBlockLv3.get();
+  private static final int LV4 = CommonConfig.INSTANCE.signalTimerBlockLv4.get();
+  private static final int LV5 = CommonConfig.INSTANCE.signalTimerBlockLv5.get();
+  private static final int LV6 = CommonConfig.INSTANCE.signalTimerBlockLv6.get();
+  private static final int LV7 = CommonConfig.INSTANCE.signalTimerBlockLv7.get();
+  private static final int LV8 = CommonConfig.INSTANCE.signalTimerBlockLv8.get();
+  private static final int LV9 = CommonConfig.INSTANCE.signalTimerBlockLv9.get();
 
-  public SingnalTimerTileEntity(TileEntityType<?> type) {
+  public SignalTimerTileEntity(TileEntityType<?> type) {
     super(type);
   }
 
-  public SingnalTimerTileEntity() {
-    this(TileEntities.SINGNAL_TIMER);
+  public SignalTimerTileEntity() {
+    this(TileEntities.SIGNAL_TIMER);
   }
 
   @Override
@@ -79,7 +79,7 @@ public class SingnalTimerTileEntity extends TileEntity implements ITickableTileE
       break;
     }
 
-    return skipTicksAmount - Config.SINGNAL_DURATION_TIKCS;
+    return skipTicksAmount - Config.SIGNAL_DURATION_TIKCS;
   }
 
 }

@@ -14,5 +14,5 @@
   "block.simplerail.timer_holding_rail": "Timer Rail",
   "_comment": "====================Machine====================",
   "block.simplerail.train_dispenser": "Train Dispenser",
-  "block.simplerail.singnal_timer": "Singnal Timer"
+  "block.simplerail.signal_timer": "Signal Timer"
 }

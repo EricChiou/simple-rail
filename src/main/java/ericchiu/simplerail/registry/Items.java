@@ -39,8 +39,8 @@ public class Items {
 	// machine
 	public static final RegistryObject<Item> TRAIN_DISPENSER = REGISTER.register(I18n.BLOCK_TRAIN_DISPENSER,
 			() -> new BlockItem(Blocks.TRAIN_DISPENSER.get(), new Item.Properties().tab(Rail.TAB)));
-	public static final RegistryObject<Item> SINGNAL_TIMER = REGISTER.register(I18n.BLOCK_SINGNAL_TIMER,
-			() -> new BlockItem(Blocks.SINGNAL_TIMER.get(), new Item.Properties().tab(Rail.TAB)));
+	public static final RegistryObject<Item> SIGNAL_TIMER = REGISTER.register(I18n.BLOCK_SIGNAL_TIMER,
+			() -> new BlockItem(Blocks.SIGNAL_TIMER.get(), new Item.Properties().tab(Rail.TAB)));
 
 	public static void register(IEventBus bus) {
 		REGISTER.register(bus);

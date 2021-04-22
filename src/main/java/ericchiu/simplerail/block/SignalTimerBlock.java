@@ -4,7 +4,7 @@ import java.util.Random;
 
 import ericchiu.simplerail.constants.Config;
 import ericchiu.simplerail.setup.SimpleRailProperties;
-import ericchiu.simplerail.tileentity.SingnalTimerTileEntity;
+import ericchiu.simplerail.tileentity.SignalTimerTileEntity;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -23,12 +23,12 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.TickPriority;
 import net.minecraft.world.server.ServerWorld;
 
-public class SingnalTimerBlock extends RedstoneBlock {
+public class SignalTimerBlock extends RedstoneBlock {
 
   public static final IntegerProperty LEVEL = SimpleRailProperties.LEVEL;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-  public SingnalTimerBlock() {
+  public SignalTimerBlock() {
     super(AbstractBlock.Properties.of(Material.METAL, MaterialColor.FIRE).requiresCorrectToolForDrops()
         .strength(5.0F, 6.0F).sound(SoundType.METAL));
     this.registerDefaultState(this.stateDefinition.any().setValue(LEVEL, 0).setValue(POWERED, false));
@@ -47,7 +47,7 @@ public class SingnalTimerBlock extends RedstoneBlock {
       serverWorld.setBlock(pos, state.setValue(POWERED, false), 3);
     } else {
       serverWorld.setBlock(pos, state.setValue(POWERED, true), 3);
-      serverWorld.getBlockTicks().scheduleTick(pos, this, Config.SINGNAL_DURATION_TIKCS, TickPriority.VERY_HIGH);
+      serverWorld.getBlockTicks().scheduleTick(pos, this, Config.SIGNAL_DURATION_TIKCS, TickPriority.VERY_HIGH);
     }
   }
 
@@ -68,7 +68,7 @@ public class SingnalTimerBlock extends RedstoneBlock {
 
   @Override
   public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-    return new SingnalTimerTileEntity();
+    return new SignalTimerTileEntity();
   }
 
 }

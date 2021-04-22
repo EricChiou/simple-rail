@@ -7,7 +7,7 @@ import ericchiu.simplerail.block.HighSpeedRail;
 import ericchiu.simplerail.block.HoldingRail;
 import ericchiu.simplerail.block.OnewayRail;
 import ericchiu.simplerail.block.TimerHoldingRail;
-import ericchiu.simplerail.block.SingnalTimerBlock;
+import ericchiu.simplerail.block.SignalTimerBlock;
 import ericchiu.simplerail.block.TrainDispenserBlock;
 import ericchiu.simplerail.constants.I18n;
 
@@ -39,8 +39,8 @@ public class Blocks {
 	// machine
 	public static final RegistryObject<Block> TRAIN_DISPENSER = REGISTER.register(I18n.BLOCK_TRAIN_DISPENSER,
 			() -> new TrainDispenserBlock());
-	public static final RegistryObject<Block> SINGNAL_TIMER = REGISTER.register(I18n.BLOCK_SINGNAL_TIMER,
-			() -> new SingnalTimerBlock());
+	public static final RegistryObject<Block> SIGNAL_TIMER = REGISTER.register(I18n.BLOCK_SIGNAL_TIMER,
+			() -> new SignalTimerBlock());
 
 	public static void register(IEventBus bus) {
 		REGISTER.register(bus);

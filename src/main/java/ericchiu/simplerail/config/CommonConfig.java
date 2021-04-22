@@ -36,16 +36,16 @@ public class CommonConfig {
   public final IntValue timerHoldingRailLv7;
   public final IntValue timerHoldingRailLv8;
   public final IntValue timerHoldingRailLv9;
-  // singnal_timer_block
-  public final IntValue singnalTimerBlockLv1;
-  public final IntValue singnalTimerBlockLv2;
-  public final IntValue singnalTimerBlockLv3;
-  public final IntValue singnalTimerBlockLv4;
-  public final IntValue singnalTimerBlockLv5;
-  public final IntValue singnalTimerBlockLv6;
-  public final IntValue singnalTimerBlockLv7;
-  public final IntValue singnalTimerBlockLv8;
-  public final IntValue singnalTimerBlockLv9;
+  // signal_timer_block
+  public final IntValue signalTimerBlockLv1;
+  public final IntValue signalTimerBlockLv2;
+  public final IntValue signalTimerBlockLv3;
+  public final IntValue signalTimerBlockLv4;
+  public final IntValue signalTimerBlockLv5;
+  public final IntValue signalTimerBlockLv6;
+  public final IntValue signalTimerBlockLv7;
+  public final IntValue signalTimerBlockLv8;
+  public final IntValue signalTimerBlockLv9;
 
   public CommonConfig(Builder builder) {
     builder.comment("Simple Rail Settings");
@@ -111,25 +111,25 @@ public class CommonConfig {
 
     builder.pop();
 
-    builder.push("singnal_timer_block");
+    builder.push("signal_timer_block");
 
-    singnalTimerBlockLv1 = builder.comment("Singnal Timer Block lv 1 wait time (default: 5s)")
+    signalTimerBlockLv1 = builder.comment("Signal Timer Block lv 1 wait time (default: 5s)")
         .defineInRange(Config.TIMER_HOLDING_RAIL_LV1, 5, 0, 2147483647);
-    singnalTimerBlockLv2 = builder.comment("Singnal Timer Block lv 2 wait time (default: 10s)")
+    signalTimerBlockLv2 = builder.comment("Signal Timer Block lv 2 wait time (default: 10s)")
         .defineInRange(Config.TIMER_HOLDING_RAIL_LV2, 10, 0, 2147483647);
-    singnalTimerBlockLv3 = builder.comment("Singnal Timer Block lv 3 wait time (default: 15s)")
+    signalTimerBlockLv3 = builder.comment("Signal Timer Block lv 3 wait time (default: 15s)")
         .defineInRange(Config.TIMER_HOLDING_RAIL_LV3, 15, 0, 2147483647);
-    singnalTimerBlockLv4 = builder.comment("Singnal Timer Block lv 4 wait time (default: 20s)")
+    signalTimerBlockLv4 = builder.comment("Signal Timer Block lv 4 wait time (default: 20s)")
         .defineInRange(Config.TIMER_HOLDING_RAIL_LV4, 20, 0, 2147483647);
-    singnalTimerBlockLv5 = builder.comment("Singnal Timer Block lv 5 wait time (default: 25s)")
+    signalTimerBlockLv5 = builder.comment("Signal Timer Block lv 5 wait time (default: 25s)")
         .defineInRange(Config.TIMER_HOLDING_RAIL_LV5, 25, 0, 2147483647);
-    singnalTimerBlockLv6 = builder.comment("Singnal Timer Block lv 6 wait time (default: 30s)")
+    signalTimerBlockLv6 = builder.comment("Signal Timer Block lv 6 wait time (default: 30s)")
         .defineInRange(Config.TIMER_HOLDING_RAIL_LV6, 30, 0, 2147483647);
-    singnalTimerBlockLv7 = builder.comment("Singnal Timer Block lv 7 wait time (default: 40s)")
+    signalTimerBlockLv7 = builder.comment("Signal Timer Block lv 7 wait time (default: 40s)")
         .defineInRange(Config.TIMER_HOLDING_RAIL_LV7, 40, 0, 2147483647);
-    singnalTimerBlockLv8 = builder.comment("Singnal Timer Block lv 8 wait time (default: 50s)")
+    signalTimerBlockLv8 = builder.comment("Signal Timer Block lv 8 wait time (default: 50s)")
         .defineInRange(Config.TIMER_HOLDING_RAIL_LV8, 50, 0, 2147483647);
-    singnalTimerBlockLv9 = builder.comment("Singnal Timer Block lv 9 wait time (default: 60s)")
+    signalTimerBlockLv9 = builder.comment("Signal Timer Block lv 9 wait time (default: 60s)")
         .defineInRange(Config.TIMER_HOLDING_RAIL_LV9, 60, 0, 2147483647);
 
     builder.pop();
