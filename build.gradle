@@ -11,7 +11,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.16.5-0.1.96'
+version = '1.16.5-0.2.46'
 group = 'ericchiu.simplerail'
 archivesBaseName = 'simplerail'
 
