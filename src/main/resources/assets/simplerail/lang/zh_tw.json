@@ -12,6 +12,7 @@
   "block.simplerail.eject_rail": "彈出鐵軌",
   "block.simplerail.destory_rail": "銷毀鐵軌",
   "block.simplerail.timer_holding_rail": "定時鐵軌",
+  "block.simplerail.cross_rail": "交叉鐵軌",
   "_comment": "====================Machine====================",
   "block.simplerail.train_dispenser": "火車放置器",
   "block.simplerail.signal_timer": "信號計時器"
