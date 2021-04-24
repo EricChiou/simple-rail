@@ -45,8 +45,9 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
       DataSerializers.BOOLEAN);
 
   private static final EntityType<LocomotiveCartEntity> CART_TYPE = Entities.LOCOMOTIVE_CART.get();
+  private static final double detectRange = 0.2D;
 
-  private ArrayList<AbstractMinecartEntity> train;
+  private ArrayList<Car> train;
   private BlockPos prevPos;
 
   public LocomotiveCartEntity(World world, double x, double y, double z) {
@@ -121,17 +122,17 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
         this.initTrain();
       }
 
-      if (this.detectPosChanged()) {
-        this.moveCarts((ServerWorld) this.level);
+      if (this.posChanged()) {
+        this.updateCartsStopPos((ServerWorld) this.level);
         this.prevPos = this.blockPosition();
-      } else {
-        for (AbstractMinecartEntity cart : this.train) {
-          cart.moveTo(cart.blockPosition(), cart.yRot, cart.xRot);
-        }
       }
 
-      for (AbstractMinecartEntity cart : this.train) {
-        cart.setDeltaMovement(Vector3d.ZERO);
+      if (this.isMoving()) {
+        if (this.needMoveCarts()) {
+          this.moveCarts();
+        }
+      } else {
+        this.moveCarts();
       }
     }
   }
@@ -186,8 +187,8 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
 
     if (this.train != null) {
       ListNBT listNbt = new ListNBT();
-      for (AbstractMinecartEntity cart : this.train) {
-        listNbt.add(StringNBT.valueOf(cart.getUUID().toString()));
+      for (Car car : this.train) {
+        listNbt.add(StringNBT.valueOf(car.cart.getUUID().toString()));
       }
       nbt.put(I18n.LOCOMOTIVE_COMPOUND_TRAIN_NAME, listNbt);
     }
@@ -227,7 +228,7 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
       this.initTrain();
     }
 
-    this.train.add(cart);
+    this.train.add(new Car(cart, cart.blockPosition()));
     LinkageManager.updateTrain(this.uuid, this.train);
     return true;
   }
@@ -236,8 +237,8 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     LinkageManager.removeTrain(this.uuid);
 
     if (this.train != null) {
-      for (AbstractMinecartEntity cart : this.train) {
-        cart.remove();
+      for (Car car : this.train) {
+        car.cart.remove();
       }
     }
     this.remove();
@@ -257,7 +258,7 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
 
   private void updateFacingDirection() {
     Vector3d motion = this.getDeltaMovement();
-    if (this.isMoving(motion)) {
+    if (this.isMoving()) {
       if (!this.isOnGround() && this.random.nextInt(4) == 0) {
         this.level.addParticle(ParticleTypes.LARGE_SMOKE, //
             this.getX(), this.getY() + 1.5D, this.getZ(), //
@@ -293,47 +294,33 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     return motion.x != 0 || motion.y != 0 || motion.z != 0;
   }
 
-  private boolean isMoving(Vector3d motion) {
-    return motion.x != 0 || motion.y != 0 || motion.z != 0;
-  }
-
   private void initTrain() {
-    this.train = new ArrayList<AbstractMinecartEntity>();
+    this.train = new ArrayList<Car>();
     for (UUID cartUuid : LinkageManager.getTrainUuid(this.uuid)) {
       ServerWorld serverWorld = (ServerWorld) this.level;
       AbstractMinecartEntity cart = (AbstractMinecartEntity) serverWorld.getEntity(cartUuid);
 
       if (cart != null) {
-        this.train.add(cart);
+        this.train.add(new Car(cart, cart.blockPosition()));
       }
     }
     LinkageManager.updateTrain(this.uuid, this.train);
   }
 
-  private boolean detectPosChanged() {
-    Vector3d pos = this.position();
-    BlockPos blockPos = this.blockPosition();
-
+  private boolean posChanged() {
     if (this.prevPos == null) {
       this.prevPos = this.blockPosition();
       return false;
     }
 
-    if (!blockPos.equals(this.prevPos)) {
-      if (isMoving()) {
-        if ((blockPos.getX() + 0.2D <= pos.x && pos.x <= blockPos.getX() + 0.8D)
-            && (blockPos.getZ() + 0.2D <= pos.z && pos.z <= blockPos.getZ() + 0.8D)) {
-          return true;
-        }
-      } else {
-        return true;
-      }
+    if (this.blockPosition().equals(this.prevPos)) {
+      return false;
     }
 
-    return false;
+    return true;
   }
 
-  private void moveCarts(ServerWorld serverWorld) {
+  private void updateCartsStopPos(ServerWorld serverWorld) {
     if (this.train.size() == 0) {
       return;
     }
@@ -345,7 +332,7 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
     }
 
     for (int i = train.size() - 1; i >= 0; i--) {
-      AbstractMinecartEntity cart = this.getCartByUuid(serverWorld, this.train.get(i).getUUID());
+      AbstractMinecartEntity cart = this.getCartByUuid(serverWorld, this.train.get(i).cart.getUUID());
       if (cart == null) {
         this.train.subList(i, this.train.size()).clear();
         LinkageManager.updateTrain(this.uuid, this.train);
@@ -353,16 +340,46 @@ public class LocomotiveCartEntity extends FurnaceMinecartEntity {
       }
 
       if (i == 0) {
-        cart.moveTo(this.prevPos.getX() + 0.5D, this.prevPos.getY(), this.prevPos.getZ() + 0.5D);
+        this.train.get(i).stopPos = this.prevPos;
       } else {
-        BlockPos pos = this.train.get(i - 1).blockPosition();
-        cart.moveTo(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
+        this.train.get(i).stopPos = this.train.get(i - 1).stopPos;
       }
+    }
+  }
+
+  private boolean needMoveCarts() {
+    Vector3d pos = this.position();
+    BlockPos blockPos = this.blockPosition();
+
+    if ((blockPos.getX() + detectRange <= pos.x && pos.x <= blockPos.getX() + (1 - detectRange))
+        && (blockPos.getZ() + detectRange <= pos.z && pos.z <= blockPos.getZ() + (1 - detectRange))) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private void moveCarts() {
+    for (Car car : this.train) {
+      car.cart.moveTo(car.stopPos.getX() + 0.5D, car.stopPos.getY(), car.stopPos.getZ() + 0.5D);
+      car.cart.setDeltaMovement(Vector3d.ZERO);
     }
   }
 
   private AbstractMinecartEntity getCartByUuid(ServerWorld serverWorld, UUID cartUuid) {
     return (AbstractMinecartEntity) serverWorld.getEntity(cartUuid);
+  }
+
+  public static class Car {
+
+    public final AbstractMinecartEntity cart;
+    public BlockPos stopPos;
+
+    public Car(AbstractMinecartEntity cart, BlockPos stopPos) {
+      this.cart = cart;
+      this.stopPos = stopPos;
+    }
+
   }
 
 }
