@@ -7,6 +7,8 @@
     "simplerail:eject_rail",
     "simplerail:destory_rail",
     "simplerail:timer_holding_rail",
-    "simplerail:cross_rail"
+    "simplerail:cross_rail",
+    "simplerail:y_cross_rail",
+    "simplerail:y_cross_right_rail"
   ]
 }

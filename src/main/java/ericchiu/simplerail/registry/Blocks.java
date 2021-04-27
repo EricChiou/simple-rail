@@ -10,6 +10,8 @@ import ericchiu.simplerail.block.OnewayRail;
 import ericchiu.simplerail.block.TimerHoldingRail;
 import ericchiu.simplerail.block.SignalTimerBlock;
 import ericchiu.simplerail.block.TrainDispenserBlock;
+import ericchiu.simplerail.block.YCrossRail;
+import ericchiu.simplerail.block.YCrossRightRail;
 import ericchiu.simplerail.constants.I18n;
 
 import net.minecraft.block.Block;
@@ -38,6 +40,10 @@ public class Blocks {
 			() -> new TimerHoldingRail());
 	public static final RegistryObject<Block> CROSS_RAIL = REGISTER.register(I18n.BLOCK_CROSS_RAIL,
 			() -> new CrossRail());
+	public static final RegistryObject<Block> Y_CROSS_RAIL = REGISTER.register(I18n.BLOCK_Y_CROSS_RAIL,
+			() -> new YCrossRail());
+	public static final RegistryObject<Block> Y_CROSS_RIGHT_RAIL = REGISTER.register(I18n.BLOCK_Y_CROSS_RIGHT_RAIL,
+			() -> new YCrossRightRail());
 
 	// machine
 	public static final RegistryObject<Block> TRAIN_DISPENSER = REGISTER.register(I18n.BLOCK_TRAIN_DISPENSER,

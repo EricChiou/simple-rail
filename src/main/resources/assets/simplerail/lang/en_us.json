@@ -13,6 +13,8 @@
   "block.simplerail.destory_rail": "Destory Rail",
   "block.simplerail.timer_holding_rail": "Timer Rail",
   "block.simplerail.cross_rail": "Cross Rail",
+  "block.simplerail.y_cross_rail": "Y-Cross Rail(left)",
+  "block.simplerail.y_cross_right_rail": "Y-Cross Rail(right)",
   "_comment": "====================Machine====================",
   "block.simplerail.train_dispenser": "Train Dispenser",
   "block.simplerail.signal_timer": "Signal Timer"

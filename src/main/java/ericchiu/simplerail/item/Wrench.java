@@ -69,6 +69,7 @@ public class Wrench extends Item {
     if (firstPosCarts.size() <= 0 && state.is(SimpleRailTags.RAILS)) {
       this.changeReverse(world, state, pos);
       this.changeLevel(world, state, pos);
+      this.changeDirection(world, state, pos);
     }
 
     if (state.is(SimpleRailTags.MACHINES)) {
@@ -107,6 +108,22 @@ public class Wrench extends Item {
         world.setBlock(pos, state.setValue(DirectionalBlock.FACING, Direction.EAST), 3);
       } else if (direction.equals(Direction.SOUTH)) {
         world.setBlock(pos, state.setValue(DirectionalBlock.FACING, Direction.WEST), 3);
+      }
+    }
+  }
+
+  private void changeDirection(World world, BlockState state, BlockPos pos) {
+    if (state.hasProperty(SimpleRailProperties.DIRECTION)) {
+      Direction direction = state.getValue(SimpleRailProperties.DIRECTION);
+
+      if (direction.equals(Direction.EAST)) {
+        world.setBlock(pos, state.setValue(SimpleRailProperties.DIRECTION, Direction.SOUTH), 3);
+      } else if (direction.equals(Direction.WEST)) {
+        world.setBlock(pos, state.setValue(SimpleRailProperties.DIRECTION, Direction.NORTH), 3);
+      } else if (direction.equals(Direction.NORTH)) {
+        world.setBlock(pos, state.setValue(SimpleRailProperties.DIRECTION, Direction.EAST), 3);
+      } else if (direction.equals(Direction.SOUTH)) {
+        world.setBlock(pos, state.setValue(SimpleRailProperties.DIRECTION, Direction.WEST), 3);
       }
     }
   }

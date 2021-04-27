@@ -1,0 +1,6 @@
+{
+  "parent": "block/rail_flat",
+  "textures": {
+    "rail": "simplerail:blocks/y_cross_right_straight_rail"
+  }
+}

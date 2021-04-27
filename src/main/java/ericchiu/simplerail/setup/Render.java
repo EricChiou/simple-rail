@@ -20,6 +20,8 @@ public class Render {
     RenderTypeLookup.setRenderLayer(Blocks.DESTORY_RAIL.get(), cutout);
     RenderTypeLookup.setRenderLayer(Blocks.TIMER_HOLDING_RAIL.get(), cutout);
     RenderTypeLookup.setRenderLayer(Blocks.CROSS_RAIL.get(), cutout);
+    RenderTypeLookup.setRenderLayer(Blocks.Y_CROSS_RAIL.get(), cutout);
+    RenderTypeLookup.setRenderLayer(Blocks.Y_CROSS_RIGHT_RAIL.get(), cutout);
 
     RenderingRegistry.registerEntityRenderingHandler(Entities.LOCOMOTIVE_CART.get(),
         manager -> new LocomotiveCartRender<LocomotiveCartEntity>(manager));

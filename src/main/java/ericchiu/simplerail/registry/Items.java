@@ -38,6 +38,10 @@ public class Items {
 			() -> new BlockItem(Blocks.TIMER_HOLDING_RAIL.get(), new Item.Properties().tab(Rail.TAB)));
 	public static final RegistryObject<Item> CROSS_RAIL = REGISTER.register(I18n.BLOCK_CROSS_RAIL,
 			() -> new BlockItem(Blocks.CROSS_RAIL.get(), new Item.Properties().tab(Rail.TAB)));
+	public static final RegistryObject<Item> Y_CROSS_RAIL = REGISTER.register(I18n.BLOCK_Y_CROSS_RAIL,
+			() -> new BlockItem(Blocks.Y_CROSS_RAIL.get(), new Item.Properties().tab(Rail.TAB)));
+	public static final RegistryObject<Item> Y_CROSS_RIGHT_RAIL = REGISTER.register(I18n.BLOCK_Y_CROSS_RIGHT_RAIL,
+			() -> new BlockItem(Blocks.Y_CROSS_RIGHT_RAIL.get(), new Item.Properties().tab(Rail.TAB)));
 	// machine
 	public static final RegistryObject<Item> TRAIN_DISPENSER = REGISTER.register(I18n.BLOCK_TRAIN_DISPENSER,
 			() -> new BlockItem(Blocks.TRAIN_DISPENSER.get(), new Item.Properties().tab(Rail.TAB)));
