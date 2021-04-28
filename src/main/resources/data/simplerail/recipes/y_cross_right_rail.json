@@ -2,15 +2,18 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "   ",
-    " RI",
+    "SRI",
     "   "
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:iron_nugget"
     },
     "R": {
       "item": "minecraft:rail"
+    },
+    "S": {
+      "item": "minecraft:redstone"
     }
   },
   "result": {

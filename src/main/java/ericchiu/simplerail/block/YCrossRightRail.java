@@ -60,13 +60,15 @@ public class YCrossRightRail extends BaseRail {
       Direction direction = cart.getMotionDirection();
       double speed = Math.max(Math.abs(motion.x), Math.abs(motion.z));
 
-      cartData = new CartData(cart.getUUID(), speed, direction, this.getDestPos(state, pos, direction), cart.yRot,
-          cart.xRot);
+      Direction destDirection = this.getDestDirection(state, pos, direction);
+      BlockPos destPos = this.getDestPos(pos, destDirection);
+
+      cartData = new CartData(cart.getUUID(), speed, destDirection, destPos, cart.yRot, cart.xRot);
       this.yCrossRailData.put(pos, cartData);
 
-      if (direction.equals(Direction.EAST) || direction.equals(Direction.WEST)) {
+      if (destDirection.equals(Direction.EAST) || destDirection.equals(Direction.WEST)) {
         world.setBlock(pos, state.setValue(BlockStateProperties.RAIL_SHAPE, RailShape.EAST_WEST), 3);
-      } else if (direction.equals(Direction.NORTH) || direction.equals(Direction.SOUTH)) {
+      } else if (destDirection.equals(Direction.NORTH) || destDirection.equals(Direction.SOUTH)) {
         world.setBlock(pos, state.setValue(BlockStateProperties.RAIL_SHAPE, RailShape.NORTH_SOUTH), 3);
       }
 
@@ -109,17 +111,136 @@ public class YCrossRightRail extends BaseRail {
     return super.removedByPlayer(state, world, pos, player, willHarvest, fluid);
   }
 
-  private BlockPos getDestPos(BlockState state, BlockPos pos, Direction direction) {
-    if (Direction.EAST.equals(direction)) {
-      return pos.east();
-    } else if (Direction.WEST.equals(direction)) {
-      return pos.west();
-    } else if (Direction.SOUTH.equals(direction)) {
-      return pos.south();
-    } else if (Direction.NORTH.equals(direction)) {
-      return pos.north();
-    }
+  private Direction getDestDirection(BlockState state, BlockPos pos, Direction direction) {
+    Direction railDirection = state.getValue(DIRECTION);
+    boolean powered = state.getValue(POWERED);
 
+    // east
+    if (Direction.EAST.equals(direction)) {
+      if (Direction.EAST.equals(railDirection)) {
+        if (powered) {
+          return Direction.SOUTH;
+        } else {
+          return Direction.EAST;
+        }
+      } else if (Direction.WEST.equals(railDirection)) {
+        if (powered) {
+          return Direction.EAST;
+        } else {
+          return Direction.EAST;
+        }
+      } else if (Direction.NORTH.equals(railDirection)) {
+        if (powered) {
+          return Direction.EAST;
+        } else {
+          return Direction.SOUTH;
+        }
+      } else if (Direction.SOUTH.equals(railDirection)) {
+        if (powered) {
+          return Direction.NORTH;
+        } else {
+          return Direction.SOUTH;
+        }
+      }
+      return Direction.EAST;
+      // west
+    } else if (Direction.WEST.equals(direction)) {
+      if (Direction.EAST.equals(railDirection)) {
+        if (powered) {
+          return Direction.WEST;
+        } else {
+          return Direction.WEST;
+        }
+      } else if (Direction.WEST.equals(railDirection)) {
+        if (powered) {
+          return Direction.NORTH;
+        } else {
+          return Direction.WEST;
+        }
+      } else if (Direction.NORTH.equals(railDirection)) {
+        if (powered) {
+          return Direction.SOUTH;
+        } else {
+          return Direction.SOUTH;
+        }
+      } else if (Direction.SOUTH.equals(railDirection)) {
+        if (powered) {
+          return Direction.WEST;
+        } else {
+          return Direction.SOUTH;
+        }
+      }
+      return Direction.WEST;
+      // north
+    } else if (Direction.NORTH.equals(direction)) {
+      if (Direction.EAST.equals(railDirection)) {
+        if (powered) {
+          return Direction.WEST;
+        } else {
+          return Direction.EAST;
+        }
+      } else if (Direction.WEST.equals(railDirection)) {
+        if (powered) {
+          return Direction.NORTH;
+        } else {
+          return Direction.EAST;
+        }
+      } else if (Direction.NORTH.equals(railDirection)) {
+        if (powered) {
+          return Direction.EAST;
+        } else {
+          return Direction.NORTH;
+        }
+      } else if (Direction.SOUTH.equals(railDirection)) {
+        if (powered) {
+          return Direction.NORTH;
+        } else {
+          return Direction.NORTH;
+        }
+      }
+      return Direction.NORTH;
+      // south
+    } else if (Direction.SOUTH.equals(direction)) {
+      if (Direction.EAST.equals(railDirection)) {
+        if (powered) {
+          return Direction.SOUTH;
+        } else {
+          return Direction.EAST;
+        }
+      } else if (Direction.WEST.equals(railDirection)) {
+        if (powered) {
+          return Direction.EAST;
+        } else {
+          return Direction.EAST;
+        }
+      } else if (Direction.NORTH.equals(railDirection)) {
+        if (powered) {
+          return Direction.SOUTH;
+        } else {
+          return Direction.SOUTH;
+        }
+      } else if (Direction.SOUTH.equals(railDirection)) {
+        if (powered) {
+          return Direction.WEST;
+        } else {
+          return Direction.SOUTH;
+        }
+      }
+      return Direction.SOUTH;
+    }
+    return Direction.SOUTH;
+  }
+
+  private BlockPos getDestPos(BlockPos pos, Direction destDirection) {
+    if (Direction.EAST.equals(destDirection)) {
+      return pos.east();
+    } else if (Direction.WEST.equals(destDirection)) {
+      return pos.west();
+    } else if (Direction.NORTH.equals(destDirection)) {
+      return pos.north();
+    } else if (Direction.SOUTH.equals(destDirection)) {
+      return pos.south();
+    }
     return pos;
   }
 

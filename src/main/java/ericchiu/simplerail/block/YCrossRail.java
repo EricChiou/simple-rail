@@ -115,6 +115,7 @@ public class YCrossRail extends BaseRail {
     Direction railDirection = state.getValue(DIRECTION);
     boolean powered = state.getValue(POWERED);
 
+    // east
     if (Direction.EAST.equals(direction)) {
       if (Direction.EAST.equals(railDirection)) {
         if (powered) {
@@ -132,16 +133,17 @@ public class YCrossRail extends BaseRail {
         if (powered) {
           return Direction.SOUTH;
         } else {
-          return Direction.NORTH;
+          return Direction.SOUTH;
         }
       } else if (Direction.SOUTH.equals(railDirection)) {
         if (powered) {
-          return Direction.NORTH;
+          return Direction.EAST;
         } else {
-          return Direction.NORTH;
+          return Direction.SOUTH;
         }
       }
       return Direction.EAST;
+      // west
     } else if (Direction.WEST.equals(direction)) {
       if (Direction.EAST.equals(railDirection)) {
         if (powered) {
@@ -157,30 +159,31 @@ public class YCrossRail extends BaseRail {
         }
       } else if (Direction.NORTH.equals(railDirection)) {
         if (powered) {
-          return Direction.NORTH;
+          return Direction.WEST;
         } else {
-          return Direction.NORTH;
+          return Direction.SOUTH;
         }
       } else if (Direction.SOUTH.equals(railDirection)) {
         if (powered) {
           return Direction.NORTH;
         } else {
-          return Direction.NORTH;
+          return Direction.SOUTH;
         }
       }
       return Direction.WEST;
+      // north
     } else if (Direction.NORTH.equals(direction)) {
       if (Direction.EAST.equals(railDirection)) {
         if (powered) {
           return Direction.NORTH;
         } else {
-          return Direction.WEST;
+          return Direction.EAST;
         }
       } else if (Direction.WEST.equals(railDirection)) {
         if (powered) {
           return Direction.EAST;
         } else {
-          return Direction.WEST;
+          return Direction.EAST;
         }
       } else if (Direction.NORTH.equals(railDirection)) {
         if (powered) {
@@ -196,18 +199,19 @@ public class YCrossRail extends BaseRail {
         }
       }
       return Direction.NORTH;
+      // south
     } else if (Direction.SOUTH.equals(direction)) {
       if (Direction.EAST.equals(railDirection)) {
         if (powered) {
           return Direction.WEST;
         } else {
-          return Direction.WEST;
+          return Direction.EAST;
         }
       } else if (Direction.WEST.equals(railDirection)) {
         if (powered) {
-          return Direction.WEST;
+          return Direction.SOUTH;
         } else {
-          return Direction.WEST;
+          return Direction.EAST;
         }
       } else if (Direction.NORTH.equals(railDirection)) {
         if (powered) {
@@ -224,7 +228,7 @@ public class YCrossRail extends BaseRail {
       }
       return Direction.SOUTH;
     }
-    return Direction.NORTH;
+    return Direction.SOUTH;
   }
 
   private BlockPos getDestPos(BlockPos pos, Direction destDirection) {
