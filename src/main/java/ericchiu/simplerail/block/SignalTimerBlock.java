@@ -11,7 +11,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.RedstoneBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
+// import net.minecraft.block.material.MaterialColor;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer.Builder;
@@ -22,6 +22,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.TickPriority;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.ToolType;
 
 public class SignalTimerBlock extends RedstoneBlock {
 
@@ -29,8 +30,11 @@ public class SignalTimerBlock extends RedstoneBlock {
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
   public SignalTimerBlock() {
-    super(AbstractBlock.Properties.of(Material.METAL, MaterialColor.FIRE).requiresCorrectToolForDrops()
-        .strength(5.0F, 6.0F).sound(SoundType.METAL));
+    super(AbstractBlock.Properties //
+        .of(Material.METAL) //
+        .strength(5.0F, 6.0F) //
+        .sound(SoundType.METAL) //
+        .harvestTool(ToolType.PICKAXE));
     this.registerDefaultState(this.stateDefinition.any().setValue(LEVEL, 0).setValue(POWERED, false));
   }
 

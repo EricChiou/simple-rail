@@ -11,6 +11,7 @@ import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 
 public class BasePoweredRail extends PoweredRailBlock {
 
@@ -20,6 +21,7 @@ public class BasePoweredRail extends PoweredRailBlock {
         .noCollission() //
         .strength(0.7F) //
         .sound(SoundType.METAL) //
+        .harvestTool(ToolType.PICKAXE) //
         , true);
   }
 

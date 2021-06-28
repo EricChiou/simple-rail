@@ -9,6 +9,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.dispenser.ProxyBlockSource;
 import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
@@ -40,7 +41,11 @@ public class TrainDispenserBlock extends DispenserBlock {
   private static final int containerSize = 27;
 
   public TrainDispenserBlock() {
-    super(AbstractBlock.Properties.of(Material.STONE).harvestTool(ToolType.PICKAXE).strength(3.5F));
+    super(AbstractBlock.Properties //
+        .of(Material.METAL) //
+        .strength(5.0F, 6.0F) //
+        .sound(SoundType.METAL) //
+        .harvestTool(ToolType.PICKAXE));
   }
 
   @Override
@@ -140,21 +145,21 @@ public class TrainDispenserBlock extends DispenserBlock {
   private AbstractMinecartEntity getCartEntity(World world, Vector3d placeLoc, String itemName) {
     AbstractMinecartEntity cart = null;
     switch (itemName) {
-    case "chest_minecart":
-      cart = new ChestMinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
-      break;
-    case "furnace_minecart":
-      cart = new FurnaceMinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
-      break;
-    case "hopper_minecart":
-      cart = new HopperMinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
-      break;
-    case "tnt_minecart":
-      cart = new TNTMinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
-      break;
-    default:
-      cart = new MinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
-      break;
+      case "chest_minecart":
+        cart = new ChestMinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
+        break;
+      case "furnace_minecart":
+        cart = new FurnaceMinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
+        break;
+      case "hopper_minecart":
+        cart = new HopperMinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
+        break;
+      case "tnt_minecart":
+        cart = new TNTMinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
+        break;
+      default:
+        cart = new MinecartEntity(world, placeLoc.x, placeLoc.y, placeLoc.z);
+        break;
     }
 
     return cart;

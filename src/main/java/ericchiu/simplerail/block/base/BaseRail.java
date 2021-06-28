@@ -11,6 +11,7 @@ import net.minecraft.entity.item.minecart.AbstractMinecartEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 
 public class BaseRail extends RailBlock {
 
@@ -19,7 +20,8 @@ public class BaseRail extends RailBlock {
         .of(Material.DECORATION) //
         .noCollission() //
         .strength(0.7F) //
-        .sound(SoundType.METAL));
+        .sound(SoundType.METAL) //
+        .harvestTool(ToolType.PICKAXE));
   }
 
   @Override
