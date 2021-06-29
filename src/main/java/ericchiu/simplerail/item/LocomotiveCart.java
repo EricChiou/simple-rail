@@ -52,11 +52,9 @@ public class LocomotiveCart extends Item {
         blockpos.getY() + 0.0625D + deltaY, blockpos.getZ() + 0.5D);
 
     if (itemstack.hasCustomHoverName()) {
-      // abstractCartEntity.setCustomName(itemstack.getHoverName());
       locomotiveCartEntity.setCustomName(itemstack.getHoverName());
     }
 
-    // world.addFreshEntity(abstractCartEntity);
     world.addFreshEntity(locomotiveCartEntity);
 
     return ActionResultType.sidedSuccess(world.isClientSide);

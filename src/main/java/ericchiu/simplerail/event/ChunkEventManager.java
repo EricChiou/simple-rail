@@ -1,5 +1,8 @@
 package ericchiu.simplerail.event;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import ericchiu.simplerail.SimpleRail;
 import ericchiu.simplerail.entity.LocomotiveCartEntity;
 import net.minecraft.entity.Entity;
@@ -9,6 +12,8 @@ import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.event.entity.EntityEvent.EnteringChunk;
 
 public class ChunkEventManager {
+
+  private static final Logger LOGGER = LogManager.getLogger();
 
   private static final int CHUNK_RADIUS = 2;
 
@@ -33,7 +38,11 @@ public class ChunkEventManager {
   private static void loadChunks(ServerWorld world, Entity entity, int chunkX, int chunkZ, int radius) {
     for (int x = chunkX - radius; x <= chunkX + radius; x++) {
       for (int z = chunkZ - radius; z <= chunkZ + radius; z++) {
-        ForgeChunkManager.forceChunk(world, SimpleRail.MOD_ID, entity, chunkX, chunkZ, true, true);
+        try {
+          ForgeChunkManager.forceChunk(world, SimpleRail.MOD_ID, entity, chunkX, chunkZ, true, true);
+        } catch (Exception e) {
+          LOGGER.error(e);
+        }
       }
     }
   }
