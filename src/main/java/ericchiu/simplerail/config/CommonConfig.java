@@ -52,14 +52,18 @@ public class CommonConfig {
     public CommonConfig(Builder builder) {
         builder.comment("Simple Rail Settings");
 
-        builder.push("rail");
+        builder.push("cart");
 
-        builder.push("high_speed_rail");
+        builder.push("locomotive");
 
         locomotiveDisableLoadingChunk = builder.comment("Enable/disable keep locomotive loading chunks (default: true)")
                 .define(Config.DISABLE_LOADING_CHUNK, true);
 
         builder.pop();
+
+        builder.pop();
+
+        builder.push("rail");
 
         builder.push("high_speed_rail");
 
