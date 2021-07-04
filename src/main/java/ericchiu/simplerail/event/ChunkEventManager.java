@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import ericchiu.simplerail.SimpleRail;
+import ericchiu.simplerail.config.CommonConfig;
 import ericchiu.simplerail.entity.LocomotiveCartEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
@@ -18,7 +19,9 @@ public class ChunkEventManager {
   private static final int CHUNK_RADIUS = 2;
 
   public static void run(EnteringChunk event) {
-    forceChunkLoading(event);
+    if (CommonConfig.INSTANCE.locomotiveDisableLoadingChunk.get()) {
+      forceChunkLoading(event);
+    }
   }
 
   private static void forceChunkLoading(EnteringChunk event) {

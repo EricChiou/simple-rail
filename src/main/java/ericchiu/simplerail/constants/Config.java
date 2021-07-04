@@ -2,6 +2,9 @@ package ericchiu.simplerail.constants;
 
 public class Config {
 
+  // locomotive
+  public static final String DISABLE_LOADING_CHUNK = "disableLoadingChunk";
+
   // high speed rail
   public static final String HIGH_SPEED_RAIL_MAX_SPEED = "maxSpeed";
 
