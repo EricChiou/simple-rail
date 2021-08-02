@@ -27,7 +27,7 @@
 ### Link Carts
 Right-click on the rail which is below cart to link carts.  
 Right-click on rail which is below carts to link carts.  
-![link carts](https://www.calicomoomoo.ml/file/simplerail/link_carts.png)
+![link carts](https://www.calicomoomoo.com/file/simplerail/link_carts.png)
 
 ### Timer Rail
 Use wrench to change Timer Rail's level, the default holding time is :  
